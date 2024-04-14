@@ -21,7 +21,7 @@ Negative: The creation of a child process was unsuccessful.<br/>
 Zero: Returned to the newly created child process.<br/>
 Positive: Returned to parent or caller. The value contains the process ID of the newly created child process.<br/>
 
-* **third parameter in main for environment variables** : env variables can be accessed with the third variable in main function. [More info](https://stackoverflow.com/questions/10321435/is-char-envp-as-a-third-argument-to-main-portable)
+* **third parameter in main for environment variables** : env variables can be accessed with the third variable in main function. [More](https://stackoverflow.com/questions/10321435/is-char-envp-as-a-third-argument-to-main-portable)
 ```c
 void	child1_process(int *fd, char **argv, char **env)
 {
@@ -29,4 +29,4 @@ void	child1_process(int *fd, char **argv, char **env)
 }
 ```
 * **`int dup2(int oldfd, int newfd);`** : duplicates value of oldfd to new fd.
-
+* **`int access( const char * path,int amode );`** : checks to see if the file or directory specified by path exists and if it can be accessed with the file access permissions given by amode. [More](https://www.qnx.com/developers/docs/7.1/#com.qnx.doc.neutrino.lib_ref/topic/a/access.html)
