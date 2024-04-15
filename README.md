@@ -1,7 +1,9 @@
 # 42_minishell
-
+ To make my own shell.<br/>
+ **Knowledge from previous Project Minitalk and PipeX is required.** 
 ## Must Know
-### Key Points in the project Pipex, of which I did Minitalk instead.
+### Key Points in the project Pipex, of which I did Minitalk instead. 
+
 * **Prompt** : refers to a message or text displayed to the user to solicit input or provide instructions.
 * **Pipe** : Pipe is one-way communication only i.e we can use a pipe such that One process write to the pipe, and the other process reads from the pipe.
 * **File Descriptor** : File descriptor refers to a numeric number identifier used in operating systems, meaning it's a special number that a computer uses to track files and devices it is using.
