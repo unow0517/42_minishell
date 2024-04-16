@@ -35,5 +35,8 @@ void	child1_process(int *fd, char **argv, char **env)
 * **`int execve(const char *pathname, char *const _Nullable argv[], char *const _Nullable envp[]);`**: execve() executes the program referred to by pathname.  This causes the program that is currently being run by the calling process to be replaced with a new program, with newly initialized stack, heap, and (initialized and uninitialized) data segments.[More](https://man7.org/linux/man-pages/man2/execve.2.html)
 * **`pid_t waitpid(pid_t pid, int *status_ptr, int options);`** : Suspends the calling process until a child process ends or is stopped. status = Points to a location where waitpid() can store a status value. [More](https://www.ibm.com/docs/en/zvm/7.3?topic=descriptions-waitpid-wait-specific-child-process-end)
 
+### Parsing
+
+* **Canonical vs Noncanonical** : 
 ## To read
 https://techdebt.tistory.com/33
