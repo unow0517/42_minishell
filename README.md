@@ -34,3 +34,6 @@ void	child1_process(int *fd, char **argv, char **env)
 * **`int access( const char * path,int amode );`** : checks to see if the file or directory specified by path exists and if it can be accessed with the file access permissions given by amode. [More](https://www.qnx.com/developers/docs/7.1/#com.qnx.doc.neutrino.lib_ref/topic/a/access.html)
 * **`int execve(const char *pathname, char *const _Nullable argv[], char *const _Nullable envp[]);`**: execve() executes the program referred to by pathname.  This causes the program that is currently being run by the calling process to be replaced with a new program, with newly initialized stack, heap, and (initialized and uninitialized) data segments.[More](https://man7.org/linux/man-pages/man2/execve.2.html)
 * **`pid_t waitpid(pid_t pid, int *status_ptr, int options);`** : Suspends the calling process until a child process ends or is stopped. status = Points to a location where waitpid() can store a status value. [More](https://www.ibm.com/docs/en/zvm/7.3?topic=descriptions-waitpid-wait-specific-child-process-end)
+
+## To read
+https://techdebt.tistory.com/33
