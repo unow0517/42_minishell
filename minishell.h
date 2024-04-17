@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/17 11:23:59 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/04/17 13:25:41 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # define IGN 2
 
 //SUBFUNCTIONS.C
-int		ifinputis(char *inpt, char *string);
-int		ifinputstartswith(char *inpt, char *string);
+int		inputis(char *inpt, char *string);
+int		inputstartswith(char *inpt, char *string);
 
 //HISTORY.C
 void	print_history(char *inpt);
@@ -37,5 +37,8 @@ void	print_history(char *inpt);
 void	sighandler(int sig);
 void	sigchecker(int sigint, int sigquit);
 void	catchsignal(void);
+
+//PWD.C
+void	printpwd(void);
 
 #endif

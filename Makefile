@@ -6,13 +6,13 @@
 #    By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/12 17:57:56 by yowoo             #+#    #+#              #
-#    Updated: 2024/04/17 11:41:12 by yowoo            ###   ########.fr        #
+#    Updated: 2024/04/17 13:22:30 by yowoo            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = gcc
-SRC = minishell.c inpt_functions.c history.c sig_functions.c
+SRC = minishell.c inpt_functions.c history.c sig_functions.c pwd.c
 CC_FLAGS = -Wall -Wextra -Werror -lreadline
 RM = rm -rf
 LIBFT_AR = Libft/libft.a
