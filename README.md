@@ -44,4 +44,5 @@ To use Ctrl+D (an arbitrary way of telling the OS to send the eof signal to a pr
 * **AST-Abstract Syntax Tree**
 <br/><br/>
 ## To read
-https://techdebt.tistory.com/33 (In Korean)
+https://techdebt.tistory.com/33 (In Korean)</br>
+https://m4nnb3ll.medium.com/minishell-building-a-mini-bash-a-42-project-b55a10598218
