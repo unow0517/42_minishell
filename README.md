@@ -41,6 +41,7 @@ To use Ctrl+D (an arbitrary way of telling the OS to send the eof signal to a pr
   Standard input mode for terminal. In canonical input processing mode, **terminal input is processed in lines terminated by newline ('\n'), EOF(EndOfFile), or EOL(EndOfLine) characters**. No input can be read until an entire line has been typed by the user, and the read function (see I/O Primitives) returns at most a single line of input, no matter how many bytes are requested.
 * **Noncanonical** : In noncanonical input processing mode, **characters are not grouped into lines, and ERASE and KILL processing is not performed**. The granularity with which bytes are read in noncanonical input mode is controlled by the MIN and TIME settings.
 * **STDIN_FILENO** : is **a predefined constant representing the file descriptor** associated with the standard input stream, typically the keyboard. It's defined in the <unistd.h> header file. When you run a program from the command line and type something into it, you're providing input via stdin.
+* **AST-Abstract Syntax Tree**
 <br/><br/>
 ## To read
 https://techdebt.tistory.com/33 (In Korean)
