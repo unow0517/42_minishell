@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:24 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/17 13:07:38 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/04/18 16:04:42 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	sighandler(int sig)
 	{
 		write(1, "\n", 1);
 		rl_on_new_line();
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 	if (sig == SIGQUIT)
@@ -36,6 +37,7 @@ void	catchsignal(void)
 {
 	struct termios	term;
 
+	// printf("catchsignal\n");
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~(ECHOCTL); //to hide ^C 
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);

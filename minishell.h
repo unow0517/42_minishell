@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/17 13:25:41 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/04/19 17:20:07 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,15 @@
 # define DFL 1
 # define IGN 2
 
-//SUBFUNCTIONS.C
+typedef struct s_mini
+{
+	char	*cwd;
+}	t_mini;
+
+//inpt_functions.C
 int		inputis(char *inpt, char *string);
 int		inputstartswith(char *inpt, char *string);
+int		inputhas(char *input, char c);
 
 //HISTORY.C
 void	print_history(char *inpt);
@@ -39,6 +45,16 @@ void	sigchecker(int sigint, int sigquit);
 void	catchsignal(void);
 
 //PWD.C
-void	printpwd(void);
+void	printpwd(t_mini *shell_info);
+
+//PIPE.C
+// void	run_pipe(char *inpt);
+void	run_pipe(char *inpt, char **argv, char **env);
+
+//ECHO.C
+void	run_echo(char *inpt);
+
+//CD.C
+void	run_cd(char *inpt, t_mini *shell_info);
 
 #endif
