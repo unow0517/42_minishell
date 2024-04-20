@@ -6,23 +6,29 @@
 #    By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/12 17:57:56 by yowoo             #+#    #+#              #
-#    Updated: 2024/04/19 17:09:37 by yowoo            ###   ########.fr        #
+#    Updated: 2024/04/20 23:56:20 by yowoo            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = gcc
-SRC = minishell.c inpt_functions.c history.c sig_functions.c pwd.c pipe.c echo.c cd.c
+SRC = minishell.c inpt_functions.c history.c sig_functions.c pwd.c pipe.c echo.c cd.c env.c
 CC_FLAGS = -Wall -Wextra -Werror -lreadline
 RM = rm -rf
 LIBFT_AR = Libft/libft.a
 PRINTF_AR = ft_printf/libftprintf.a
-all: $(NAME)
+# OBJ = $(SRC:.c=.o)
 
-$(NAME):
-	cd Libft && make
-	cd ft_printf && make
+all: $(LIBFT_AR) $(PRINTF_AR) $(NAME)
+
+$(NAME): $(SRC)
 	@$(CC) $(CC_FLAGS) $(SRC) $(LIBFT_AR) $(PRINTF_AR) -o $(NAME)
+
+$(LIBFT_AR):
+	cd Libft && make
+
+$(PRINTF_AR):
+	cd ft_printf && make
 
 clean:
 	cd Libft && make clean

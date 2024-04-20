@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/19 17:20:07 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/04/20 19:30:58 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,16 @@ void	printpwd(t_mini *shell_info);
 //PIPE.C
 // void	run_pipe(char *inpt);
 void	run_pipe(char *inpt, char **argv, char **env);
+char	*find_cmd_in_env(char *cmd, char **env);
+void	execute(char *cmd, char *argv, char **env);
 
 //ECHO.C
 void	run_echo(char *inpt);
 
 //CD.C
 void	run_cd(char *inpt, t_mini *shell_info);
+
+//ENV.C
+void	run_env(char *inpt, char **env);
 
 #endif

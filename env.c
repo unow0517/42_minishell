@@ -1,19 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/17 13:18:23 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/21 00:21:32 by yowoo            ###   ########.fr       */
+/*   Created: 2024/04/20 17:51:49 by yowoo             #+#    #+#             */
+/*   Updated: 2024/04/20 21:17:31 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//pwd asdf => pwd should work 
-void	printpwd(t_mini *shell_info)
+void	run_env(char *inpt, char **env)
 {
-	ft_printf("%s\n", shell_info->cwd);
+	(void)inpt;
+	while (env && *env)
+	{
+		printf("%s\n",*env);
+		env++;
+	}
 }
