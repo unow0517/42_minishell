@@ -6,36 +6,16 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:46 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/21 00:20:39 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/04/21 01:28:41 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*starting_ws(char *string)
-{
-	char	*ptr;
-	char	*string_0;
-
-	string_0 = string;
-	string++;
-	while (*string != '\0')
-	{
-		if (*string == ' ')
-			string++;
-		else
-			break ;
-	}
-	ptr = ft_strdup(string);
-	free(string_0);
-	return (ptr);
-}
-
-// void	inpt_handler(char *prompt)
-// void	inpt_handler(char *prompt, char **argv, char **env)
 void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info)
 {
 	char	*inpt;
+	char	*full_path;
 	// t_mini	*shell_info;
 
 	// shell_info = malloc(sizeof(t_mini));
@@ -59,7 +39,10 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info)
 		if (!inputis(inpt, ""))
 			add_history(inpt);
 		if (*inpt == ' ')
-			inpt = starting_ws(inpt);
+			inpt = rm_starting_ws(inpt);
+		multiple_ws_to_single(inpt);
+
+		//have to run this after split cmd by space.
 		if (inputis(inpt, ""))
 		{
 			rl_on_new_line();
@@ -70,15 +53,18 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info)
 		else if (inputstartswith(inpt, "echo "))
 			run_echo(inpt);
 		else if (inputstartswith(inpt, "cd "))
-		{
 			run_cd(inpt, shell_info);
-		}
 		else if (inputstartswith(inpt, "pwd ") | inputis(inpt, "pwd"))
 			printpwd(shell_info);
-		else if (inputis(inpt, "env"))
+		else if (inputis(inpt, "env") | inputis(inpt, "env "))
 			run_env(inpt, env);
 		else if (inputstartswith(inpt, "history"))
 			print_history(inpt);
+		else if (find_cmd_in_env(inpt, env))
+		{
+			full_path = find_cmd_in_env(inpt, env);
+			execute(full_path, inpt, env);
+		}
 		else
 			ft_printf("minishell: %s: command not found\n", inpt);
 		free(inpt);

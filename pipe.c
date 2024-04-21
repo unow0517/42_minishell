@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:11:21 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/20 19:31:26 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/04/21 01:36:16 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@
 
 void	execute(char *cmd, char *argv, char **env)
 {
+	printf("cmd: %s\n",cmd);
+	printf("argv: %s\n",argv);
+	printf("env: %s\n",env[0]);
 	execve(cmd, ft_split(argv, ' '), env);
 }
 
@@ -89,14 +92,26 @@ char	*find_cmd_in_env(char *cmd, char **env)
 	while (env[i] && ft_strncmp(env[i], path_from_env, 5) != 0)
 		i++;
 	path_from_env = env[i];
+	printf("path_from_env + 5: %s\n", path_from_env + 5);
+	printf("path_from_env: %s\n", path_from_env);
 	paths = ft_split(path_from_env + 5, ':');
+	while (*paths)
+	{
+		printf("paths: %s\n", *paths);
+		printf("\n");
+		paths++;
+	}
 	i = 0;
 	slash_cmd = ft_strjoin("/", cmd);
+	printf("slash_cmd: %s\n", slash_cmd);
 	while (paths[i])
 	{
 		cmd_path = ft_strjoin(paths[i], slash_cmd);
+		printf("cmd_path: %s\n\n", cmd_path);
 		if (access(cmd_path, X_OK) != -1)
 			return (free(paths), free(slash_cmd), cmd_path);
+		else
+			free(cmd_path);
 		i++;
 	}
 	return (free(paths), free(slash_cmd), NULL);

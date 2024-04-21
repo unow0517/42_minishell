@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:31:29 by yowoo             #+#    #+#             */
-/*   Updated: 2023/10/26 17:28:10 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/04/21 02:18:49 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,31 +80,45 @@ char	**ft_split(char const *s, char c)
 	start = 0;
 	cnt = cntwords(s, c);
 	array = malloc((cntwords(s, c) + 1) * sizeof(char *));
+	// array = ft_calloc((cntwords(s, c) + 1), sizeof(char *));
 	if (!array)
 		return (0);
 	while (i < cnt)
 	{
+		printf("start : %d\n", start);
 		start = start + get_start(s + start, c);
 		len = get_len(s + start, c);
 		array[i] = ft_substr(s, start, len);
-		if (array[i] == NULL)
-			return (free_mem(array, i));
+		printf("array[%d]: %s\n",i, array[i]);
+		// if (array[i] == NULL)
+		// {
+		// 	printf("hello");
+		// 	return (free_mem(array, i));
+		// }
 		start = start + len + 1;
 		i++;
 	}
-	array[i] = 0;
+	printf("i: %d\n",i);
+	array[i] = "\0";
+	printf("array: %s\n",array[0]);
+	printf("array: %s\n",array[1]);
+    printf("array: %s\n",array[2]);
 	return (array);
 }
 
-// int main(){
-//     char string[] = "^^^1^^2a,^^^^3^^^^--h^^^^";
-//     char delim = '^';
-//     char** token = ft_split(string, delim);
-//     int i = 0;
-// 	while(token[i] != 0)
-// 	{
-//        	printf("res: %s\n",token[i]);
-//         i++;
-//     }
-// 	return 0;
-// }
+int main(){
+    char string[] = "asdhk  slajf asd";
+    char delim = ' ';
+    char **token = ft_split(string, delim);
+    int i = 0;
+    // printf("res: %s\n",token[0]);
+	// printf("res: %s\n",token[1]);
+    // printf("res: %s\n",token[2]);
+
+	// while(token[i] != 0)
+	// {
+    //    	printf("res: %s\n",token[i]);
+    //     i++;
+    // }
+	return 0;
+}

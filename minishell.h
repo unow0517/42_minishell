@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/20 19:30:58 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/04/21 00:45:11 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,9 @@ void	run_cd(char *inpt, t_mini *shell_info);
 
 //ENV.C
 void	run_env(char *inpt, char **env);
+
+//WHITE_SPACE.C
+char	*rm_starting_ws(char *string);
+char	*multiple_ws_to_single(char	*str);
 
 #endif
