@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:46 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/25 17:30:43 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/04/25 18:22:30 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,16 +97,25 @@ int	main(int argc, char **argv, char **env)
 	char	*prompt_with_dollar;
 	t_mini	*shell_info;
 	char	cwd[1024];
+	t_shell	*info;
 
-
+	(void)argv;
+	if (argc != 1)
+		ft_printf("Minishell executable does not use arguments\n");
+	info = ft_calloc(sizeof(t_shell), 1);
+	info->first_token_node = ft_calloc(sizeof(t_token), 1);
 	prompt = ft_strjoin("minishell ", getenv("USER"));
+	if (!prompt)
+		return (0);
 	prompt_with_dollar = ft_strjoin(prompt, "$ ");
+	if (!prompt_with_dollar)
+		return (free(prompt), 0);
 	catchsignal();
 	// inpt_handler(prompt_with_dollar);
-	(void)argc;
 	shell_info = malloc(sizeof(t_mini));
 	// shell_info->cwd = "";
 	shell_info->cwd = getcwd(cwd, sizeof(cwd));
+	initialise_basics(argc, env, info);
 	inpt_handler(prompt_with_dollar, argv, env, shell_info);
 	// (void)argv;
 	// (void)env;
@@ -119,5 +128,11 @@ int	main(int argc, char **argv, char **env)
 	return (0);
 }
 
-//HELLO THALEIA
-//HELLO THALEIA
+void	initialise_basics(int argc, char **env, t_shell *info)
+{
+	char	cwd[1024];
+	info->argc = argc;
+	info->env = env; //env not properly initialized?
+	info->cwd = getcwd(cwd, sizeof(cwd));
+}
+
