@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:46 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/21 01:28:41 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/04/21 18:06:30 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info)
 {
 	char	*inpt;
 	char	*full_path;
+	
+	// (void)full_path;
+	// (void)argv;
+	// (void)env;
 	// t_mini	*shell_info;
 
 	// shell_info = malloc(sizeof(t_mini));
@@ -28,12 +32,14 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info)
 		{
 			free(shell_info);
 			system("leaks minishell | grep leaked");
+			// system("leaks minishell");
 			exit(0) ;
 		}
 		if (inputis(inpt, "exit")) //these both if statements in same, then seg fault for ctrl+d
 		{
 			free(shell_info);
 			system("leaks minishell | grep leaked");
+			// system("leaks minishell");
 			exit(0) ;
 		}
 		if (!inputis(inpt, ""))
@@ -63,13 +69,25 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info)
 		else if (find_cmd_in_env(inpt, env))
 		{
 			full_path = find_cmd_in_env(inpt, env);
-			execute(full_path, inpt, env);
+			ft_printf("full_path: %s\n", full_path);
+			if (fork() == 0)
+			{
+				execute(full_path, inpt, env);
+				perror("execve");
+			}
+			else
+			{
+				wait(NULL);
+				ft_printf("child process finished\n");
+			}
 		}
 		else
 			ft_printf("minishell: %s: command not found\n", inpt);
-		free(inpt);
+
+		if (inpt)
+			free(inpt);
 	}
-	free(shell_info);
+
 }
 
 // int	main(void)
@@ -90,6 +108,10 @@ int	main(int argc, char **argv, char **env)
 	// shell_info->cwd = "";
 	shell_info->cwd = getcwd(cwd, sizeof(cwd));
 	inpt_handler(prompt_with_dollar, argv, env, shell_info);
+	// (void)argv;
+	// (void)env;
+	if (shell_info)
+		free(shell_info);
 	if (prompt)
 		free(prompt);
 	if (prompt_with_dollar)
