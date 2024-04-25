@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/25 18:22:47 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/25 18:45:19 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,17 @@ typedef struct s_shell
 }	t_shell;
 
 void	initialise_basics(int argc, char **env, t_shell *info);
-
+void	input_types(char *inpt, t_shell *info, t_token *first_token);
+int		set_token_word(char *inpt, int i, t_token *token);
+int		set_token_not_word(char *inpt, int i, t_token *token);
+void	token_add_back(t_token **first_token, t_token *new);
+t_token	*token_last(t_token *token);
+int		skip_whitespace(char *inpt, int i);
+char	*find_path(char *argv, char **env);
+char	*get_directory_name(char *argv);
+char	*iter_env(char *path, char *argv);
+void	handle_error_free(char *str);
+void	handle_error(char *str);
+void	free_split_thalia(char **str);
 
 #endif

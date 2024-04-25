@@ -6,12 +6,12 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:46 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/25 18:31:27 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/25 18:43:11 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+// git push origin thalia_branch 
 void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info, t_shell *info)
 {
 	char	*inpt;
@@ -127,7 +127,7 @@ int	main(int argc, char **argv, char **env)
 	// shell_info->cwd = "";
 	shell_info->cwd = getcwd(cwd, sizeof(cwd));
 	initialise_basics(argc, env, info);
-	inpt_handler(prompt_with_dollar, argv, env, shell_info);
+	inpt_handler(prompt_with_dollar, argv, env, shell_info, info);
 	// (void)argv;
 	// (void)env;
 	if (shell_info)

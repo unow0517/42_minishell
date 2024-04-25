@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:36:23 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/25 16:40:52 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/25 18:45:50 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,47 +77,60 @@ char	*iter_env(char *path, char *argv)
 		if (!cmd)
 			return (NULL);
 		if (access(cmd, X_OK) != -1)
-			return (free_split(env_split), free(small_cmd), free(argv), cmd);
+			return (free_split_thalia(env_split), free(small_cmd), free(argv), cmd);
 		i++;
 		free(cmd);
 	}
-	return (free_split(env_split), free(small_cmd), free(argv), NULL);
+	return (free_split_thalia(env_split), free(small_cmd), free(argv), NULL);
 }
 
-void	execute(char *cmd, char *argv, char **env)
+void	free_split_thalia(char **str)
 {
-	execve(cmd, ft_split(argv, ' '), env);
-	handle_error("execve");
-}
-
-//minishell
-char	*find_cmd_in_env(char *cmd, char **env)
-{
-	char	*path_from_env;
-	int		i;
-	char	**paths;
-	char	*slash_cmd;
-	char	*cmd_path;
+	int	i;
 
 	i = 0;
-	path_from_env = "PATH=";
-	while (env[i] && ft_strncmp(env[i], path_from_env, 5) != 0)
-		i++;
-	path_from_env = env[i];
-	paths = ft_split(path_from_env + 5, ':');
-	i = 0;
-	slash_cmd = ft_strjoin("/", cmd);
-	while (paths[i])
+	while (str && str[i])
 	{
-		cmd_path = ft_strjoin(paths[i], slash_cmd);
-		if (access(cmd_path, X_OK) != -1)
-			return (free(paths), free(slash_cmd), cmd_path);
-		else
-			free(cmd_path);
+		free(str[i]);
 		i++;
 	}
-	return (free(paths), free(slash_cmd), NULL);
+	free(str);
 }
+
+// void	execute(char *cmd, char *argv, char **env)
+// {
+// 	execve(cmd, ft_split(argv, ' '), env);
+// 	handle_error("execve");
+// }
+
+// //minishell
+// char	*find_cmd_in_env(char *cmd, char **env)
+// {
+// 	char	*path_from_env;
+// 	int		i;
+// 	char	**paths;
+// 	char	*slash_cmd;
+// 	char	*cmd_path;
+
+// 	i = 0;
+// 	path_from_env = "PATH=";
+// 	while (env[i] && ft_strncmp(env[i], path_from_env, 5) != 0)
+// 		i++;
+// 	path_from_env = env[i];
+// 	paths = ft_split(path_from_env + 5, ':');
+// 	i = 0;
+// 	slash_cmd = ft_strjoin("/", cmd);
+// 	while (paths[i])
+// 	{
+// 		cmd_path = ft_strjoin(paths[i], slash_cmd);
+// 		if (access(cmd_path, X_OK) != -1)
+// 			return (free(paths), free(slash_cmd), cmd_path);
+// 		else
+// 			free(cmd_path);
+// 		i++;
+// 	}
+// 	return (free(paths), free(slash_cmd), NULL);
+// }
 
 void	close_fd(int *fd)
 {
