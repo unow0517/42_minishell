@@ -43,6 +43,8 @@ To use Ctrl+D (an arbitrary way of telling the OS to send the eof signal to a pr
 * **STDIN_FILENO** : is **a predefined constant representing the file descriptor** associated with the standard input stream, typically the keyboard. It's defined in the <unistd.h> header file. When you run a program from the command line and type something into it, you're providing input via stdin.
 * **AST-Abstract Syntax Tree**
 * **Glob**
+
+Trying to use `execve()` function to use `ls` command in minishell, but is it only available in a child process?
 <br/><br/>
 ## To read
 https://techdebt.tistory.com/33 (In Korean)</br>
