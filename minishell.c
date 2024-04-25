@@ -6,16 +6,18 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:46 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/25 18:22:30 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/25 18:31:27 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info)
+void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info, t_shell *info)
 {
 	char	*inpt;
 	char	*full_path;
+	t_token	*token;
+	char 	*cmd;
 	
 	// (void)full_path;
 	// (void)argv;
@@ -49,6 +51,15 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info)
 		multiple_ws_to_single(inpt);
 
 		//have to run this after split cmd by space.
+		token = *(info->first_token_node);
+		input_types(inpt, info, token);
+		cmd = get_directory_name(inpt);
+		if (!cmd)
+		{
+			perror("cmd not allocated");
+			exit(1);
+		}
+
 		if (inputis(inpt, ""))
 		{
 			rl_on_new_line();
@@ -66,10 +77,10 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info)
 			run_env(inpt, env);
 		else if (inputstartswith(inpt, "history"))
 			print_history(inpt);
-		else if (find_cmd_in_env(inpt, env))
+		else if (find_cmd_in_env(cmd, env))
 		{
 			full_path = find_cmd_in_env(inpt, env);
-			ft_printf("full_path: %s\n", full_path);
+			// ft_printf("full_path: %s\n", full_path);
 			if (fork() == 0)
 			{
 				execute(full_path, inpt, env);
