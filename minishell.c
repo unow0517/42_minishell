@@ -6,29 +6,24 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:46 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/25 17:30:43 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/04/26 12:44:34 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// handle input from user.
 void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info)
 {
 	char	*inpt;
 	char	*full_path;
-	
-	// (void)full_path;
-	// (void)argv;
-	// (void)env;
-	// t_mini	*shell_info;
 
-	// shell_info = malloc(sizeof(t_mini));
 	while (1)
 	{
 		signal(SIGINT, sighandler);
 		if (prompt)
 			inpt = readline(prompt);
-		if (!inpt)
+		if (!inpt) //ctrl+D go through here
 		{
 			free(shell_info);
 			system("leaks minishell | grep leaked");
@@ -42,9 +37,9 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info)
 			// system("leaks minishell");
 			exit(0) ;
 		}
-		if (!inputis(inpt, ""))
+		if (!inputis(inpt, "")) //if input is not empty, put in history
 			add_history(inpt);
-		if (*inpt == ' ')
+		if (*inpt == ' ') //removing starting whitespaces
 			inpt = rm_starting_ws(inpt);
 		multiple_ws_to_single(inpt);
 
@@ -66,11 +61,10 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info)
 			run_env(inpt, env);
 		else if (inputstartswith(inpt, "history"))
 			print_history(inpt);
-		else if (find_cmd_in_env(inpt, env))
+		else if (find_cmd_in_env(inpt, env)) // search user input cmd looping PATH in env, if exists run in child process
 		{
-			full_path = find_cmd_in_env(inpt, env);
-			ft_printf("full_path: %s\n", full_path);
-			if (fork() == 0)
+			full_path = find_cmd_in_env(inpt, env); //take cmd, and find a correct full path from PATH in env.
+			if (fork() == 0) //make child process and run the cmd
 			{
 				execute(full_path, inpt, env);
 				perror("execve");
@@ -81,16 +75,15 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info)
 				ft_printf("child process finished\n");
 			}
 		}
-		else
-			ft_printf("minishell: %s: command not found\n", inpt);
-
+		else 
+			ft_printf("minishell: %s: command not found\n", inpt); //when no cmd is 
 		if (inpt)
 			free(inpt);
 	}
 
 }
 
-// int	main(void)
+//minishell struct malloc, free the struct and prompt
 int	main(int argc, char **argv, char **env)
 {
 	char	*prompt;
@@ -98,18 +91,13 @@ int	main(int argc, char **argv, char **env)
 	t_mini	*shell_info;
 	char	cwd[1024];
 
-
 	prompt = ft_strjoin("minishell ", getenv("USER"));
 	prompt_with_dollar = ft_strjoin(prompt, "$ ");
 	catchsignal();
-	// inpt_handler(prompt_with_dollar);
 	(void)argc;
 	shell_info = malloc(sizeof(t_mini));
-	// shell_info->cwd = "";
 	shell_info->cwd = getcwd(cwd, sizeof(cwd));
 	inpt_handler(prompt_with_dollar, argv, env, shell_info);
-	// (void)argv;
-	// (void)env;
 	if (shell_info)
 		free(shell_info);
 	if (prompt)
@@ -118,6 +106,3 @@ int	main(int argc, char **argv, char **env)
 		free(prompt_with_dollar);
 	return (0);
 }
-
-//HELLO THALEIA
-//HELLO THALEIA
