@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:46 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/25 18:43:11 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/26 16:31:30 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 // git push origin thalia_branch 
-void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info, t_shell *info)
+void	inpt_handler(char *prompt, char **argv, char **env, t_shell *info)
 {
 	char	*inpt;
 	char	*full_path;
@@ -29,17 +29,22 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info, t_s
 	{
 		signal(SIGINT, sighandler);
 		if (prompt)
+		{
 			inpt = readline(prompt);
+			// ft_printf("INPUT: %s\n", inpt);
+		}
 		if (!inpt)
 		{
-			free(shell_info);
+			// free(shell_info);
+			free(info);
 			system("leaks minishell | grep leaked");
 			// system("leaks minishell");
 			exit(0) ;
 		}
 		if (inputis(inpt, "exit")) //these both if statements in same, then seg fault for ctrl+d
 		{
-			free(shell_info);
+			// free(shell_info);
+			free(info);
 			system("leaks minishell | grep leaked");
 			// system("leaks minishell");
 			exit(0) ;
@@ -53,13 +58,16 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info, t_s
 		//have to run this after split cmd by space.
 		token = *(info->first_token_node);
 		input_types(inpt, info, token);
-		cmd = get_directory_name(inpt);
+		cmd = get_directory_name(inpt);//ls simple
+		// ft_printf("cmd = %s\n", cmd);
 		if (!cmd)
 		{
 			perror("cmd not allocated");
 			exit(1);
 		}
 
+
+		
 		if (inputis(inpt, ""))
 		{
 			rl_on_new_line();
@@ -70,21 +78,24 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info, t_s
 		else if (inputstartswith(inpt, "echo "))
 			run_echo(inpt);
 		else if (inputstartswith(inpt, "cd "))
-			run_cd(inpt, shell_info);
+			run_cd(inpt, info);
 		else if (inputstartswith(inpt, "pwd ") | inputis(inpt, "pwd"))
-			printpwd(shell_info);
+			printpwd(info);
 		else if (inputis(inpt, "env") | inputis(inpt, "env "))
 			run_env(inpt, env);
 		else if (inputstartswith(inpt, "history"))
 			print_history(inpt);
 		else if (find_cmd_in_env(cmd, env))
 		{
-			full_path = find_cmd_in_env(inpt, env);
-			// ft_printf("full_path: %s\n", full_path);
+			full_path = find_cmd_in_env(cmd, env);
+			ft_printf("full_path: %s\n", full_path);
 			if (fork() == 0)
 			{
+				printf("\ninput: %s\n\n", inpt);
 				execute(full_path, inpt, env);
 				perror("execve");
+				exit(EXIT_FAILURE);
+				
 			}
 			else
 			{
@@ -95,26 +106,35 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_mini *shell_info, t_s
 		else
 			ft_printf("minishell: %s: command not found\n", inpt);
 
+
+
+
 		if (inpt)
 			free(inpt);
+		
 	}
 
 }
+
+// void	free_small_linked(t_shell shell_info)
+// {
+	
+// }
 
 // int	main(void)
 int	main(int argc, char **argv, char **env)
 {
 	char	*prompt;
 	char	*prompt_with_dollar;
-	t_mini	*shell_info;
-	char	cwd[1024];
-	t_shell	*info;
+	t_shell	*shell_info;
+	// t_shell	*info;
+	// char	cwd[1024];
 
 	(void)argv;
 	if (argc != 1)
 		ft_printf("Minishell executable does not use arguments\n");
-	info = ft_calloc(sizeof(t_shell), 1);
-	info->first_token_node = ft_calloc(sizeof(t_token), 1);
+	shell_info = ft_calloc(sizeof(t_shell), 1);
+	shell_info->first_token_node = ft_calloc(sizeof(t_token), 1);
 	prompt = ft_strjoin("minishell ", getenv("USER"));
 	if (!prompt)
 		return (0);
@@ -122,12 +142,11 @@ int	main(int argc, char **argv, char **env)
 	if (!prompt_with_dollar)
 		return (free(prompt), 0);
 	catchsignal();
-	// inpt_handler(prompt_with_dollar);
-	shell_info = malloc(sizeof(t_mini));
-	// shell_info->cwd = "";
-	shell_info->cwd = getcwd(cwd, sizeof(cwd));
-	initialise_basics(argc, env, info);
-	inpt_handler(prompt_with_dollar, argv, env, shell_info, info);
+	// shell_info = malloc(sizeof(t_mini));
+	// shell_info->cwd = getcwd(cwd, sizeof(cwd));
+	initialise_basics(argc, env, shell_info);
+	// inpt_handler(prompt_with_dollar, argv, env, shell_info, info);
+	inpt_handler(prompt_with_dollar, argv, env, shell_info);
 	// (void)argv;
 	// (void)env;
 	if (shell_info)
@@ -139,11 +158,11 @@ int	main(int argc, char **argv, char **env)
 	return (0);
 }
 
-void	initialise_basics(int argc, char **env, t_shell *info)
+void	initialise_basics(int argc, char **env, t_shell *shell_info)
 {
 	char	cwd[1024];
-	info->argc = argc;
-	info->env = env; //env not properly initialized?
-	info->cwd = getcwd(cwd, sizeof(cwd));
+	shell_info->argc = argc;
+	shell_info->env = env; //env not properly initialized?
+	shell_info->cwd = getcwd(cwd, sizeof(cwd));
 }
 

@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:31:29 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/21 02:25:51 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/04/26 15:31:33 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,10 @@ char	**ft_split(char const *s, char c)
 // 	// printf("res: %s\n",token[1]);
 //     // printf("res: %s\n",token[2]);
 
-// 	// while(token[i] != 0)
-// 	// {
-//     //    	printf("res: %s\n",token[i]);
-//     //     i++;
-//     // }
+// 	while(token[i] != 0)
+// 	{
+//        	printf("res: %s\n",token[i]);
+//         i++;
+//     }
 // 	return 0;
 // }

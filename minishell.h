@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/25 18:45:19 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/26 14:55:53 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,45 +26,10 @@
 # define DFL 1
 # define IGN 2
 
-typedef struct s_mini
-{
-	char	*cwd;
-}	t_mini;
-
-//inpt_functions.C
-int		inputis(char *inpt, char *string);
-int		inputstartswith(char *inpt, char *string);
-int		inputhas(char *input, char c);
-
-//HISTORY.C
-void	print_history(char *inpt);
-
-//SIG_FUNCTIONS.C
-void	sighandler(int sig);
-void	sigchecker(int sigint, int sigquit);
-void	catchsignal(void);
-
-//PWD.C
-void	printpwd(t_mini *shell_info);
-
-//PIPE.C
-// void	run_pipe(char *inpt);
-void	run_pipe(char *inpt, char **argv, char **env);
-char	*find_cmd_in_env(char *cmd, char **env);
-void	execute(char *cmd, char *argv, char **env);
-
-//ECHO.C
-void	run_echo(char *inpt);
-
-//CD.C
-void	run_cd(char *inpt, t_mini *shell_info);
-
-//ENV.C
-void	run_env(char *inpt, char **env);
-
-//WHITE_SPACE.C
-char	*rm_starting_ws(char *string);
-char	*multiple_ws_to_single(char	*str);
+// typedef struct s_mini
+// {
+// 	char	*cwd;
+// }	t_mini;
 
 //added by thalia
 typedef enum s_type
@@ -96,18 +61,67 @@ typedef struct s_shell
 	t_token	**first_token_node;
 }	t_shell;
 
-void	initialise_basics(int argc, char **env, t_shell *info);
-void	input_types(char *inpt, t_shell *info, t_token *first_token);
-int		set_token_word(char *inpt, int i, t_token *token);
-int		set_token_not_word(char *inpt, int i, t_token *token);
-void	token_add_back(t_token **first_token, t_token *new);
-t_token	*token_last(t_token *token);
-int		skip_whitespace(char *inpt, int i);
+
+//inpt_functions.C
+int		inputis(char *inpt, char *string);
+int		inputstartswith(char *inpt, char *string);
+int		inputhas(char *input, char c);
+
+//HISTORY.C
+void	print_history(char *inpt);
+
+//SIG_FUNCTIONS.C
+void	sighandler(int sig);
+void	sigchecker(int sigint, int sigquit);
+void	catchsignal(void);
+
+//PWD.C
+void	printpwd(t_shell *shell_info);
+
+//PIPE.C
+// void	run_pipe(char *inpt);
+void	run_pipe(char *inpt, char **argv, char **env);
+char	*find_cmd_in_env(char *cmd, char **env);
+void	execute(char *full_path, char *argv, char **env);
+
+//ECHO.C
+void	run_echo(char *inpt);
+
+//CD.C
+void	run_cd(char *inpt, t_shell *shell_info);
+
+//ENV.C
+void	run_env(char *inpt, char **env);
+
+//WHITE_SPACE.C
+char	*rm_starting_ws(char *string);
+char	*multiple_ws_to_single(char	*str);
+
+//CHECKS.C
+void	print_token(t_token *token);
+void	print_linked_tokens(t_token *token);
+
+//PIPEX
 char	*find_path(char *argv, char **env);
 char	*get_directory_name(char *argv);
 char	*iter_env(char *path, char *argv);
 void	handle_error_free(char *str);
 void	handle_error(char *str);
 void	free_split_thalia(char **str);
+
+//MINISHELL.C
+void	inpt_handler(char *prompt, char **argv, char **env, t_shell *info);
+void	initialise_basics(int argc, char **env, t_shell *info);
+//int	main(int argc, char **argv, char **env);
+
+//SET_NODES.C
+void	input_types(char *inpt, t_shell *info, t_token *first_token);
+int		set_token_word(char *inpt, int i, t_token *token);
+int		set_token_not_word(char *inpt, int i, t_token *token);
+
+//UTILS
+void	token_add_back(t_token **first_token, t_token *new);
+t_token	*token_last(t_token *token);
+int		skip_whitespace(char *inpt, int i);
 
 #endif

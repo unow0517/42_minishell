@@ -6,14 +6,14 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 17:03:00 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/19 18:22:09 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/04/26 13:32:45 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //ABS PATH
-void	run_cd(char *inpt, t_mini *shell_info)
+void	run_cd(char *inpt, t_shell *shell_info)
 {
 	char	*path_input;
 	char	cwd[1024];

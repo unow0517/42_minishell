@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:11:21 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/21 18:14:12 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/04/26 16:42:47 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,84 @@
 // 	return (NULL);
 // }
 
-void	execute(char *cmd, char *argv, char **env)
-{
-	char	**ptr;
-	// char *argv1[] = {"/bin/ls", "-l", NULL};
-	char *argv1[] = {"/bin/ls", "-lacb", NULL};
+// void	execute(char *cmd, char *argv, char **env)
+// {
+// 	char	**ptr;
+// 	// char *argv1[] = {"/bin/ls", "-l", NULL};
+// 	char *argv1[] = {"/bin/ls", NULL, NULL};
 	
-	ptr = ft_split(argv, ' ');
-	ft_printf("cmd %s\n", cmd);
-	ft_printf("ptr %s\n", ptr[0]);
-	// execve(cmd, ptr, env);
-	// execve(cmd, ptr, env);
-	execve(argv1[0], argv1, env);
-	// perror("execve");
-	free(ptr[0]);
-	free(ptr);
+// 	ptr = ft_split(argv, ' ');
+// 	ft_printf("cmd %s\n", cmd);
+// 	ft_printf("ptr %s\n", ptr[0]);
+// 	// execve(cmd, ptr, env);
+// 	// execve(cmd, ptr, env);
+// 	execve(argv1[0], argv1, env);
+// 	// perror("execve");
+// 	free(ptr[0]);
+// 	free(ptr);
+// }
+
+// void	execute(char *full_path, char *argv, char **env)
+// {
+// 	char	**argv_split;
+// 	int		i;
+
+// 	i = 0;
+// 	argv_split = ft_split(argv, ' ');
+// 	argv_split[0] = full_path;
+// 	while (argv_split[i] != NULL)
+// 	{
+// 		i++;
+// 	}
+// 	argv_split[i - 1] = NULL;
+// 	execve(full_path, argv_split, env);
+
+// 	exit(EXIT_FAILURE);
+// }
+
+void	execute(char *full_path, char *argv, char **env)
+{
+	char	**argv_split;
+	// char	*argv_split1[] = {"bin/ls", "-l", "-a", NULL};
+	int		i;
+	i = 0;
+	if (inputhas(argv, ' '))
+	{
+		ft_printf("inputhas(argv, ' ')\n");
+		// ft_printf("full_path = %s\n", full_path);
+
+		argv_split = ft_split(argv, ' ');
+		argv_split[0] = full_path;
+		while (argv_split[i] != NULL)
+		{
+			// ft_printf("i: %d\n", i );
+			printf("argv_split[%d]: %s\n",i ,argv_split[i]);
+			i++;
+		}
+		ft_printf("i_out: %d\n", i );
+
+		argv_split[i - 1] = NULL;
+		// ft_printf("argv[0] = %s\n", argv[0]);
+		// ft_printf("argv[1] = %s\n", argv[1]);
+		// ft_printf("argv[2] = %s\n", argv[2]);
+		// ft_printf("argv[3] = %s\n", argv[3]);
+		execve(full_path, argv_split, env); //work
+	}
+	else
+	{
+		ft_printf("else\n");
+		ft_printf("full_path = %s\n", full_path);
+
+		char *chars[2];
+		chars[0] = ft_calloc(ft_strlen(argv), sizeof(char));
+		chars[1] = NULL;
+		ft_printf("chars[0] = %s\n", chars[0]);
+		ft_printf("chars[1] = %s\n", chars[1]);
+		execve(full_path, chars, env);
+	}
+	// exit(EXIT_FAILURE);
 }
+
 
 // void	run_pipe(char *inpt)
 void	run_pipe(char *inpt, char **argv, char **env)
