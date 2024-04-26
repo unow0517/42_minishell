@@ -54,7 +54,10 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_shell *info)
 		if (*inpt == ' ')
 			inpt = rm_starting_ws(inpt);
 		multiple_ws_to_single(inpt);
-
+		// if (!info)
+		// 	info = ft_calloc(sizeof(t_shell), 1);
+		// if (!*(info->first_token_node))
+		// 	info->first_token_node = ft_calloc(sizeof(t_token), 1);
 		//have to run this after split cmd by space.
 		token = *(info->first_token_node);
 		input_types(inpt, info, token);
@@ -108,7 +111,7 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_shell *info)
 
 
 
-
+		// free_small_linked(info);
 		if (inpt)
 			free(inpt);
 		
@@ -116,9 +119,19 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_shell *info)
 
 }
 
-// void	free_small_linked(t_shell shell_info)
+// void	free_small_linked(t_shell *shell_info)
 // {
-	
+// 	t_token	*del;
+	// 	t_token	*temp;
+
+	// 	del = *(shell_info->first_token_node);
+	// 	while (del)
+	// 	{
+// 		temp = del;
+		// 		del = del->next;
+		// 		free(temp);
+	// 	}
+// 	free(shell_info->first_token_node);
 // }
 
 // int	main(void)

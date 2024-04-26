@@ -124,4 +124,7 @@ void	token_add_back(t_token **first_token, t_token *new);
 t_token	*token_last(t_token *token);
 int		skip_whitespace(char *inpt, int i);
 
+//FREES
+// void	free_small_linked(t_shell *shell_info);
+
 #endif
