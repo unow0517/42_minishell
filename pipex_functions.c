@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:36:23 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/25 18:45:50 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/27 22:12:59 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,11 @@ char	*iter_env(char *path, char *argv)
 		if (!cmd)
 			return (NULL);
 		if (access(cmd, X_OK) != -1)
-			return (free_split_thalia(env_split), free(small_cmd), free(argv), cmd);
+			return (free(env_split), free(small_cmd), free(argv), cmd);
 		i++;
 		free(cmd);
 	}
-	return (free_split_thalia(env_split), free(small_cmd), free(argv), NULL);
+	return (free(env_split), free(small_cmd), free(argv), NULL);
 }
 
 void	free_split_thalia(char **str)

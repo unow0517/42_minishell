@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/26 14:55:53 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/04/27 21:01:11 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <termios.h>
 # include "Libft/libft.h"
 # include "ft_printf/ft_printf.h"
+# include <sys/wait.h>
 
 # define SHE 0
 # define DFL 1
@@ -107,10 +108,10 @@ char	*get_directory_name(char *argv);
 char	*iter_env(char *path, char *argv);
 void	handle_error_free(char *str);
 void	handle_error(char *str);
-void	free_split_thalia(char **str);
+// void	free_split_thalia(char **str);
 
 //MINISHELL.C
-void	inpt_handler(char *prompt, char **argv, char **env, t_shell *info);
+void	inpt_handler(char *prompt, char **argv, char **env, t_shell *info, int argc);
 void	initialise_basics(int argc, char **env, t_shell *info);
 //int	main(int argc, char **argv, char **env);
 
@@ -125,6 +126,6 @@ t_token	*token_last(t_token *token);
 int		skip_whitespace(char *inpt, int i);
 
 //FREES
-// void	free_small_linked(t_shell *shell_info);
+void	free_small_linked(t_shell *shell_info);
 
 #endif

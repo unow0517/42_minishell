@@ -20,7 +20,7 @@ void	input_types(char *inpt, t_shell *info, t_token *first_token)
 	i = 0;
 	cur = NULL;
 	cur = first_token;
-	while (inpt && inpt[i])
+	while (inpt && inpt[i] != '\0')
 	{
 		cur = ft_calloc(sizeof(t_token), 1);
 		cur->input = ft_calloc(ft_strlen(inpt) + 1, sizeof(char));
@@ -39,7 +39,7 @@ void	input_types(char *inpt, t_shell *info, t_token *first_token)
 		cur = cur->next;
 	}
 	// print_token(*(info->first_token_node));
-	print_linked_tokens(*(info->first_token_node));
+	// print_linked_tokens(*(info->first_token_node));
 }
 
 int	set_token_word(char *inpt, int i, t_token *token)
