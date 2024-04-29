@@ -1,0 +1,52 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex_functions.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/25 16:36:23 by tsimitop          #+#    #+#             */
+/*   Updated: 2024/04/29 13:20:24 by yowoo            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+char	*get_first_word(char *argv)
+{
+	int		i;
+	char	*small_cmd;
+
+	i = 0;
+	while (argv[i] != '\0' && argv[i] != ' ')
+		i++;
+	small_cmd = ft_calloc(i + 1, sizeof(char));
+	if (!small_cmd)
+		return (NULL);
+	i = 0;
+	while (argv[i] != '\0' && argv[i] != ' ')
+	{
+		small_cmd[i] = argv[i];
+		i++;
+	}
+	return (small_cmd);
+}
+
+void	free_split_thalia(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str && str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+}
+
+void	handle_error(char *str)
+{
+	perror(str);
+	exit(EXIT_FAILURE);
+}

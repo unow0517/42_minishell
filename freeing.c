@@ -1,19 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   freeing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/17 13:18:23 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/26 13:32:33 by yowoo            ###   ########.fr       */
+/*   Created: 2024/04/27 18:13:23 by tsimitop          #+#    #+#             */
+/*   Updated: 2024/04/27 18:13:36 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//pwd asdf => pwd should work 
-void	printpwd(t_shell *shell_info)
+void	free_small_linked(t_shell *shell_info)
 {
-	ft_printf("%s\n", shell_info->cwd);
+	t_token	*del;
+	t_token	*temp;
+
+	del = *(shell_info->first_token_node);
+	while (del)
+	{
+		temp = del;
+		del = del->next;
+		free(temp);
+	}
+	free(shell_info->first_token_node);
 }

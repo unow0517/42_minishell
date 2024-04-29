@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+         #
+#    By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/12 17:57:56 by yowoo             #+#    #+#              #
-#    Updated: 2024/04/21 00:27:37 by yowoo            ###   ########.fr        #
+#    Updated: 2024/04/27 22:13:14 by tsimitop         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = gcc
-SRC = minishell.c inpt_functions.c history.c sig_functions.c pwd.c pipe.c echo.c cd.c env.c white_space.c
-CC_FLAGS = -Wall -Wextra -Werror -lreadline
+SRC = loop.c freeing.c minishell.c inpt_functions.c history.c sig_functions.c pwd.c pipe.c echo.c cd.c env.c white_space.c set_nodes.c pipex_functions.c checks.c utils.c
+CC_FLAGS = -Wall -Wextra -Werror -lreadline #-fsanitize=address
 RM = rm -rf
 LIBFT_AR = Libft/libft.a
 PRINTF_AR = ft_printf/libftprintf.a
