@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:46 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/29 12:16:44 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/04/29 13:41:54 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,3 @@ void	initialise_basics(int argc, char **env, t_shell *shell_info)
 	ft_printf("info->cwd: %s\n", shell_info->cwd);
 
 }
-
