@@ -3,55 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 18:12:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/27 21:00:36 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/29 13:16:03 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	inpt_handler(char *prompt, char **argv, char **env, t_shell *info, int argc)
+void	inpt_handler(char *prompt, char **argv, char **env, t_shell *info)
 {
 	char	*inpt;
 	char	*full_path;
 	t_token	*token;
-	char 	*cmd;
+	char	*cmd;
 	int		status;
 	pid_t	pid;
-	
-	// (void)full_path;
-	// (void)argv;
-	// (void)env;
-	// t_mini	*shell_info;
-	// shell_info = malloc(sizeof(t_mini));
+
 	inpt = NULL;
 	while (1)
 	{
 		signal(SIGINT, sighandler);
 		if (prompt)
-		{
 			inpt = readline(prompt);
-			// ft_printf("INPUT: %s\n", inpt);
-		}
 		if (!inpt)
 		{
-			// free(shell_info);
 			free(info);
-			system("leaks minishell | grep leaked");
-			// system("leaks minishell");
 			exit(0) ;
 		}
 		if (inputis(inpt, "exit")) //these both if statements in same, then seg fault for ctrl+d
 		{
-			// free(shell_info);
 			free(info);
-			system("leaks minishell | grep leaked");
-			// system("leaks minishell");
 			exit(0) ;
 		}
-// ft_printf("_________________________________________\n");
 		if (!inputis(inpt, ""))
 			add_history(inpt);
 		if (*inpt == ' ')
@@ -61,19 +46,15 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_shell *info, int argc
 			info = ft_calloc(sizeof(t_shell), 1);
 		if (!*(info->first_token_node))
 			info->first_token_node = ft_calloc(sizeof(t_token), 1);
-		(void)argc;
-		// initialise_basics(argc, env, info);
 		//have to run this after split cmd by space.
 		token = *(info->first_token_node);
 		input_types(inpt, info, token);
-		cmd = get_directory_name(inpt);//ls simple
-		// ft_printf("cmd = %s\n", cmd);
+		cmd = get_first_word(inpt);
 		if (!cmd)
 		{
 			perror("cmd not allocated");
 			exit(1);
 		}
-
 		if (inputis(inpt, ""))
 		{
 			rl_on_new_line();
@@ -86,7 +67,9 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_shell *info, int argc
 		else if (inputstartswith(inpt, "cd "))
 			run_cd(inpt, info);
 		else if (inputstartswith(inpt, "pwd ") | inputis(inpt, "pwd"))
+		{
 			printpwd(info);
+		}
 		else if (inputis(inpt, "env") | inputis(inpt, "env "))
 			run_env(inpt, env);
 		else if (inputstartswith(inpt, "history"))
@@ -99,8 +82,7 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_shell *info, int argc
 				full_path = find_cmd_in_env(cmd, env);
 				ft_printf("full_path: %s\n", full_path);
 				printf("\ninput: %s\n\n", inpt);
-				// printf("\nenv[2]: %s\n\n", env[2]);
-				execute(full_path, inpt, env);
+				execve(full_path, ft_split(inpt, ' '), env);
 				perror("execve");
 				exit(EXIT_FAILURE);
 			}
@@ -112,11 +94,8 @@ void	inpt_handler(char *prompt, char **argv, char **env, t_shell *info, int argc
 		}
 		else
 			ft_printf("minishell: %s: command not found\n", inpt);
-
-		// free_small_linked(info);
 		if (inpt)
 			free(inpt);
-		
 	}
 
 }

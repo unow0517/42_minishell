@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:31:29 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/27 20:37:41 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/29 13:00:32 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,23 +92,6 @@ char	**ft_split(char const *s, char c)
 		start = start + len + 1;
 		i++;
 	}
-	array[i] = "\0";
+	array[i] = NULL;
 	return (array);
 }
-
-// int main(){
-//     char string[] = "asdhk  slajf asd";
-//     char delim = ' ';
-//     char **token = ft_split(string, delim);
-//     int i = 0;
-//     // printf("res: %s\n",token[0]);
-// 	// printf("res: %s\n",token[1]);
-//     // printf("res: %s\n",token[2]);
-
-// 	while(token[i] != 0)
-// 	{
-//        	printf("res: %s\n",token[i]);
-//         i++;
-//     }
-// 	return 0;
-// }

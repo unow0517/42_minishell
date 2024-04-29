@@ -38,7 +38,6 @@ void	input_types(char *inpt, t_shell *info, t_token *first_token)
 		i++;
 		cur = cur->next;
 	}
-	// print_token(*(info->first_token_node));
 	// print_linked_tokens(*(info->first_token_node));
 }
 

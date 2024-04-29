@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/27 21:01:11 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/29 13:22:17 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,10 @@ void	catchsignal(void);
 void	printpwd(t_shell *shell_info);
 
 //PIPE.C
+void	execute(char *full_path, char *argv, char **env);
 // void	run_pipe(char *inpt);
 void	run_pipe(char *inpt, char **argv, char **env);
 char	*find_cmd_in_env(char *cmd, char **env);
-void	execute(char *full_path, char *argv, char **env);
 
 //ECHO.C
 void	run_echo(char *inpt);
@@ -102,16 +102,13 @@ char	*multiple_ws_to_single(char	*str);
 void	print_token(t_token *token);
 void	print_linked_tokens(t_token *token);
 
-//PIPEX
-char	*find_path(char *argv, char **env);
-char	*get_directory_name(char *argv);
-char	*iter_env(char *path, char *argv);
-void	handle_error_free(char *str);
+// //PIPEX_FUNCTIONS.C
+char	*get_first_word(char *argv);
 void	handle_error(char *str);
-// void	free_split_thalia(char **str);
+void	free_split_thalia(char **str);
 
 //MINISHELL.C
-void	inpt_handler(char *prompt, char **argv, char **env, t_shell *info, int argc);
+void	inpt_handler(char *prompt, char **argv, char **env, t_shell *info);
 void	initialise_basics(int argc, char **env, t_shell *info);
 //int	main(int argc, char **argv, char **env);
 
