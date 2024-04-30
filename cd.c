@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 17:03:00 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/29 11:37:20 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/04/30 19:00:38 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,11 @@ void	run_cd(char *inpt, t_shell *shell_info)
 	{
 		cwd_input = ft_substr(path_input, 0, ft_strlen(cwd));
 		if (ft_strncmp(cwd_input, cwd, ft_strlen(cwd_input)) == 0)
-			shell_info->cwd = ft_strdup(path_input);
+		{
+			ft_memset(shell_info->cwd, 0, 1024);
+			ft_strlcat(shell_info->cwd, path_input, 1024);
+			// shell_info->cwd = ft_strdup(path_input);
+		}
 		else
 			ft_printf("minishell: cd : %s: Folder exist but absolute path is required\n", path_input);	
 	}
