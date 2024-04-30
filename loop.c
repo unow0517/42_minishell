@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 18:12:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/30 19:03:27 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/30 19:48:13 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 		//have to run this after split cmd by space.
 // ft_printf("loop shell_info->user_input = %s\n", shell_info->user_input);
 		create_tokens(shell_info);
+	print_linked_tokens(shell_info->tokens);
 // ft_printf("loop.c_____________________DEBUG______________________________\n");
 		cmd = get_first_word(shell_info->user_input);
 		if (!cmd)
@@ -94,8 +95,8 @@ void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 		}
 		else
 			ft_printf("minishell: %s: command not found\n", shell_info->user_input);
-		// free(shell_info->user_input);
-	// free_tokens(shell_info->tokens);
+		// shell_info->user_input = NULL;
+	free_tokens(&shell_info->tokens);
 	}
 
 }

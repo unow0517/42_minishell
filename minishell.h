@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/30 18:52:39 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/30 19:37:50 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,6 @@ t_token	*token_last(t_token *token);
 int		skip_whitespace(char *inpt, int i);
 
 //FREES
-void	free_tokens(t_token *shell_info);
+void	free_tokens(t_token **shell_info);
 
 #endif
