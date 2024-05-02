@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 18:12:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/02 15:33:34 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/02 17:03:21 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 	{
 		signal(SIGINT, sighandler);
 		shell_info->user_input = readline(shell_info->prompt);
-		create_tokens(shell_info);
+		parse_input(shell_info);
+		// create_tokens(shell_info);
 		if (!shell_info->user_input)
 		{
 			// free(shell_info);

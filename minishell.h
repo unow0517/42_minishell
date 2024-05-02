@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/02 15:32:29 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/02 17:11:24 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_token //token, not token
 {
 	char			*input;
 	int				len;
-	int				i;
+	int				idx;
 	char			*content;
 	t_token_type	token_type;
 	struct s_token	*next;
@@ -63,20 +63,19 @@ typedef struct s_shell
 	char	prompt[1024];
 				//Its in linux/limits.h.
 				// #define PATH_MAX        4096 
-	// char	**user_input_split;
 }	t_shell;
 
 typedef struct s_command
 {
 	// ls -lah LibFt
-	char *cmd; // "ls"
-	char **options; // ["-lah", "LibFt"]
-	char **full_cmd; // ["ls", "-lah", "LibFt"]
-	int	input_fd; // -1 (if no input < OR <<) otherwise set fd to opened file fd
-	int output_fd; // -f (if no output > OR >>) otherwise set fd to opened file fd
-	char *output_path; // path to output file
-	char *input_path; // path to input file
-	int is_heredoc; // 0 if no << otherwise set to 1
+	char	*cmd; // "ls"
+	char	**options; // ["-lah", "LibFt"]
+	char	**full_cmd; // ["ls", "-lah", "LibFt"]
+	int		input_fd; // -1 (if no input < OR <<) otherwise set fd to opened file fd
+	int		output_fd; // -f (if no output > OR >>) otherwise set fd to opened file fd
+	char	*output_path; // path to output file
+	char	*input_path; // path to input file
+	int		is_heredoc; // 0 if no << otherwise set to 1
 	struct s_command *next;
 } t_command;
 
@@ -139,6 +138,11 @@ t_token	*create_double_token(t_shell *shell_info, int i);
 void	token_add_back(t_token **first_token, t_token *new);
 t_token	*token_last(t_token *token);
 int		skip_whitespace(char *inpt, int i);
+
+//PARSING.C
+void	parse_input(t_shell *shell_info);
+void	parse_tokens(t_shell *shell_info);
+int		number_of_tokens(t_shell *shell_info);
 
 //FREES
 void	free_tokens(t_token **shell_info);
