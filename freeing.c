@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 18:13:23 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/30 19:37:06 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:31:44 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,4 @@ void	free_tokens(t_token **tokens)
 		free(temp);
 	}
 	*tokens = NULL;
-	// free(tokens);
 }

@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/30 19:37:50 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:32:29 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,19 @@ typedef struct s_shell
 	// char	**user_input_split;
 }	t_shell;
 
+typedef struct s_command
+{
+	// ls -lah LibFt
+	char *cmd; // "ls"
+	char **options; // ["-lah", "LibFt"]
+	char **full_cmd; // ["ls", "-lah", "LibFt"]
+	int	input_fd; // -1 (if no input < OR <<) otherwise set fd to opened file fd
+	int output_fd; // -f (if no output > OR >>) otherwise set fd to opened file fd
+	char *output_path; // path to output file
+	char *input_path; // path to input file
+	int is_heredoc; // 0 if no << otherwise set to 1
+	struct s_command *next;
+} t_command;
 
 //inpt_functions.C
 int		inputis(char *inpt, char *string);
@@ -114,14 +127,10 @@ void	free_split_thalia(char **str);
 //MINISHELL.C
 void	inpt_handler(char **argv, char **env, t_shell *info);
 void	initialise_basics(int argc, char **argv, char **env, t_shell *info);
-//int	main(int argc, char **argv, char **env);
 int		create_prompt(t_shell *shell_info);
 
 
 //SET_NODES.C
-// void	input_types(t_shell *info, t_token *first_token);
-// int		set_token_word(t_shell *info, int i, t_token *token, char *inpt);
-// int		set_token_not_word(char *inpt, int i, t_token *token);
 int	create_tokens(t_shell *shell_info);
 t_token	*create_single_token(t_shell *shell_info, int i);
 t_token	*create_double_token(t_shell *shell_info, int i);

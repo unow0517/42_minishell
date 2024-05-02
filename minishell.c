@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:46 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/30 19:26:24 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:31:28 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,6 @@ int	main(int argc, char **argv, char **env)
 	initialise_basics(argc, argv, env, &shell_info);
 	if (create_prompt(&shell_info) != 0)
 		return (EXIT_FAILURE);
-	// shell_info = ft_calloc(1, sizeof(t_shell));
-	// shell_info->tokens = ft_calloc(1, sizeof(t_token));
-	// prompt = ft_strjoin("\033[0;35mminishell\033[0m ", getenv("USER"));
-	// if (!prompt)
-	// 	return (0);
-	// prompt_with_dollar = ft_strjoin(prompt, "$ ");
-	// if (!prompt_with_dollar)
-	// 	return (free(prompt), 0);
 	catchsignal();
 	inpt_handler(argv, env, &shell_info);
 ft_printf("minishell______DONE_________________\n");
@@ -46,7 +38,7 @@ void	initialise_basics(int argc, char **argv, char **env, t_shell *shell_info)
 {
 	shell_info->argc = argc;
 	shell_info->argv = argv;
-	shell_info->env = env; //env not properly initialized?
+	shell_info->env = env;
 	getcwd(shell_info->cwd, sizeof(shell_info->cwd));
 	shell_info->tokens = NULL;
 	shell_info->user_input = NULL;

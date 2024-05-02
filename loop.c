@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 18:12:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/30 19:48:13 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:33:34 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 {
-	// char	*inpt;
 	char	*full_path;
-	t_token	*token;
 	char	*cmd;
 	int		status;
 	pid_t	pid;
@@ -29,7 +27,6 @@ void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 		signal(SIGINT, sighandler);
 		shell_info->user_input = readline(shell_info->prompt);
 		create_tokens(shell_info);
-		token = shell_info->tokens;
 		if (!shell_info->user_input)
 		{
 			// free(shell_info);
@@ -47,9 +44,6 @@ void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 		multiple_ws_to_single(shell_info->user_input);
 		//have to run this after split cmd by space.
 // ft_printf("loop shell_info->user_input = %s\n", shell_info->user_input);
-		create_tokens(shell_info);
-	print_linked_tokens(shell_info->tokens);
-// ft_printf("loop.c_____________________DEBUG______________________________\n");
 		cmd = get_first_word(shell_info->user_input);
 		if (!cmd)
 		{

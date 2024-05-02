@@ -125,7 +125,6 @@ int	create_tokens(t_shell *shell_info)
 		shell_info->tokens = cur;
 	while (shell_info->user_input && shell_info->user_input[i] != '\0') // && shell_info->user_input[i] != EOF
 	{
-		printf("HELLO\n");
 		i = skip_whitespace(shell_info->user_input, i);
 		if (shell_info->user_input[i] == '\0')
 			break;
