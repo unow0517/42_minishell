@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/29 13:22:17 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/04/30 19:37:50 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,10 @@
 # define DFL 1
 # define IGN 2
 
-// typedef struct s_mini
-// {
-// 	char	*cwd;
-// }	t_mini;
-
 //added by thalia
-typedef enum s_type
+typedef enum e_token_type
 {
+	NO_TOKEN,
 	WORD,
 	PIPE,
 	S_QUOTE,
@@ -43,23 +39,31 @@ typedef enum s_type
 	S_MORE,
 	D_LESS,
 	D_MORE
-}	t_type;
+}	t_token_type;
 
 typedef struct s_token //token, not token
 {
 	char			*input;
 	int				len;
 	int				i;
-	t_type			token_type;
+	char			*content;
+	t_token_type	token_type;
 	struct s_token	*next;
+	// char			*user_input_element;
 } t_token;
 
 typedef struct s_shell
 {
 	int		argc;
+	char	**argv;
 	char	**env;
-	char	*cwd;
-	t_token	**first_token_node;
+	char	cwd[1024];
+	t_token	*tokens;
+	char	*user_input;
+	char	prompt[1024];
+				//Its in linux/limits.h.
+				// #define PATH_MAX        4096 
+	// char	**user_input_split;
 }	t_shell;
 
 
@@ -108,14 +112,19 @@ void	handle_error(char *str);
 void	free_split_thalia(char **str);
 
 //MINISHELL.C
-void	inpt_handler(char *prompt, char **argv, char **env, t_shell *info);
-void	initialise_basics(int argc, char **env, t_shell *info);
+void	inpt_handler(char **argv, char **env, t_shell *info);
+void	initialise_basics(int argc, char **argv, char **env, t_shell *info);
 //int	main(int argc, char **argv, char **env);
+int		create_prompt(t_shell *shell_info);
+
 
 //SET_NODES.C
-void	input_types(char *inpt, t_shell *info, t_token *first_token);
-int		set_token_word(char *inpt, int i, t_token *token);
-int		set_token_not_word(char *inpt, int i, t_token *token);
+// void	input_types(t_shell *info, t_token *first_token);
+// int		set_token_word(t_shell *info, int i, t_token *token, char *inpt);
+// int		set_token_not_word(char *inpt, int i, t_token *token);
+int	create_tokens(t_shell *shell_info);
+t_token	*create_single_token(t_shell *shell_info, int i);
+t_token	*create_double_token(t_shell *shell_info, int i);
 
 //UTILS
 void	token_add_back(t_token **first_token, t_token *new);
@@ -123,6 +132,6 @@ t_token	*token_last(t_token *token);
 int		skip_whitespace(char *inpt, int i);
 
 //FREES
-void	free_small_linked(t_shell *shell_info);
+void	free_tokens(t_token **shell_info);
 
 #endif

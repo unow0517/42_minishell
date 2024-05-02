@@ -12,76 +12,147 @@
 
 #include "minishell.h"
 
-void	input_types(char *inpt, t_shell *info, t_token *first_token)
+t_token	*create_word_token(t_shell *shell_info, int i)
+{
+	int		len;
+	int		start_pos;
+	t_token	*cur;
+
+	len = 0;
+	start_pos = i;
+	if (shell_info->user_input[i] != '\0' && shell_info->user_input[i] != ' ' && shell_info->user_input[i] != '\t')
+	{
+		cur = ft_calloc(sizeof(t_token), 1);
+		if (!cur)
+		{
+			// free stuff!!!!
+			return (NULL);
+		}
+	}
+	while (shell_info->user_input[i] != '\0' && shell_info->user_input[i] != ' ' && shell_info->user_input[i] != '\t')
+	{
+		i++;
+		len++;
+	}
+	cur->i = start_pos;
+	cur->input = shell_info->user_input;
+	cur->token_type = WORD;
+	cur->len = len;
+	cur->content = &shell_info->user_input[start_pos];
+	cur->next = NULL;
+	return (cur);
+}
+
+t_token	*create_single_token(t_shell *shell_info, int i)
+{
+	t_token *cur;
+
+	if (!(shell_info->user_input[i] == '|') && !(shell_info->user_input[i] == '>') && !(shell_info->user_input[i] == '<') && !(shell_info->user_input[i] == '\'') && !(shell_info->user_input[i] == '"'))
+		return (NULL);
+	if ((shell_info->user_input[i] == '|') || (shell_info->user_input[i] == '>') || (shell_info->user_input[i] == '<') || (shell_info->user_input[i] == '\'') || (shell_info->user_input[i] == '"'))
+	{
+		cur = ft_calloc(sizeof(t_token), 1);
+		if (!cur)
+		{
+			// free stuff!!!!
+			return (NULL);
+		}
+		cur->i = i;
+		if (shell_info->user_input[i] == '>')
+			cur->token_type = S_MORE;
+		else if (shell_info->user_input[i] == '<')
+			cur->token_type = S_LESS;
+		else if (shell_info->user_input[i] == '|')
+			cur->token_type = PIPE;
+		else if (shell_info->user_input[i] == '\'')
+			cur->token_type = S_QUOTE;
+		else if (shell_info->user_input[i] == '"')
+			cur->token_type = D_QUOTE;
+		else
+			cur->token_type = NO_TOKEN;
+		i++;
+		cur->input = shell_info->user_input;
+		cur->len = 1;
+		cur->content = &shell_info->user_input[i];
+		cur->next = NULL;
+		return (cur);
+	}
+	return (NULL);
+}
+
+t_token	*create_double_token(t_shell *shell_info, int i)
+{
+	t_token *cur;
+
+	cur = NULL;
+	// if (!(shell_info->user_input[i] == '>' && shell_info->user_input[i + 1] == '>') && !(shell_info->user_input[i] == '<' && shell_info->user_input[i + 1] == '<'))
+	// 	return (NULL);
+	if ((shell_info->user_input[i] == '>' && shell_info->user_input[i + 1] == '>') || (shell_info->user_input[i] == '<' && shell_info->user_input[i + 1] == '<'))
+	{
+		cur = ft_calloc(sizeof(t_token), 1);
+		if (!cur)
+		{
+			// free stuff!!!!
+			return (NULL);
+		}
+		cur->i = i;
+		if (shell_info->user_input[i] == '>' && shell_info->user_input[i + 1] == '>')
+			cur->token_type = S_MORE;
+		else if (shell_info->user_input[i] == '<' && shell_info->user_input[i + 1] == '<')
+			cur->token_type = S_LESS;
+		else
+			cur->token_type = NO_TOKEN;
+		i = i + 2;
+		cur->input = shell_info->user_input;
+		cur->len = 2;
+		cur->content = &shell_info->user_input[i];
+		cur->next = NULL;
+	}
+	return (cur);
+}
+
+
+// create_word
+
+int	create_tokens(t_shell *shell_info)
 {
 	int		i;
 	t_token	*cur;
 
 	i = 0;
 	cur = NULL;
-	cur = first_token;
-	while (inpt && inpt[i] != '\0')
+	if (!shell_info->tokens)
+		shell_info->tokens = cur;
+	while (shell_info->user_input && shell_info->user_input[i] != '\0') // && shell_info->user_input[i] != EOF
 	{
-		cur = ft_calloc(sizeof(t_token), 1);
-		cur->input = ft_calloc(ft_strlen(inpt) + 1, sizeof(char));
-		if (!cur->input)
-			perror("calloc failed");
-		cur->input = inpt;
-		token_add_back(info->first_token_node, cur);
-		i = skip_whitespace(inpt, i);
-		if (inpt[i] == '\0')
+		printf("HELLO\n");
+		i = skip_whitespace(shell_info->user_input, i);
+		if (shell_info->user_input[i] == '\0')
 			break;
-		if (!(ft_isalpha(inpt[i])) && !(ft_isdigit(inpt[i])) && !(inpt[i] == '-'))
-			i = set_token_not_word(inpt, i, cur);
-		else if ((inpt[i] == '-') || (ft_isdigit(inpt[i])) || (ft_isalpha(inpt[i])))
-			i = set_token_word(inpt, i, cur);
+		cur = create_double_token(shell_info, i);
+		if (cur == NULL)
+			cur = create_single_token(shell_info, i);
+		if (cur == NULL)
+			cur = create_word_token(shell_info, i);
+		if (cur == NULL)
+			break ;
+		if (cur->token_type == NO_TOKEN)
+		{
+			free(cur);
+			break;
+		}
+		i = cur->i + cur->len;
+		token_add_back(&shell_info->tokens, cur);
+		if (shell_info->user_input[i] == '\0')
+			break;
 		i++;
 		cur = cur->next;
 	}
-	// print_linked_tokens(*(info->first_token_node));
+	// print_linked_tokens(shell_info->tokens);
+	if (cur)
+		return (0);
+	else
+		return (1);
 }
 
-int	set_token_word(char *inpt, int i, t_token *token)
-{
-	int	len;
-
-	len = 0;
-	token->i = i;
-	while (inpt[i] != '\0' && ((ft_isalpha(inpt[i])) || (ft_isdigit(inpt[i])) \
-	|| (inpt[i] == '-')))
-	{
-		len++;
-		i++;
-	}
-	token->len = len;
-	token->token_type = WORD;
-	token->next = NULL;
-	return (i);
-}
-
-int	set_token_not_word(char *inpt, int i, t_token *token)
-{
-	token->i = i;
-	if (inpt[i] == '|' || (inpt[i] == '>' && inpt[i + 1] != '>') || (inpt[i] \
-	== '<' && inpt[i + 1] != '<') || (inpt[i] == '\'') || (inpt[i] == '"'))
-		i++;
-	else if ((inpt[i] == '>' && inpt[i + 1] == '>') || (inpt[i] == '<' && \
-	inpt[i + 1] == '<'))
-		i = i + 2;
-	if (inpt[i] == '|')
-		token->token_type = PIPE;
-	else if (inpt[i] == '>' && inpt[i + 1] != '>')
-		token->token_type = S_MORE;
-	else if (inpt[i] == '<' && inpt[i + 1] != '<')
-		token->token_type = S_LESS;
-	else if (inpt[i] == '\'')
-		token->token_type = S_QUOTE;
-	else if (inpt[i] == '"')
-		token->token_type = D_QUOTE;
-	else if (inpt[i] == '>' && inpt[i + 1] == '>')
-		token->token_type = D_MORE;
-	else if (inpt[i] == '<' && inpt[i + 1] == '<')
-		token->token_type = D_LESS;
-	token->next = NULL;
-	return (i);
-}
+// la -l  > f1 << END | grep hi | cat > out
