@@ -13,12 +13,28 @@ void	parse_tokens(t_shell *shell_info)
 	int			len;
 
 	cmd_node = NULL;
+	if (!shell_info->first_command)
+		shell_info->first_command = cmd_node;
 	iterate = shell_info->tokens;
 	len = number_of_tokens(shell_info);
 	cmd_node = ft_calloc(1, sizeof(t_command));
+	initialise_cmd_node(cmd_node);
 	// if (len > 1)
 	// 	create_pipe(shell_info, len?);
 	set_executable_nodes(cmd_node, iterate);
+}
+
+void	initialise_cmd_node(t_command *cmd_node)
+{
+	cmd_node->cmd = ft_calloc(1, sizeof(char));
+	cmd_node->options = NULL;
+	cmd_node->full_cmd = NULL;
+	cmd_node->input_fd = -1;
+	cmd_node->output_fd = -1;
+	cmd_node->input_path = NULL;
+	cmd_node->output_path = NULL;
+	cmd_node->is_heredoc = 0;
+	cmd_node->next = NULL;
 }
 
 void	set_executable_nodes(t_command *cmd_node, t_token *iterate)
@@ -28,10 +44,8 @@ void	set_executable_nodes(t_command *cmd_node, t_token *iterate)
 	char	*temp;
 	char	*temp_cmd;
 
-	to_split = ft_calloc(1, sizeof(char));
-	cmd_node = ft_calloc(1, sizeof(t_command));
-	cmd_node->cmd = ft_calloc(1, sizeof(char));
-	// cmd_node->cmd = "";
+	// to_split = ft_calloc(1, sizeof(char));
+	// cmd_node->cmd = ft_calloc(1, sizeof(char));
 	while (iterate != NULL && iterate->token_type != PIPE)
 	{
 		iterate = set_redirections(cmd_node, iterate);
@@ -51,25 +65,25 @@ void	set_executable_nodes(t_command *cmd_node, t_token *iterate)
 	temp_cmd = ft_strjoin(cmd_node->cmd, " ");
 	if (!temp_cmd)
 	{
-		perror("ft_strjoin(cmd_node->cmd, " ")  FAILED");
+		perror("ft_strjoin(cmd_node->cmd, " ") FAILED");
 		exit (-1);
 	}
 	to_full_cmd = ft_strjoin(temp_cmd, to_split);
 	if (!temp_cmd)
 	{
-		perror("ft_strjoin(cmd_node->cmd, " ")  FAILED");
+		perror("ft_strjoin(cmd_node->cmd, " ") FAILED");
 		exit (-1);
 	}
 	cmd_node->full_cmd = ft_split(to_full_cmd, ' ');
 	if (!temp_cmd)
 	{
-		perror("ft_strjoin(cmd_node->cmd, " ")  FAILED");
+		perror("ft_strjoin(cmd_node->cmd, " ") FAILED");
 		exit (-1);
 	}
 	cmd_node->options = ft_split(to_split, ' ');
 	if (!temp_cmd)
 	{
-		perror("ft_strjoin(cmd_node->cmd, " ")  FAILED");
+		perror("ft_strjoin(cmd_node->cmd, " ") FAILED");
 		exit (-1);
 	}
 }
@@ -104,7 +118,6 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 		iterate = iterate->next;
 	return (iterate);
 }
-
 
 int	open_file(t_command *cmd_node, t_token *iterate, int flag)
 {

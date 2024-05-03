@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/03 16:08:12 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/03 18:25:22 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,10 @@ int		number_of_tokens(t_shell *shell_info);
 void	set_executable_nodes(t_command *cmd_node, t_token *iterate);
 t_token	*set_redirections(t_command *cmd_node, t_token *iterate);
 int		open_file(t_command *cmd_node, t_token *iterate, int flag);
+void	initialise_cmd_node(t_command *cmd_node);
 
+//EXECUTING
+void	executor(t_shell *shell_info);
 
 //FREES
 void	free_tokens(t_token **shell_info);
