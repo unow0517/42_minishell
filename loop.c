@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 18:12:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/03 18:28:33 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/03 19:48:43 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 		signal(SIGINT, sighandler);
 		shell_info->user_input = readline(shell_info->prompt);
 		parse_input(shell_info);
-		(void)status;
-		executor(shell_info);
+		// (void)status;
+		executor(shell_info, &status);
 		// create_tokens(shell_info);
 		if (!shell_info->user_input)
 		{
@@ -98,25 +98,35 @@ void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 
 }
 
-void	executor(t_shell *shell_info)
+void	executor(t_shell *shell_info, int *status)
 {
 	t_command	*cmd_node;
 	pid_t		pid;
 	char		*full_path;
-
+printf("EXECUTOR\n");
 	cmd_node = shell_info->first_command;
+printf("after first command\n");
+// printf("cmd_node->cmd = %s\n", cmd_node->cmd);
 	while (cmd_node)
 	{
+		printf("while cmd_node\n");
 		pid = fork();
 		if (pid == 0)
 		{
+printf("cmd_node->cmd[0] = %c\n", cmd_node->cmd[0]);
 			printf("cmd_node->cmd = %s\n", cmd_node->cmd);
-			printf("heyyyy\n");
 			full_path = find_cmd_in_env(cmd_node->cmd, shell_info->env);
+printf("full_path = %s\n", full_path);
+printf("cmd_node->full_cmd_____________\n");
+			print_split(cmd_node->full_cmd);
 			execve(full_path, cmd_node->full_cmd, shell_info->env);
 			perror("execve");
+			exit(EXIT_FAILURE);
 			// execve(full_path, ft_split(shell_info->user_input, ' '), env);
 		}
+		else
+			waitpid(pid, status, 0);
 		cmd_node = cmd_node->next;
 	}
 }
+

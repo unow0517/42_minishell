@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 13:39:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/02 17:12:20 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/03 19:49:04 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,16 @@ void	print_linked_tokens(t_token *token)
 		ft_printf("________________________________________________________\n");
 		print_token(token);
 		token = token->next;
+	}
+}
+
+void	print_split(char **str)
+{
+	int i = 0;
+
+	while (str[i])
+	{
+		printf("str[%i] = %s\n", i, str[i]);
+		i++;
 	}
 }
