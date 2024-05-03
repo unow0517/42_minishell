@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/02 17:11:24 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/03 16:08:12 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include "Libft/libft.h"
 # include "ft_printf/ft_printf.h"
 # include <sys/wait.h>
+# include <fcntl.h>
 
 # define SHE 0
 # define DFL 1
@@ -35,10 +36,10 @@ typedef enum e_token_type
 	PIPE,
 	S_QUOTE,
 	D_QUOTE,
-	S_LESS,
-	S_MORE,
-	D_LESS,
-	D_MORE
+	S_LESS, // < input redirection
+	S_MORE, // > output redirection
+	D_LESS, // <<
+	D_MORE  // >>
 }	t_token_type;
 
 typedef struct s_token //token, not token
@@ -52,19 +53,6 @@ typedef struct s_token //token, not token
 	// char			*user_input_element;
 } t_token;
 
-typedef struct s_shell
-{
-	int		argc;
-	char	**argv;
-	char	**env;
-	char	cwd[1024];
-	t_token	*tokens;
-	char	*user_input;
-	char	prompt[1024];
-				//Its in linux/limits.h.
-				// #define PATH_MAX        4096 
-}	t_shell;
-
 typedef struct s_command
 {
 	// ls -lah LibFt
@@ -76,8 +64,22 @@ typedef struct s_command
 	char	*output_path; // path to output file
 	char	*input_path; // path to input file
 	int		is_heredoc; // 0 if no << otherwise set to 1
-	struct s_command *next;
+	struct	s_command *next;
 } t_command;
+
+typedef struct s_shell
+{
+	int			argc;
+	char		**argv;
+	char		**env;
+	char		cwd[1024];
+	t_token		*tokens;
+	char		*user_input;
+	char		prompt[1024];
+	t_command	*first_command;
+				//Its in linux/limits.h.
+				// #define PATH_MAX        4096 
+}	t_shell;
 
 //inpt_functions.C
 int		inputis(char *inpt, char *string);
@@ -143,6 +145,10 @@ int		skip_whitespace(char *inpt, int i);
 void	parse_input(t_shell *shell_info);
 void	parse_tokens(t_shell *shell_info);
 int		number_of_tokens(t_shell *shell_info);
+void	set_executable_nodes(t_command *cmd_node, t_token *iterate);
+t_token	*set_redirections(t_command *cmd_node, t_token *iterate);
+int		open_file(t_command *cmd_node, t_token *iterate, int flag);
+
 
 //FREES
 void	free_tokens(t_token **shell_info);

@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:46 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/02 15:31:28 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/03 16:17:07 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 // {
 // 	system("leaks minishell");
 // }
-// int	main(void)
+
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	shell_info;
@@ -42,6 +42,7 @@ void	initialise_basics(int argc, char **argv, char **env, t_shell *shell_info)
 	getcwd(shell_info->cwd, sizeof(shell_info->cwd));
 	shell_info->tokens = NULL;
 	shell_info->user_input = NULL;
+	shell_info->first_command = NULL;
 	// shell_info->cwd = ft_strdup(shell_info->cwd); // ft_strdup since cwd is local variable, and it dealloc when fn is finished.
 }
 

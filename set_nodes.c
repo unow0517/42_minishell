@@ -47,8 +47,9 @@ t_token	*create_single_token(t_shell *shell_info, int i)
 {
 	t_token *cur;
 
-	if (!(shell_info->user_input[i] == '|') && !(shell_info->user_input[i] == '>') && !(shell_info->user_input[i] == '<') && !(shell_info->user_input[i] == '\'') && !(shell_info->user_input[i] == '"'))
-		return (NULL);
+	// if (!(shell_info->user_input[i] == '|') && !(shell_info->user_input[i] == '>') && !(shell_info->user_input[i] == '<') && !(shell_info->user_input[i] == '\'') && !(shell_info->user_input[i] == '"'))
+	// 	return (NULL);
+	cur = NULL;
 	if ((shell_info->user_input[i] == '|') || (shell_info->user_input[i] == '>') || (shell_info->user_input[i] == '<') || (shell_info->user_input[i] == '\'') || (shell_info->user_input[i] == '"'))
 	{
 		cur = ft_calloc(sizeof(t_token), 1);
@@ -75,9 +76,8 @@ t_token	*create_single_token(t_shell *shell_info, int i)
 		i++;
 		cur->len = 1;
 		cur->next = NULL;
-		return (cur);
 	}
-	return (NULL);
+	return (cur);
 }
 
 t_token	*create_double_token(t_shell *shell_info, int i)
@@ -154,4 +154,5 @@ int	create_tokens(t_shell *shell_info)
 		return (1);
 }
 
-// la -l  > f1 << END | grep hi | cat > out
+// la -l > f1 << END | grep hi | cat > out
+// la -l < f1 < f2 < f3 > f1 << END | grep hi | cat > out

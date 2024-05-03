@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:11:21 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/29 13:21:50 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/03 17:26:44 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,17 @@ void	run_pipe(char *inpt, char **argv, char **env)
 	path_from_env = env[i];
 	paths = ft_split(path_from_env + 5, ':');
 	i = 0;
-	printf("%s\n", paths[0]);
+	// printf("%s\n", paths[0]);
 	first_cmd = ft_split(subcmds[0],' ')[0];
 	first_cmd = ft_strjoin("/",first_cmd);
-	printf("%s\n", first_cmd);
+	// printf("%s\n", first_cmd);
 	while (paths[i])
 	{
 		cmd_path = ft_strjoin(paths[i], first_cmd);
 		// printf("%s\n", cmd_path);
 		if (access(cmd_path, X_OK) != -1)
 		{
-			printf("first_cmd found\n");
+			// printf("first_cmd found\n");
 			break ;
 		}
 		i++;
