@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/03 19:47:54 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/06 18:29:06 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,8 @@ char	*multiple_ws_to_single(char	*str);
 void	print_token(t_token *token);
 void	print_linked_tokens(t_token *token);
 void	print_split(char **str);
+void	print_cmd_list(t_command *cmd_node);
+void	print_split_no_newline(char **str);
 
 // //PIPEX_FUNCTIONS.C
 char	*get_first_word(char *argv);
@@ -152,9 +154,11 @@ int		open_file(t_command *cmd_node, t_token *iterate, int flag);
 void	initialise_cmd_node(t_command *cmd_node);
 
 //EXECUTING
-void	executor(t_shell *shell_info, int *status);
+void	executor(t_shell *shell_info, int *status, t_command *cur);
+void	handle_redir(t_command *cur);
 
 //FREES
 void	free_tokens(t_token **shell_info);
+void	free_cmd_list(t_command **cmds);
 
 #endif

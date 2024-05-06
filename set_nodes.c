@@ -31,7 +31,14 @@ t_token	*create_word_token(t_shell *shell_info, int i)
 	}
 	while (shell_info->user_input[i] != '\0' && shell_info->user_input[i] != ' ' && shell_info->user_input[i] != '\t')
 	{
-		i++;
+		if ((shell_info->user_input[i] == '|') || (shell_info->user_input[i] == '>') || (shell_info->user_input[i] == '<') || (shell_info->user_input[i] == '\'') || (shell_info->user_input[i] == '"'))
+		{
+			printf("shell_info->user_input[%d] = %c\tlen = %i\n", i, shell_info->user_input[i], len);
+			// i--;
+			// len--;
+			break;
+		}
+		i++; //check for < > | ' " for input without gaps
 		len++;
 	}
 	cur->idx = start_pos;
@@ -144,7 +151,7 @@ int	create_tokens(t_shell *shell_info)
 		token_add_back(&shell_info->tokens, cur);
 		if (shell_info->user_input[i] == '\0')
 			break;
-		i++;
+		// i++;
 		cur = cur->next;
 	}
 	print_linked_tokens(shell_info->tokens);

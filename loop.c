@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 18:12:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/03 19:48:43 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/06 19:50:34 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,21 @@
 
 void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 {
-	// char	*full_path;
 	char	*cmd;
 	int		status;
-	// pid_t	pid;
-
-		// if (!shell_info)
-		// 	shell_info = ft_calloc(1, sizeof(t_shell));
+	t_command	*cur;
 	shell_info->user_input = NULL;
 	while (1)
 	{
 		signal(SIGINT, sighandler);
 		shell_info->user_input = readline(shell_info->prompt);
 		parse_input(shell_info);
-		// (void)status;
-		executor(shell_info, &status);
-		// create_tokens(shell_info);
+		cur = shell_info->first_command;
+		while (cur)
+		{
+			executor(shell_info, &status, cur);
+			cur = cur->next;
+		}
 		if (!shell_info->user_input)
 		{
 			// free(shell_info);
@@ -46,7 +45,6 @@ void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 			shell_info->user_input = rm_starting_ws(shell_info->user_input);
 		multiple_ws_to_single(shell_info->user_input);
 		//have to run this after split cmd by space.
-// ft_printf("loop shell_info->user_input = %s\n", shell_info->user_input);
 		cmd = get_first_word(shell_info->user_input);
 		if (!cmd)
 		{
@@ -74,59 +72,42 @@ void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 			print_history(shell_info->user_input);
 		else
 			ft_printf("minishell: %s: command not found\n", shell_info->user_input);
-		// else if (find_cmd_in_env(cmd, env))
-		// {
-		// 	pid = fork();
-		// 	if (pid == 0)
-		// 	{
-		// 		full_path = find_cmd_in_env(cmd, env);
-		// 		// ft_printf("full_path: %s\n", full_path);
-		// 		// printf("\ninput: %s\n\n", shell_info->user_input);
-		// 		execve(full_path, ft_split(shell_info->user_input, ' '), env);
-		// 		perror("execve");
-		// 		exit(EXIT_FAILURE);
-		// 	}
-		// 	else
-		// 	{
-		// 		waitpid(pid, &status, 0);
-		// 		ft_printf("child process finished\n");
-		// 	}
-		// }
-		// shell_info->user_input = NULL;
 	free_tokens(&shell_info->tokens);
+	free_cmd_list(&shell_info->first_command);
 	}
 
 }
 
-void	executor(t_shell *shell_info, int *status)
+void	executor(t_shell *shell_info, int *status, t_command *cur)
 {
-	t_command	*cmd_node;
 	pid_t		pid;
 	char		*full_path;
-printf("EXECUTOR\n");
-	cmd_node = shell_info->first_command;
-printf("after first command\n");
-// printf("cmd_node->cmd = %s\n", cmd_node->cmd);
-	while (cmd_node)
+
+	pid = fork();
+	if (pid == 0)
 	{
-		printf("while cmd_node\n");
-		pid = fork();
-		if (pid == 0)
-		{
-printf("cmd_node->cmd[0] = %c\n", cmd_node->cmd[0]);
-			printf("cmd_node->cmd = %s\n", cmd_node->cmd);
-			full_path = find_cmd_in_env(cmd_node->cmd, shell_info->env);
-printf("full_path = %s\n", full_path);
-printf("cmd_node->full_cmd_____________\n");
-			print_split(cmd_node->full_cmd);
-			execve(full_path, cmd_node->full_cmd, shell_info->env);
-			perror("execve");
-			exit(EXIT_FAILURE);
-			// execve(full_path, ft_split(shell_info->user_input, ' '), env);
-		}
-		else
-			waitpid(pid, status, 0);
-		cmd_node = cmd_node->next;
+		handle_redir(cur);
+		full_path = find_cmd_in_env(cur->cmd, shell_info->env);
+		// print_split(cur->full_cmd);
+		execve(full_path, cur->full_cmd, shell_info->env);
+		printf("passed execve\n");
+		perror("execve");
+		exit(EXIT_FAILURE);
 	}
+	else
+		waitpid(pid, status, 0);
 }
 
+void	handle_redir(t_command *cur)
+{
+	if (cur->input_fd != -1)
+		{
+			dup2(cur->input_fd, STDIN_FILENO);
+			close(cur->input_fd);
+		}
+		if (cur->output_fd != -1)
+		{
+			dup2(cur->output_fd, STDOUT_FILENO);
+			close(cur->output_fd);
+		}
+}

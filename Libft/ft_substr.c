@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 13:01:37 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/03 18:48:58 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/06 12:51:44 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	size_t	slength;
 	size_t	i;
 
-
-printf("ft_substr(char const *s, unsigned int start, size_t len) == ft_substr(%s, %i, %i\n)", s, start, len);
+// printf("ft_substr(char const *s, unsigned int start, size_t len) == ft_substr(%s, %i, %zu)\n", s, start, len);
 	i = 0;
 	slength = ft_strlen(s);
 	if (!s)

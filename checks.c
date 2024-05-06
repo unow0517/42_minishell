@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 13:39:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/03 19:49:04 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/06 17:05:58 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,37 @@ void	print_split(char **str)
 	{
 		printf("str[%i] = %s\n", i, str[i]);
 		i++;
+	}
+}
+
+void	print_split_no_newline(char **str)
+{
+	int i = 0;
+
+	while (str[i])
+	{
+		printf("\t\t\tstr[%i] = %s\n", i, str[i]);
+		i++;
+	}
+}
+
+
+void	print_cmd_list(t_command *cmd_node)
+{
+	while (cmd_node)
+	{
+		printf("________________________________________________________\n");
+		printf("cmd_node->cmd\t\t%s\n", cmd_node->cmd);
+		printf("cmd_node->options\n");
+		print_split_no_newline(cmd_node->options);
+		printf("cmd_node->full_cmd\n");
+		print_split_no_newline(cmd_node->full_cmd);
+		printf("cmd_node->input_fd\t%i\n", cmd_node->input_fd);
+		printf("cmd_node->output_fd\t%i\n", cmd_node->output_fd);
+		printf("cmd_node->output_path\t%s\n", cmd_node->output_path);
+		printf("cmd_node->input_path\t%s\n", cmd_node->input_path);
+		printf("cmd_node->is_heredoc\t%i\n", cmd_node->is_heredoc);
+		printf("cmd_node->next\t%p\n", cmd_node->next);
+		cmd_node = cmd_node->next;
 	}
 }

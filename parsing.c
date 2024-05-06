@@ -4,6 +4,7 @@ void	parse_input(t_shell *shell_info)
 {
 	create_tokens(shell_info);
 	parse_tokens(shell_info);
+	print_cmd_list(shell_info->first_command);
 }
 
 void	parse_tokens(t_shell *shell_info)
@@ -51,38 +52,23 @@ void	set_executable_nodes(t_command *cmd_node, t_token *iterate)
 	while (iterate != NULL && iterate->token_type != PIPE)
 	{
 		iterate = set_redirections(cmd_node, iterate);
+printf("__________________________DEBUG__________________________\n");
 		if (iterate != NULL && iterate->token_type == WORD && cmd_node->cmd[0] == '\0' && iterate->token_type != PIPE) //cmd_node->cmd == NULL
+			cmd_node->cmd = get_first_word(iterate->content);
+		else if (iterate && iterate->token_type == WORD && cmd_node->cmd == NULL && iterate->token_type != PIPE)
+			cmd_node->cmd = get_first_word(iterate->content);
+		else if (iterate && iterate->token_type == WORD && cmd_node->cmd != NULL && cmd_node->cmd[0] != '\0' && iterate->token_type != PIPE)
 		{
-			printf("CREATING cmd in set_executable_nodes\n");
-			cmd_node->cmd = ft_substr(iterate->input, iterate->idx, iterate->len);
-
-		}
-		else if (iterate && iterate->token_type == WORD && cmd_node->cmd[0] == '\0' && iterate->token_type != PIPE)
-		{
-			printf("CREATING cmd in set_executable_nodes\n");
-			cmd_node->cmd = ft_substr(iterate->content, iterate->idx, iterate->len);
-
-		}
-		else if (iterate && iterate->token_type == WORD && cmd_node->cmd[0] != '\0' && iterate->token_type != PIPE)
-		{
-printf("set_executable_nodes: entered ambiguous else if statement\n");
-printf("set_executable_nodes: iterate->content = %s\n", iterate->content);
 			temp = ft_strjoin(to_split, " ");
-printf("set_executable_nodes: temp = %s\n", temp);
-			temp1 = ft_substr(iterate->content, iterate->idx, iterate->len);
-			// to_split = ft_strjoin(temp, ft_substr(iterate->content, iterate->idx, iterate->len));
-			to_split = ft_strjoin(iterate->content, temp1);
+			temp1 = get_first_word(iterate->content); //-l
+			to_split = ft_strjoin(temp, get_first_word(iterate->content));
+			to_split = ft_strjoin(temp, temp1);
 			free(temp);
+			free(temp1);
 		}
-printf("set_executable_nodes: iterate address = %p\n", iterate);
-printf("set_executable_nodes: iterate->token_type = %i\n", iterate->token_type);
-printf("set_executable_nodes: cmd_node->cmd[0] = %c\n", cmd_node->cmd[0]);
-printf("set_executable_nodes: to_split = %s\n", to_split);
-
 		if (iterate)
 			iterate = iterate->next;
 	}
-	// cmd_node->cmd = ft_calloc(1, sizeof(char));
 	temp_cmd = ft_strjoin(cmd_node->cmd, " ");
 	if (!temp_cmd)
 	{
@@ -111,14 +97,17 @@ printf("set_executable_nodes: to_split = %s\n", to_split);
 
 t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 {
-	// printf("set_redirections: iterate address = %p\n", iterate);
-
+	t_token	*init_tok;
+	init_tok = iterate;
 	if (iterate->token_type == S_LESS) //create open file function to pass enum
 	{
-		// printf("entered if statement\n");
+		iterate = iterate->next;
 		if (open_file(cmd_node, iterate, S_LESS) == -1)
-			return (NULL);// fix return/exit and frees
-		iterate = iterate->next->next;
+		{
+			printf("failed to open file\n");
+			return (init_tok);// fix return/exit and frees
+		}
+		iterate = iterate->next;
 	}
 	else if (iterate->token_type == D_LESS) //create open file function to pass enum
 	{
@@ -127,38 +116,46 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 		// 	return (NULL);
 		//heredoc case;
 	}
-	else if (iterate->token_type == WORD && iterate->next && iterate->next->token_type == S_MORE) //create open file function to pass enum
+	else if (iterate && iterate->token_type == S_MORE && iterate->next && iterate->next->token_type == WORD) //create open file function to pass enum
 	{
 		// printf("entered if statement\n");
+		iterate = iterate->next;
 		if (open_file(cmd_node, iterate, S_MORE) == -1)
-			return (NULL);// fix return/exit and frees
-		iterate = iterate->next->next;
+		{
+			printf("failed to open file\n");
+			return (init_tok);// fix return/exit and frees
+		}
+		iterate = iterate->next;
 	}
-	else if (iterate->token_type == WORD && iterate->next && iterate->next->token_type == D_MORE) //create open file function to pass enum
+	else if (iterate && iterate->token_type == D_MORE && iterate->next && iterate->next->token_type == WORD) //create open file function to pass enum
 	{
 		// printf("entered if statement\n");
+		iterate = iterate->next;
 		if (open_file(cmd_node, iterate, D_MORE) == -1)
-			return (NULL);// fix return/exit and frees
-		iterate = iterate->next->next;
+		{
+			printf("failed to open file\n");
+			return (init_tok);// fix return/exit and frees
+		}
+		iterate = iterate->next;
 	}
-	// if (iterate)
-	// 	iterate = iterate->next;
 	return (iterate);
 }
 
 int	open_file(t_command *cmd_node, t_token *iterate, int flag)
 {
 	if (flag == S_LESS)
-		cmd_node->input_fd = open(ft_substr(iterate->input, iterate->idx, iterate->len), O_RDONLY);
+		cmd_node->input_fd = open(get_first_word(iterate->content), O_RDONLY);
 	else if (flag == S_MORE)
-		cmd_node->output_fd = open(ft_substr(iterate->input, iterate->idx, iterate->len), O_WRONLY | O_CREAT | O_TRUNC);
+		cmd_node->output_fd = open(get_first_word(iterate->content), O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (flag == D_MORE)
-		cmd_node->output_fd = open(ft_substr(iterate->input, iterate->idx, iterate->len), O_WRONLY | O_CREAT | O_APPEND);
+		cmd_node->output_fd = open(get_first_word(iterate->content), O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else if (flag == D_LESS)
 	{
 		//handle heredoc
 	}
-	if (cmd_node->output_fd == -1) // add checks
+	if ((flag == S_MORE || flag == D_MORE) && cmd_node->output_fd == -1) // add checks
+		return (-1);
+	else if (flag == S_LESS && cmd_node->input_fd ==  -1)
 		return (-1);
 	else
 		return (0);
