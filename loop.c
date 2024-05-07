@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 18:12:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/06 19:50:34 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/07 16:29:46 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 		signal(SIGINT, sighandler);
 		shell_info->user_input = readline(shell_info->prompt);
 		parse_input(shell_info);
+		print_token_types(shell_info);
 		cur = shell_info->first_command;
 		while (cur)
 		{
@@ -75,7 +76,6 @@ void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 	free_tokens(&shell_info->tokens);
 	free_cmd_list(&shell_info->first_command);
 	}
-
 }
 
 void	executor(t_shell *shell_info, int *status, t_command *cur)
@@ -86,6 +86,8 @@ void	executor(t_shell *shell_info, int *status, t_command *cur)
 	pid = fork();
 	if (pid == 0)
 	{
+		// if (num_of_remaining_cmds(cur) > 1)
+		// 	init_pipe(cur);
 		handle_redir(cur);
 		full_path = find_cmd_in_env(cur->cmd, shell_info->env);
 		// print_split(cur->full_cmd);
@@ -95,19 +97,63 @@ void	executor(t_shell *shell_info, int *status, t_command *cur)
 		exit(EXIT_FAILURE);
 	}
 	else
+	{
+		if (cur->input_fd != -1)
+			close(cur->input_fd);
+		if (cur->output_fd != -1)
+			close(cur->output_fd);
 		waitpid(pid, status, 0);
+	}
+}
+
+void	init_pipe(t_command *cur)
+{
+	int	fd[2];
+
+	if (pipe(fd) == -1)
+	{
+		perror("pipe failed"); //fix proper message and exit
+		exit(1);
+	}
+	if (cur->input_fd != -1)
+		dup2(fd[0], STDIN_FILENO);
+	if (cur->output_fd != -1)
+		dup2(fd[1], STDOUT_FILENO);
+	close(fd[0]);
+	close(fd[1]);
 }
 
 void	handle_redir(t_command *cur)
 {
 	if (cur->input_fd != -1)
+	{
+		if (dup2(cur->input_fd, STDIN_FILENO) == -1)
 		{
-			dup2(cur->input_fd, STDIN_FILENO);
-			close(cur->input_fd);
+			perror("dup2 for input_fd failed");
+			exit(EXIT_FAILURE);
 		}
-		if (cur->output_fd != -1)
+		close(cur->input_fd);
+	}
+	if (cur->output_fd != -1)
+	{
+		if (dup2(cur->output_fd, STDOUT_FILENO) == -1)
 		{
-			dup2(cur->output_fd, STDOUT_FILENO);
-			close(cur->output_fd);
+			perror("dup2 for output_fd failed");
+			exit(EXIT_FAILURE);
 		}
+		close(cur->output_fd);
+	}
+}
+
+int	num_of_remaining_cmds(t_command *cur)
+{
+	int	counter;
+
+	counter = 0;
+	while (cur)
+	{
+		cur = cur->next;
+		counter++;
+	}
+	return (counter);
 }

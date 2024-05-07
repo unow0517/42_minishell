@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/06 18:29:06 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/07 15:21:29 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ void	print_linked_tokens(t_token *token);
 void	print_split(char **str);
 void	print_cmd_list(t_command *cmd_node);
 void	print_split_no_newline(char **str);
+void	print_token_types(t_shell *shell_info);
 
 // //PIPEX_FUNCTIONS.C
 char	*get_first_word(char *argv);
@@ -132,7 +133,7 @@ void	free_split_thalia(char **str);
 void	inpt_handler(char **argv, char **env, t_shell *info);
 void	initialise_basics(int argc, char **argv, char **env, t_shell *info);
 int		create_prompt(t_shell *shell_info);
-
+void	init_pipe(t_command *cur);
 
 //SET_NODES.C
 int	create_tokens(t_shell *shell_info);
@@ -152,10 +153,12 @@ void	set_executable_nodes(t_command *cmd_node, t_token *iterate);
 t_token	*set_redirections(t_command *cmd_node, t_token *iterate);
 int		open_file(t_command *cmd_node, t_token *iterate, int flag);
 void	initialise_cmd_node(t_command *cmd_node);
+void	init_cmds_in_struct(t_command *cmd_node, char *to_split);
 
 //EXECUTING
 void	executor(t_shell *shell_info, int *status, t_command *cur);
 void	handle_redir(t_command *cur);
+int	num_of_remaining_cmds(t_command *cur);
 
 //FREES
 void	free_tokens(t_token **shell_info);

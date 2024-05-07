@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 13:39:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/06 17:05:58 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/07 14:45:09 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,35 @@ void	print_cmd_list(t_command *cmd_node)
 		printf("cmd_node->next\t%p\n", cmd_node->next);
 		cmd_node = cmd_node->next;
 	}
+}
+
+void	print_token_types(t_shell *shell_info)
+{
+	t_token *token;
+
+	token = shell_info->tokens;
+	while (token)
+	{
+		printf("\t");
+		if (token->token_type == 0)
+			printf("NO_TOKEN");
+		else if (token->token_type == 1)
+			printf("WORD");
+		else if (token->token_type == 2)
+			printf("PIPE");
+		else if (token->token_type == 3)
+			printf("S_QUOTE");
+		else if (token->token_type == 4)
+			printf("D_QUOTE");
+		else if (token->token_type == 5)
+			printf("S_LESS");
+		else if (token->token_type == 6)
+			printf("S_MORE");
+		else if (token->token_type == 7)
+			printf("D_LESS");
+		else if (token->token_type == 8)
+			printf("D_MORE");
+		token = token->next;
+	}
+	printf("\n");
 }

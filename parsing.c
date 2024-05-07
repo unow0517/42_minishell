@@ -41,18 +41,16 @@ void	initialise_cmd_node(t_command *cmd_node)
 void	set_executable_nodes(t_command *cmd_node, t_token *iterate)
 {
 	char	*to_split;
-	char	*to_full_cmd;
 	char	*temp;
-	char	*temp_cmd;
 	char	*temp1;
-
-	// to_split = ft_calloc(1, sizeof(char));
+	// char	*to_full_cmd;
+	
+	// char	*temp_cmd;
 	to_split = "";
 	cmd_node->cmd = ft_calloc(1, sizeof(char));
 	while (iterate != NULL && iterate->token_type != PIPE)
 	{
 		iterate = set_redirections(cmd_node, iterate);
-printf("__________________________DEBUG__________________________\n");
 		if (iterate != NULL && iterate->token_type == WORD && cmd_node->cmd[0] == '\0' && iterate->token_type != PIPE) //cmd_node->cmd == NULL
 			cmd_node->cmd = get_first_word(iterate->content);
 		else if (iterate && iterate->token_type == WORD && cmd_node->cmd == NULL && iterate->token_type != PIPE)
@@ -69,6 +67,38 @@ printf("__________________________DEBUG__________________________\n");
 		if (iterate)
 			iterate = iterate->next;
 	}
+	init_cmds_in_struct(cmd_node, to_split);
+	// temp_cmd = ft_strjoin(cmd_node->cmd, " ");
+	// if (!temp_cmd)
+	// {
+	// 	perror("ft_strjoin(cmd_node->cmd, " ") FAILED");
+	// 	exit (-1);
+	// }
+	// to_full_cmd = ft_strjoin(temp_cmd, to_split);
+	// if (!temp_cmd)
+	// {
+	// 	perror("ft_strjoin(cmd_node->cmd, " ") FAILED");
+	// 	exit (-1);
+	// }
+	// cmd_node->full_cmd = ft_split(to_full_cmd, ' ');
+	// if (!temp_cmd)
+	// {
+	// 	perror("ft_strjoin(cmd_node->cmd, " ") FAILED");
+	// 	exit (-1);
+	// }
+	// cmd_node->options = ft_split(to_split, ' ');
+	// if (!temp_cmd)
+	// {
+	// 	perror("ft_strjoin(cmd_node->cmd, " ") FAILED");
+	// 	exit (-1);
+	// }
+}
+
+void	init_cmds_in_struct(t_command *cmd_node, char *to_split)
+{
+	char	*to_full_cmd;
+	char	*temp_cmd;
+
 	temp_cmd = ft_strjoin(cmd_node->cmd, " ");
 	if (!temp_cmd)
 	{
@@ -99,7 +129,7 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 {
 	t_token	*init_tok;
 	init_tok = iterate;
-	if (iterate->token_type == S_LESS) //create open file function to pass enum
+	if (iterate->token_type == S_LESS)
 	{
 		iterate = iterate->next;
 		if (open_file(cmd_node, iterate, S_LESS) == -1)
@@ -109,16 +139,14 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 		}
 		iterate = iterate->next;
 	}
-	else if (iterate->token_type == D_LESS) //create open file function to pass enum
+	else if (iterate->token_type == D_LESS)
 	{
-		// printf("entered if statement\n");
+		cmd_node->is_heredoc = 1;
 		// if (open_file(cmd_node, iterate, D_LESS) == -1)
 		// 	return (NULL);
-		//heredoc case;
 	}
 	else if (iterate && iterate->token_type == S_MORE && iterate->next && iterate->next->token_type == WORD) //create open file function to pass enum
 	{
-		// printf("entered if statement\n");
 		iterate = iterate->next;
 		if (open_file(cmd_node, iterate, S_MORE) == -1)
 		{
@@ -143,16 +171,24 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 
 int	open_file(t_command *cmd_node, t_token *iterate, int flag)
 {
+	char	*file;
+
+	file = get_first_word(iterate->content);
 	if (flag == S_LESS)
-		cmd_node->input_fd = open(get_first_word(iterate->content), O_RDONLY);
+		cmd_node->input_fd = open(file, O_RDONLY);
 	else if (flag == S_MORE)
-		cmd_node->output_fd = open(get_first_word(iterate->content), O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		cmd_node->output_fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (flag == D_MORE)
-		cmd_node->output_fd = open(get_first_word(iterate->content), O_WRONLY | O_CREAT | O_APPEND, 0644);
+	{
+		cmd_node->output_fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0666);
+		if (cmd_node->output_fd != -1)
+			fcntl(cmd_node->output_fd, F_FULLFSYNC);
+	}
 	else if (flag == D_LESS)
 	{
 		//handle heredoc
 	}
+	free(file);
 	if ((flag == S_MORE || flag == D_MORE) && cmd_node->output_fd == -1) // add checks
 		return (-1);
 	else if (flag == S_LESS && cmd_node->input_fd ==  -1)

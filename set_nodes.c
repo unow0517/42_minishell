@@ -33,7 +33,7 @@ t_token	*create_word_token(t_shell *shell_info, int i)
 	{
 		if ((shell_info->user_input[i] == '|') || (shell_info->user_input[i] == '>') || (shell_info->user_input[i] == '<') || (shell_info->user_input[i] == '\'') || (shell_info->user_input[i] == '"'))
 		{
-			printf("shell_info->user_input[%d] = %c\tlen = %i\n", i, shell_info->user_input[i], len);
+			// printf("shell_info->user_input[%d] = %c\tlen = %i\n", i, shell_info->user_input[i], len);
 			// i--;
 			// len--;
 			break;
@@ -104,9 +104,9 @@ t_token	*create_double_token(t_shell *shell_info, int i)
 		}
 		cur->idx = i;
 		if (shell_info->user_input[i] == '>' && shell_info->user_input[i + 1] == '>')
-			cur->token_type = S_MORE;
+			cur->token_type = D_MORE;
 		else if (shell_info->user_input[i] == '<' && shell_info->user_input[i + 1] == '<')
-			cur->token_type = S_LESS;
+			cur->token_type = D_LESS;
 		else
 			cur->token_type = NO_TOKEN;
 		cur->input = shell_info->user_input;
