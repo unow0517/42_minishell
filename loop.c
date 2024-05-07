@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 18:12:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/07 16:29:46 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/07 18:05:51 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 			run_env(shell_info->user_input, env);
 		else if (inputstartswith(shell_info->user_input, "history"))
 			print_history(shell_info->user_input);
-		else
-			ft_printf("minishell: %s: command not found\n", shell_info->user_input);
 	free_tokens(&shell_info->tokens);
 	free_cmd_list(&shell_info->first_command);
 	}
