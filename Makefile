@@ -6,13 +6,13 @@
 #    By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/12 17:57:56 by yowoo             #+#    #+#              #
-#    Updated: 2024/05/02 16:39:17 by tsimitop         ###   ########.fr        #
+#    Updated: 2024/05/07 21:06:29 by tsimitop         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = gcc
-SRC = parsing.c loop.c freeing.c minishell.c inpt_functions.c history.c sig_functions.c pwd.c pipe.c echo.c cd.c env.c white_space.c set_nodes.c pipex_functions.c checks.c utils.c
+SRC = execution.c parsing.c loop.c freeing.c minishell.c inpt_functions.c history.c sig_functions.c pwd.c pipe.c echo.c cd.c env.c white_space.c set_nodes.c pipex_functions.c checks.c utils.c
 CFLAGS = -Wall -Wextra -Werror -g -lreadline #-fsanitize=address
 RM = rm -rf
 LIBFT_AR = Libft/libft.a

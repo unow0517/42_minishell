@@ -16,8 +16,6 @@ void	parse_tokens(t_shell *shell_info)
 	cmd_node = NULL;
 	iterate = shell_info->tokens;
 	len = number_of_tokens(shell_info);
-	// if (len > 1)
-	// 	create_pipe(shell_info, len?);
 	cmd_node = ft_calloc(1, sizeof(t_command));
 	if (!shell_info->first_command)
 		shell_info->first_command = cmd_node;
@@ -53,9 +51,11 @@ void	set_executable_nodes(t_command *cmd_node, t_token *iterate)
 	while (iterate != NULL && iterate->token_type != PIPE)
 	{
 		iterate = set_redirections(cmd_node, iterate);
-		if (iterate != NULL && iterate->token_type == WORD && cmd_node->cmd[0] == '\0' && iterate->token_type != PIPE)
-			cmd_node->cmd = get_first_word(iterate->content);
-		else if (iterate && iterate->token_type == WORD && cmd_node->cmd == NULL && iterate->token_type != PIPE)
+		// if (iterate != NULL && iterate->token_type == WORD && cmd_node->cmd[0] == '\0' && iterate->token_type != PIPE)
+		// 	cmd_node->cmd = get_first_word(iterate->content);
+		// else if (iterate && iterate->token_type == WORD && cmd_node->cmd == NULL && iterate->token_type != PIPE)
+		// 	cmd_node->cmd = get_first_word(iterate->content);
+		if (iterate && iterate->token_type == WORD && (cmd_node->cmd == NULL || cmd_node->cmd[0] == '\0') && iterate->token_type != PIPE)
 			cmd_node->cmd = get_first_word(iterate->content);
 		else if (iterate && iterate->token_type == WORD && cmd_node->cmd != NULL && cmd_node->cmd[0] != '\0' && iterate->token_type != PIPE)
 		{

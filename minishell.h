@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/07 19:01:06 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/07 21:04:35 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include "ft_printf/ft_printf.h"
 # include <sys/wait.h>
 # include <fcntl.h>
+# include <stdbool.h>
 
 # define SHE 0
 # define DFL 1
@@ -136,8 +137,6 @@ void	free_split_thalia(char **str);
 void	inpt_handler(char **argv, char **env, t_shell *info);
 void	initialise_basics(int argc, char **argv, char **env, t_shell *info);
 int		create_prompt(t_shell *shell_info);
-void	init_pipe(t_shell *shell_info, t_command *cur);
-t_command	*get_last_cmd(t_command *cmd);
 
 //SET_NODES.C
 int		create_tokens(t_shell *shell_info);
@@ -148,6 +147,12 @@ t_token	*create_double_token(t_shell *shell_info, int i);
 void	token_add_back(t_token **first_token, t_token *new);
 t_token	*token_last(t_token *token);
 int		skip_whitespace(char *inpt, int i);
+int		num_of_remaining_cmds(t_command *cur);
+int		num_of_total_cmds(t_command *cur);
+t_command	*get_last_cmd(t_command *cmd);
+void		close_fds(t_command *cur);
+bool		is_metacharacter(char c);
+bool		is_ws(char c);
 
 //PARSING.C
 void	parse_input(t_shell *shell_info);
@@ -159,11 +164,10 @@ int		open_file(t_command *cmd_node, t_token *iterate, int flag);
 void	initialise_cmd_node(t_command *cmd_node);
 void	init_cmds_in_struct(t_command *cmd_node, char *to_split);
 
-//EXECUTING
+//EXECUTION.C
 void	executor(t_shell *shell_info, int *status, t_command *cur);
+void	init_pipe(t_shell *shell_info, t_command *cur);
 void	handle_redir(t_command *cur);
-int		num_of_remaining_cmds(t_command *cur);
-int		num_of_total_cmds(t_command *cur);
 
 //FREES
 void	free_tokens(t_token **shell_info);

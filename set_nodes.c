@@ -20,7 +20,7 @@ t_token	*create_word_token(t_shell *shell_info, int i)
 
 	len = 0;
 	start_pos = i;
-	if (shell_info->user_input[i] != '\0' && shell_info->user_input[i] != ' ' && shell_info->user_input[i] != '\t')
+	if (shell_info->user_input[i] != '\0' && is_ws(shell_info->user_input[i]) == false)
 	{
 		cur = ft_calloc(sizeof(t_token), 1);
 		if (!cur)
@@ -29,9 +29,9 @@ t_token	*create_word_token(t_shell *shell_info, int i)
 			return (NULL);
 		}
 	}
-	while (shell_info->user_input[i] != '\0' && shell_info->user_input[i] != ' ' && shell_info->user_input[i] != '\t')
+	while (shell_info->user_input[i] != '\0' && is_ws(shell_info->user_input[i]) == false)
 	{
-		if ((shell_info->user_input[i] == '|') || (shell_info->user_input[i] == '>') || (shell_info->user_input[i] == '<') || (shell_info->user_input[i] == '\'') || (shell_info->user_input[i] == '"'))
+		if (is_metacharacter(shell_info->user_input[i]) == true)
 		{
 			// printf("shell_info->user_input[%d] = %c\tlen = %i\n", i, shell_info->user_input[i], len);
 			// i--;
@@ -57,7 +57,7 @@ t_token	*create_single_token(t_shell *shell_info, int i)
 	// if (!(shell_info->user_input[i] == '|') && !(shell_info->user_input[i] == '>') && !(shell_info->user_input[i] == '<') && !(shell_info->user_input[i] == '\'') && !(shell_info->user_input[i] == '"'))
 	// 	return (NULL);
 	cur = NULL;
-	if ((shell_info->user_input[i] == '|') || (shell_info->user_input[i] == '>') || (shell_info->user_input[i] == '<') || (shell_info->user_input[i] == '\'') || (shell_info->user_input[i] == '"'))
+	if (is_metacharacter(shell_info->user_input[i]) == true)
 	{
 		cur = ft_calloc(sizeof(t_token), 1);
 		if (!cur)
