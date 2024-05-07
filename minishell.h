@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/07 15:21:29 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/07 19:01:06 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,9 @@ typedef struct s_command
 	char	*output_path; // path to output file
 	char	*input_path; // path to input file
 	int		is_heredoc; // 0 if no << otherwise set to 1
+	int		fd[2];
+	// int		standard_input;
+	// int		standard_output;
 	struct	s_command *next;
 } t_command;
 
@@ -133,10 +136,11 @@ void	free_split_thalia(char **str);
 void	inpt_handler(char **argv, char **env, t_shell *info);
 void	initialise_basics(int argc, char **argv, char **env, t_shell *info);
 int		create_prompt(t_shell *shell_info);
-void	init_pipe(t_command *cur);
+void	init_pipe(t_shell *shell_info, t_command *cur);
+t_command	*get_last_cmd(t_command *cmd);
 
 //SET_NODES.C
-int	create_tokens(t_shell *shell_info);
+int		create_tokens(t_shell *shell_info);
 t_token	*create_single_token(t_shell *shell_info, int i);
 t_token	*create_double_token(t_shell *shell_info, int i);
 
@@ -158,7 +162,8 @@ void	init_cmds_in_struct(t_command *cmd_node, char *to_split);
 //EXECUTING
 void	executor(t_shell *shell_info, int *status, t_command *cur);
 void	handle_redir(t_command *cur);
-int	num_of_remaining_cmds(t_command *cur);
+int		num_of_remaining_cmds(t_command *cur);
+int		num_of_total_cmds(t_command *cur);
 
 //FREES
 void	free_tokens(t_token **shell_info);

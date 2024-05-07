@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 18:12:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/07 18:05:51 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/07 18:59:47 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ void	executor(t_shell *shell_info, int *status, t_command *cur)
 	pid = fork();
 	if (pid == 0)
 	{
-		// if (num_of_remaining_cmds(cur) > 1)
-		// 	init_pipe(cur);
+		if (num_of_total_cmds(shell_info->first_command) > 1) // create pipes before redirections, if I have a redir I should use this and over-write the pipe(fd)
+			init_pipe(shell_info, cur);
 		handle_redir(cur);
 		full_path = find_cmd_in_env(cur->cmd, shell_info->env);
 		// print_split(cur->full_cmd);
@@ -100,32 +100,61 @@ void	executor(t_shell *shell_info, int *status, t_command *cur)
 			close(cur->input_fd);
 		if (cur->output_fd != -1)
 			close(cur->output_fd);
+		if (cur->fd[0] != -1)
+			close(cur->fd[0]);
+		if (cur->fd[1] != -1)
+			close(cur->fd[1]);
 		waitpid(pid, status, 0);
 	}
 }
 
-void	init_pipe(t_command *cur)
+void	init_pipe(t_shell *shell_info, t_command *cur)
 {
-	int	fd[2];
+	t_command	*last_cmd;
+	t_command	*first_cmd;
 
-	if (pipe(fd) == -1)
+	first_cmd = shell_info->first_command;
+	last_cmd = get_last_cmd(first_cmd);
+	if (pipe(cur->fd) == -1)
 	{
 		perror("pipe failed"); //fix proper message and exit
 		exit(1);
 	}
-	if (cur->input_fd != -1)
-		dup2(fd[0], STDIN_FILENO);
-	if (cur->output_fd != -1)
-		dup2(fd[1], STDOUT_FILENO);
-	close(fd[0]);
-	close(fd[1]);
+	if (cur == first_cmd)
+	{
+		close(cur->fd[0]);
+		dup2(cur->fd[1], STDOUT_FILENO); //add checks for dup2?
+		// close(cur->fd[1]);
+	}
+	else if (cur == last_cmd)
+	{
+		close(cur->fd[1]);
+		dup2(cur->fd[0], STDIN_FILENO);
+		// close(cur->fd[0]);
+	}
+	else // i need both ends of the pipe if my command is in between pipes else I have separate for first and last commands
+	{
+		dup2(cur->fd[0], STDIN_FILENO);
+		dup2(cur->fd[1], STDOUT_FILENO);
+		// close(cur->fd[0]);
+		// close(cur->fd[1]);
+	}
+}
+
+t_command	*get_last_cmd(t_command *cmd)
+{
+	if (!cmd)
+		return (NULL);
+	while (cmd && cmd->next)
+		cmd = cmd->next;
+	return (cmd);
 }
 
 void	handle_redir(t_command *cur)
 {
 	if (cur->input_fd != -1)
 	{
-		if (dup2(cur->input_fd, STDIN_FILENO) == -1)
+		if (dup2(cur->input_fd, STDIN_FILENO) == -1) //cur->standard_input from initialise_cmd_node
 		{
 			perror("dup2 for input_fd failed");
 			exit(EXIT_FAILURE);
@@ -134,7 +163,7 @@ void	handle_redir(t_command *cur)
 	}
 	if (cur->output_fd != -1)
 	{
-		if (dup2(cur->output_fd, STDOUT_FILENO) == -1)
+		if (dup2(cur->output_fd, STDOUT_FILENO) == -1) //cur->standard_output from initialise_cmd_node
 		{
 			perror("dup2 for output_fd failed");
 			exit(EXIT_FAILURE);
@@ -144,6 +173,19 @@ void	handle_redir(t_command *cur)
 }
 
 int	num_of_remaining_cmds(t_command *cur)
+{
+	int	counter;
+
+	counter = 0;
+	while (cur)
+	{
+		cur = cur->next;
+		counter++;
+	}
+	return (counter);
+}
+
+int	num_of_total_cmds(t_command *cur)
 {
 	int	counter;
 

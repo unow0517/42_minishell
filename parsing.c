@@ -35,6 +35,10 @@ void	initialise_cmd_node(t_command *cmd_node)
 	cmd_node->input_path = NULL;
 	cmd_node->output_path = NULL;
 	cmd_node->is_heredoc = 0;
+	cmd_node->fd[0] = -1;
+	cmd_node->fd[1] = -1;
+	// cmd_node->standard_input = STDIN_FILENO;
+	// cmd_node->standard_output = STDOUT_FILENO;
 	cmd_node->next = NULL;
 }
 
