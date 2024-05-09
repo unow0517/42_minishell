@@ -4,7 +4,7 @@ void	parse_input(t_shell *shell_info)
 {
 	create_tokens(shell_info);
 	parse_tokens(shell_info);
-	print_cmd_list(shell_info->first_command);
+	// print_cmd_list(shell_info->first_command);
 }
 
 void	parse_tokens(t_shell *shell_info)

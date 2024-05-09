@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/07 21:04:35 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/09 13:21:58 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,19 @@ typedef struct s_command
 	struct	s_command *next;
 } t_command;
 
+typedef struct s_env_mini
+{
+	char				*name;
+	char				*value;
+	struct s_env_mini	*next;
+}	t_env_mini;
+
 typedef struct s_shell
 {
 	int			argc;
 	char		**argv;
 	char		**env;
+	t_env_mini	*env_mini;
 	char		cwd[1024];
 	t_token		*tokens;
 	char		*user_input;
@@ -114,7 +122,11 @@ void	run_echo(char *inpt);
 void	run_cd(char *inpt, t_shell *shell_info);
 
 //ENV.C
-void	run_env(char *inpt, char **env);
+// void	run_env(char *inpt, char **env);
+void	run_env(t_shell *shell_info);
+
+//EXPORT.C
+void	run_export(t_shell *shell_info);
 
 //WHITE_SPACE.C
 char	*rm_starting_ws(char *string);

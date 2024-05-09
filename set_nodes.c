@@ -154,7 +154,7 @@ int	create_tokens(t_shell *shell_info)
 		// i++;
 		cur = cur->next;
 	}
-	print_linked_tokens(shell_info->tokens);
+	// print_linked_tokens(shell_info->tokens);
 	if (cur)
 		return (0);
 	else

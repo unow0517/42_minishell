@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:46 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/03 16:17:07 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/09 13:54:40 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,40 @@ int	main(int argc, char **argv, char **env)
 ft_printf("minishell______DONE_________________\n");
 	return (0);
 }
+//FREE ENV_MINI REQUIRED BY EXIT!
 
+//env char ** to linkedlist, necessary for builtins export, unset.
+t_env_mini	*env_to_envmini(char	**env, t_env_mini *env_mini)
+{
+	char		*name;
+	char		*value;
+	t_env_mini	*ptr;
+	char		**ft_splitted;
+
+	ptr = env_mini;
+	while (env && *env)
+	{
+		ft_splitted = ft_split(*env, '=');
+		name = ft_splitted[0];
+		value = ft_splitted[1];
+		env_mini->name = name;
+		env_mini->value = value;
+		env++;
+		if (env && *env)
+		{
+			env_mini->next = malloc(sizeof(t_env_mini));
+			env_mini = env_mini->next;
+		}
+	}
+	return (ptr);
+}
 void	initialise_basics(int argc, char **argv, char **env, t_shell *shell_info)
 {
 	shell_info->argc = argc;
 	shell_info->argv = argv;
 	shell_info->env = env;
+	shell_info->env_mini = malloc(sizeof(t_env_mini));
+	shell_info->env_mini = env_to_envmini(env, shell_info->env_mini);
 	getcwd(shell_info->cwd, sizeof(shell_info->cwd));
 	shell_info->tokens = NULL;
 	shell_info->user_input = NULL;

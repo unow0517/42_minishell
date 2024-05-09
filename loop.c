@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 18:12:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/07 21:20:26 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/09 11:29:35 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,14 @@ void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 		{
 			printpwd(shell_info);
 		}
-		else if (inputis(shell_info->user_input, "env") | inputis(shell_info->user_input, "env "))
-			run_env(shell_info->user_input, env);
+		else if(inputstartswith(shell_info->user_input, "env") | inputis(shell_info->user_input, "env"))
+			run_env(shell_info);
+		else if(inputstartswith(shell_info->user_input, "export") | inputis(shell_info->user_input, "export"))
+			run_export(shell_info);
 		else if (inputstartswith(shell_info->user_input, "history"))
 			print_history(shell_info->user_input);
+		// else
+		// 	ft_printf("minishell: %s: command not found\n", shell_info->user_input); //No command not found error!
 	free_tokens(&shell_info->tokens);
 	free_cmd_list(&shell_info->first_command);
 	}
