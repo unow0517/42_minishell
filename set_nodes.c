@@ -118,9 +118,7 @@ t_token	*create_double_token(t_shell *shell_info, int i)
 	return (cur);
 }
 
-
 // create_word
-
 int	create_tokens(t_shell *shell_info)
 {
 	int		i;
@@ -154,7 +152,7 @@ int	create_tokens(t_shell *shell_info)
 		// i++;
 		cur = cur->next;
 	}
-	print_linked_tokens(shell_info->tokens);
+	// print_linked_tokens(shell_info->tokens);
 	if (cur)
 		return (0);
 	else

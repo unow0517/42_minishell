@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/08 17:28:22 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/09 15:13:48 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_command
 {
 	// ls -lah LibFt
 	char	*cmd; // "ls"
+	char	*cmd_path;
 	char	**options; // ["-lah", "LibFt"]
 	char	**full_cmd; // ["ls", "-lah", "LibFt"]
 	int		input_fd; // -1 (if no input < OR <<) otherwise set fd to opened file fd
@@ -154,6 +155,8 @@ void		close_fds(t_shell *shell_info, t_command *cur);
 bool		is_metacharacter(char c);
 bool		is_ws(char c);
 void	cmd_add_back(t_command **first_token, t_command *new);
+int		handle_exit(int status);
+
 
 //PARSING.C
 void	parse_input(t_shell *shell_info);
@@ -169,6 +172,10 @@ void	init_cmds_in_struct(t_command *cmd_node, char *to_split);
 void	executor(t_shell *shell_info, int *status, t_command *cur);
 void	init_pipe(t_shell *shell_info, t_command *cur);
 void	handle_redir(t_shell *shell_info, t_command *cur);
+void	execution_cases(t_shell *shell_info, int *status);
+pid_t	exec_pipeline(t_shell *shell_info);
+pid_t	exec_single_cmd(t_shell *shell_info, t_command	*cmd_to_exec);
+
 
 //FREES
 void	free_tokens(t_token **shell_info);

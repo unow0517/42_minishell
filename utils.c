@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/08 20:14:01 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/09 15:08:40 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,4 +119,13 @@ void	close_fds(t_shell *shell_info, t_command *cur)
 		close(shell_info->fd[0]);
 	if (shell_info->fd[1] != -1)
 		close(shell_info->fd[1]);
+}
+
+int	handle_exit(int status)
+{
+	if (WIFEXITED(status))
+		status = WEXITSTATUS(status);
+	else
+		status = EXIT_FAILURE;
+	return (status);
 }
