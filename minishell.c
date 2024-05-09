@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:46 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/03 16:17:07 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:08:40 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	initialise_basics(int argc, char **argv, char **env, t_shell *shell_info)
 	shell_info->tokens = NULL;
 	shell_info->user_input = NULL;
 	shell_info->first_command = NULL;
+	shell_info->fd[0] = -1;
+	shell_info->fd[1] = -1;
 	// shell_info->cwd = ft_strdup(shell_info->cwd); // ft_strdup since cwd is local variable, and it dealloc when fn is finished.
 }
 

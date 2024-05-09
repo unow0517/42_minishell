@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 13:39:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/07 14:45:09 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/08 17:39:07 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	print_cmd_list(t_command *cmd_node)
 	while (cmd_node)
 	{
 		printf("________________________________________________________\n");
+		printf("cmd_node\t\t%p\n", cmd_node);
 		printf("cmd_node->cmd\t\t%s\n", cmd_node->cmd);
 		printf("cmd_node->options\n");
 		print_split_no_newline(cmd_node->options);

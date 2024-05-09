@@ -160,6 +160,3 @@ int	create_tokens(t_shell *shell_info)
 	else
 		return (1);
 }
-
-// la -l > f1 << END | grep hi | cat > out
-// la -l < f1 < f2 < f3 > f1 << END | grep hi | cat > out

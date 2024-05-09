@@ -1,0 +1,21 @@
+cat | cat | cat | ls// checks for file descriptor leaks
+la -l > f1 << END | grep hi | cat > out
+la -l < f1 < f2 < f3 > f1 << END | grep hi | cat > out
+
+EXECUTE
+	if is_bultin
+		exec_builtin
+	else if number_of_cmds == 1
+		exec_simple_cmd
+	else
+		exec_pipeline
+
+while (cmd)
+	PIPE
+	fork_exec(pipe)
+	close pipe[1]
+	dup2(pipe[0], stdin)
+	close pipe[0]
+
+	pid = last_fork
+	waitpid (pid, &status, 0);

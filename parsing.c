@@ -9,18 +9,18 @@ void	parse_input(t_shell *shell_info)
 
 void	parse_tokens(t_shell *shell_info)
 {
-	t_command	*cmd_node;
+	// t_command	*cmd_node;
 	t_token		*iterate;
 	int			len;
 
-	cmd_node = NULL;
+	// cmd_node = NULL;
 	iterate = shell_info->tokens;
 	len = number_of_tokens(shell_info);
-	cmd_node = ft_calloc(1, sizeof(t_command));
-	if (!shell_info->first_command)
-		shell_info->first_command = cmd_node;
-	initialise_cmd_node(cmd_node);
-	set_executable_nodes(cmd_node, iterate);
+	// cmd_node = ft_calloc(1, sizeof(t_command));
+	// if (!shell_info->first_command)
+	// 	shell_info->first_command = cmd_node;
+	// initialise_cmd_node(cmd_node);
+	set_executable_nodes(shell_info, iterate);
 }
 
 void	initialise_cmd_node(t_command *cmd_node)
@@ -33,43 +33,53 @@ void	initialise_cmd_node(t_command *cmd_node)
 	cmd_node->input_path = NULL;
 	cmd_node->output_path = NULL;
 	cmd_node->is_heredoc = 0;
-	cmd_node->fd[0] = -1;
-	cmd_node->fd[1] = -1;
 	// cmd_node->standard_input = STDIN_FILENO;
 	// cmd_node->standard_output = STDOUT_FILENO;
 	cmd_node->next = NULL;
 }
 
-void	set_executable_nodes(t_command *cmd_node, t_token *iterate)
+void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 {
-	char	*to_split;
-	char	*temp;
-	char	*temp1;
+	t_command	*cmd_node;
+	char		*to_split;
+	char		*temp;
+	char		*temp1;
 
-	to_split = "";
-	cmd_node->cmd = ft_calloc(1, sizeof(char));
-	while (iterate != NULL && iterate->token_type != PIPE)
+	while (iterate != NULL)
 	{
-		iterate = set_redirections(cmd_node, iterate);
-		// if (iterate != NULL && iterate->token_type == WORD && cmd_node->cmd[0] == '\0' && iterate->token_type != PIPE)
-		// 	cmd_node->cmd = get_first_word(iterate->content);
-		// else if (iterate && iterate->token_type == WORD && cmd_node->cmd == NULL && iterate->token_type != PIPE)
-		// 	cmd_node->cmd = get_first_word(iterate->content);
-		if (iterate && iterate->token_type == WORD && (cmd_node->cmd == NULL || cmd_node->cmd[0] == '\0') && iterate->token_type != PIPE)
-			cmd_node->cmd = get_first_word(iterate->content);
-		else if (iterate && iterate->token_type == WORD && cmd_node->cmd != NULL && cmd_node->cmd[0] != '\0' && iterate->token_type != PIPE)
-		{
-			temp = ft_strjoin(to_split, " ");
-			temp1 = get_first_word(iterate->content); //-l
-			to_split = ft_strjoin(temp, get_first_word(iterate->content));
-			to_split = ft_strjoin(temp, temp1);
-			free(temp);
-			free(temp1);
-		}
-		if (iterate)
+		if (iterate->token_type == PIPE)
 			iterate = iterate->next;
+		to_split = "";
+		cmd_node = NULL;
+		if (!shell_info->first_command)
+			shell_info->first_command = cmd_node;
+		cmd_node = ft_calloc(1, sizeof(t_command));
+		initialise_cmd_node(cmd_node);
+		cmd_node->cmd = ft_calloc(1, sizeof(char));
+		while (iterate != NULL && iterate->token_type != PIPE)
+		{
+			iterate = set_redirections(cmd_node, iterate);
+			// if (iterate != NULL && iterate->token_type == WORD && cmd_node->cmd[0] == '\0' && iterate->token_type != PIPE)
+			// 	cmd_node->cmd = get_first_word(iterate->content);
+			// else if (iterate && iterate->token_type == WORD && cmd_node->cmd == NULL && iterate->token_type != PIPE)
+			// 	cmd_node->cmd = get_first_word(iterate->content);
+			if (iterate && iterate->token_type == WORD && (cmd_node->cmd == NULL || cmd_node->cmd[0] == '\0') && iterate->token_type != PIPE)
+				cmd_node->cmd = get_first_word(iterate->content);
+			else if (iterate && iterate->token_type == WORD && cmd_node->cmd != NULL && cmd_node->cmd[0] != '\0' && iterate->token_type != PIPE)
+			{
+				temp = ft_strjoin(to_split, " ");
+				temp1 = get_first_word(iterate->content); //-l
+				to_split = ft_strjoin(temp, get_first_word(iterate->content));
+				to_split = ft_strjoin(temp, temp1);
+				free(temp);
+				free(temp1);
+			}
+			if (iterate)
+				iterate = iterate->next;
+		}
+		init_cmds_in_struct(cmd_node, to_split);
+		cmd_add_back(&shell_info->first_command, cmd_node);
 	}
-	init_cmds_in_struct(cmd_node, to_split);
 }
 
 void	init_cmds_in_struct(t_command *cmd_node, char *to_split)

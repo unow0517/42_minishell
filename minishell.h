@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/07 21:04:35 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/08 17:28:22 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ typedef struct s_command
 	char	*output_path; // path to output file
 	char	*input_path; // path to input file
 	int		is_heredoc; // 0 if no << otherwise set to 1
-	int		fd[2];
 	// int		standard_input;
 	// int		standard_output;
 	struct	s_command *next;
@@ -81,6 +80,7 @@ typedef struct s_shell
 	char		*user_input;
 	char		prompt[1024];
 	t_command	*first_command;
+	int			fd[2];
 				//Its in linux/limits.h.
 				// #define PATH_MAX        4096 
 }	t_shell;
@@ -150,15 +150,16 @@ int		skip_whitespace(char *inpt, int i);
 int		num_of_remaining_cmds(t_command *cur);
 int		num_of_total_cmds(t_command *cur);
 t_command	*get_last_cmd(t_command *cmd);
-void		close_fds(t_command *cur);
+void		close_fds(t_shell *shell_info, t_command *cur);
 bool		is_metacharacter(char c);
 bool		is_ws(char c);
+void	cmd_add_back(t_command **first_token, t_command *new);
 
 //PARSING.C
 void	parse_input(t_shell *shell_info);
 void	parse_tokens(t_shell *shell_info);
 int		number_of_tokens(t_shell *shell_info);
-void	set_executable_nodes(t_command *cmd_node, t_token *iterate);
+void	set_executable_nodes(t_shell *shell_info, t_token *iterate);
 t_token	*set_redirections(t_command *cmd_node, t_token *iterate);
 int		open_file(t_command *cmd_node, t_token *iterate, int flag);
 void	initialise_cmd_node(t_command *cmd_node);
@@ -167,7 +168,7 @@ void	init_cmds_in_struct(t_command *cmd_node, char *to_split);
 //EXECUTION.C
 void	executor(t_shell *shell_info, int *status, t_command *cur);
 void	init_pipe(t_shell *shell_info, t_command *cur);
-void	handle_redir(t_command *cur);
+void	handle_redir(t_shell *shell_info, t_command *cur);
 
 //FREES
 void	free_tokens(t_token **shell_info);

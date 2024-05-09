@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 18:12:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/07 21:20:26 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/09 13:26:03 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,11 @@ void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 		parse_input(shell_info);
 		print_token_types(shell_info);
 		cur = shell_info->first_command;
+		// if (num_of_total_cmds(shell_info->first_command) > 1) // create pipes before redirections, if I have a redir I should over-write the pipe(fd) with the file fd
+		// 	init_pipe(shell_info, cur);
 		while (cur)
 		{
+			printf("exec loop\n");
 			executor(shell_info, &status, cur);
 			cur = cur->next;
 		}

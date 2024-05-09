@@ -6,11 +6,35 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/07 21:15:29 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/08 20:14:01 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	cmd_add_back(t_command **first_token, t_command *new)
+{
+	t_command	*end;
+
+	if (!first_token || !new)
+		return ;
+	if (!*first_token)
+	{
+		*first_token = new;
+		return ;
+	}
+	end = get_last_cmd(*first_token);
+	end->next = new;
+}
+
+t_command	*get_last_cmd(t_command *cmd)
+{
+	if (!cmd)
+		return (NULL);
+	while (cmd && cmd->next)
+		cmd = cmd->next;
+	return (cmd);
+}
 
 void	token_add_back(t_token **first_token, t_token *new)
 {
@@ -59,15 +83,6 @@ bool	is_ws(char c)
 	return (false);
 }
 
-t_command	*get_last_cmd(t_command *cmd)
-{
-	if (!cmd)
-		return (NULL);
-	while (cmd && cmd->next)
-		cmd = cmd->next;
-	return (cmd);
-}
-
 int	num_of_remaining_cmds(t_command *cur) //check if needed
 {
 	int	counter;
@@ -94,14 +109,14 @@ int	num_of_total_cmds(t_command *cur)
 	return (counter);
 }
 
-void	close_fds(t_command *cur)
+void	close_fds(t_shell *shell_info, t_command *cur)
 {
 	if (cur->input_fd != -1)
 		close(cur->input_fd);
 	if (cur->output_fd != -1)
 		close(cur->output_fd);
-	if (cur->fd[0] != -1)
-		close(cur->fd[0]);
-	if (cur->fd[1] != -1)
-		close(cur->fd[1]);
+	if (shell_info->fd[0] != -1)
+		close(shell_info->fd[0]);
+	if (shell_info->fd[1] != -1)
+		close(shell_info->fd[1]);
 }
