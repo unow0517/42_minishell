@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 18:12:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/11 20:24:40 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:37:56 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 {
 	int			status;
-	// t_command	*cur;
 
 	shell_info->user_input = NULL;
 	while (1)

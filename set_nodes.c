@@ -32,13 +32,8 @@ t_token	*create_word_token(t_shell *shell_info, int i)
 	while (shell_info->user_input[i] != '\0' && is_ws(shell_info->user_input[i]) == false)
 	{
 		if (is_metacharacter(shell_info->user_input[i]) == true)
-		{
-			// printf("shell_info->user_input[%d] = %c\tlen = %i\n", i, shell_info->user_input[i], len);
-			// i--;
-			// len--;
 			break;
-		}
-		i++; //check for < > | ' " for input without gaps
+		i++;
 		len++;
 	}
 	cur->idx = start_pos;
@@ -54,8 +49,6 @@ t_token	*create_single_token(t_shell *shell_info, int i)
 {
 	t_token *cur;
 
-	// if (!(shell_info->user_input[i] == '|') && !(shell_info->user_input[i] == '>') && !(shell_info->user_input[i] == '<') && !(shell_info->user_input[i] == '\'') && !(shell_info->user_input[i] == '"'))
-	// 	return (NULL);
 	cur = NULL;
 	if (is_metacharacter(shell_info->user_input[i]) == true)
 	{
@@ -92,8 +85,6 @@ t_token	*create_double_token(t_shell *shell_info, int i)
 	t_token *cur;
 
 	cur = NULL;
-	// if (!(shell_info->user_input[i] == '>' && shell_info->user_input[i + 1] == '>') && !(shell_info->user_input[i] == '<' && shell_info->user_input[i + 1] == '<'))
-	// 	return (NULL);
 	if ((shell_info->user_input[i] == '>' && shell_info->user_input[i + 1] == '>') || (shell_info->user_input[i] == '<' && shell_info->user_input[i + 1] == '<'))
 	{
 		cur = ft_calloc(sizeof(t_token), 1);
@@ -149,7 +140,6 @@ int	create_tokens(t_shell *shell_info)
 		token_add_back(&shell_info->tokens, cur);
 		if (shell_info->user_input[i] == '\0')
 			break;
-		// i++;
 		cur = cur->next;
 	}
 	// print_linked_tokens(shell_info->tokens);

@@ -88,34 +88,6 @@ void close_pipes(t_shell *shell_info)
 	}
 }
 
-void	init_pipe(t_shell *shell_info, t_command *cur) //delete function?
-{
-	t_command	*last_cmd;
-	t_command	*first_cmd;
-
-	first_cmd = shell_info->first_command;
-	last_cmd = get_last_cmd(first_cmd);
-	if (cur == first_cmd)
-	{
-		close(shell_info->fd[0]);
-		dup2(shell_info->fd[1], STDOUT_FILENO); //add checks for dup2?
-		close(shell_info->fd[1]);
-	}
-	else if (cur == last_cmd)
-	{
-		close(shell_info->fd[1]);
-		dup2(shell_info->fd[0], STDIN_FILENO);
-		close(shell_info->fd[0]);
-	}
-	else // i need both ends of the pipe if my command is in between pipes else I have separate for first and last commands
-	{
-		dup2(shell_info->fd[0], STDIN_FILENO);
-		close(shell_info->fd[0]);		
-		dup2(shell_info->fd[1], STDOUT_FILENO);
-		close(shell_info->fd[1]);
-	}
-}
-
 void	handle_redir(t_shell *shell_info, t_command *cur) ///////close pipe in each case
 {
 	if (cur->input_fd != -1)
