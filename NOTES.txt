@@ -19,3 +19,7 @@ while (cmd)
 
 	pid = last_fork
 	waitpid (pid, &status, 0);
+
+debug with terminal
+	ps aux | grep minishell
+	lsof -p (PID)       check for fd's, hanging processes etc.

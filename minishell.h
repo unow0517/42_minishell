@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/09 15:13:48 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/11 19:59:33 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ typedef struct s_command
 	char	*output_path; // path to output file
 	char	*input_path; // path to input file
 	int		is_heredoc; // 0 if no << otherwise set to 1
+	int			fd[2];
+
 	// int		standard_input;
 	// int		standard_output;
 	struct	s_command *next;
@@ -175,6 +177,8 @@ void	handle_redir(t_shell *shell_info, t_command *cur);
 void	execution_cases(t_shell *shell_info, int *status);
 pid_t	exec_pipeline(t_shell *shell_info);
 pid_t	exec_single_cmd(t_shell *shell_info, t_command	*cmd_to_exec);
+void	pipe_handling(t_shell *shell_info, t_command *cur);
+void close_pipes(t_shell *shell_info);
 
 
 //FREES

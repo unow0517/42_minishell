@@ -4,13 +4,14 @@ void	execution_cases(t_shell *shell_info, int *status)
 {
 	pid_t		pid;
 	
-		if (num_of_total_cmds(shell_info->first_command) == 1) // create pipes before redirections, if I have a redir I should over-write the pipe(fd) with the file fd
-			pid = exec_single_cmd(shell_info, shell_info->first_command);
-		else
-			pid = exec_pipeline(shell_info);
-		waitpid(pid, status, 0);
-		*status = handle_exit(*status);
-	write(2, "EXITING execution_cases\n", ft_strlen("EXITING execution_cases\n"));
+	//builtins
+	if (num_of_total_cmds(shell_info->first_command) == 1)
+		pid = exec_single_cmd(shell_info, shell_info->first_command);
+	else
+		pid = exec_pipeline(shell_info);
+	while (waitpid(-1, NULL, WNOHANG) != -1) //WUNTRACED
+		;
+	*status = handle_exit(*status);
 }
 
 pid_t	exec_pipeline(t_shell *shell_info)
@@ -21,50 +22,69 @@ pid_t	exec_pipeline(t_shell *shell_info)
 	iterate_cmd = shell_info->first_command;
 	while (iterate_cmd)
 	{
-		write(2, "ENTERED ITER LOOP\n", ft_strlen("ENTERED ITER LOOP\n"));
-		if (pipe(shell_info->fd) == -1)
-			perror("pipe failed");
-		// if (iterate_cmd != get_last_cmd(shell_info->first_command))
-			// init_pipe(shell_info, iterate_cmd);
-		dup2(shell_info->fd[1], STDOUT_FILENO);
-		close(shell_info->fd[1]);
-		// sleep(6);
 		pid = exec_single_cmd(shell_info, iterate_cmd);
-		dup2(shell_info->fd[0], STDIN_FILENO);
-		close(shell_info->fd[0]);
 		iterate_cmd = iterate_cmd->next;
 	}
-	write(2, "EXITING ITER LOOP\n", ft_strlen("EXITING ITER LOOP\n"));
+	close_pipes(shell_info);
 	return (pid);
 }
 
 pid_t	exec_single_cmd(t_shell *shell_info, t_command	*cmd_to_exec)
 {
 	pid_t		pid;
-	// t_command	*cmd_to_exec;
 	char		*full_path;  // ADD TO STRUCT!
 
 	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork failed");
+		exit (EXIT_FAILURE);
+	}
 	if (pid == 0)
 	{
-		// if (num_of_total_cmds(shell_info->first_command) > 1) // create pipes before redirections, if I have a redir I should over-write the pipe(fd) with the file fd
-		// 	init_pipe(shell_info, cmd_to_exec);
+		pipe_handling(shell_info, cmd_to_exec);
 		handle_redir(shell_info, cmd_to_exec);
 		full_path = find_cmd_in_env(cmd_to_exec->cmd, shell_info->env);
 		if (!full_path)
 			exit (127);
-		// print_split(cmd_to_exec->full_cmd);
+// sleep(999999999);
 		execve(full_path, cmd_to_exec->full_cmd, shell_info->env);
-		printf("passed execve\n");
+		// printf("passed execve\n");
 		perror("execve");
+		close_fds(shell_info, cmd_to_exec);
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
-		// printf("WAITPID\n");
-		// close_fds(shell_info, cmd_to_exec);
-		// waitpid(pid, status, 0);
+		close_fds(shell_info, cmd_to_exec);
 		return (pid);
+	}
+}
+
+void	pipe_handling(t_shell *shell_info, t_command *cur)
+{
+	t_command	*last_cmd;
+	t_command	*first_cmd;
+
+	first_cmd = shell_info->first_command;
+	last_cmd = get_last_cmd(first_cmd);
+	if (cur != last_cmd)
+		dup2(cur->next->fd[1], STDOUT_FILENO);
+	if (cur != first_cmd)
+		dup2(cur->fd[0], STDIN_FILENO);
+	close_pipes(shell_info);
+}
+
+void close_pipes(t_shell *shell_info)
+{
+	t_command *iterate;
+
+	iterate = shell_info->first_command;
+	while (iterate)
+	{
+		close(iterate->fd[0]);
+		close(iterate->fd[1]);
+		iterate = iterate->next;
 	}
 }
 
@@ -79,16 +99,20 @@ void	init_pipe(t_shell *shell_info, t_command *cur) //delete function?
 	{
 		close(shell_info->fd[0]);
 		dup2(shell_info->fd[1], STDOUT_FILENO); //add checks for dup2?
+		close(shell_info->fd[1]);
 	}
 	else if (cur == last_cmd)
 	{
 		close(shell_info->fd[1]);
 		dup2(shell_info->fd[0], STDIN_FILENO);
+		close(shell_info->fd[0]);
 	}
 	else // i need both ends of the pipe if my command is in between pipes else I have separate for first and last commands
 	{
 		dup2(shell_info->fd[0], STDIN_FILENO);
+		close(shell_info->fd[0]);		
 		dup2(shell_info->fd[1], STDOUT_FILENO);
+		close(shell_info->fd[1]);
 	}
 }
 

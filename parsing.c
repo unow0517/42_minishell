@@ -4,22 +4,14 @@ void	parse_input(t_shell *shell_info)
 {
 	create_tokens(shell_info);
 	parse_tokens(shell_info);
-	print_cmd_list(shell_info->first_command);
+	// print_cmd_list(shell_info->first_command);
 }
 
 void	parse_tokens(t_shell *shell_info)
 {
-	// t_command	*cmd_node;
 	t_token		*iterate;
-	int			len;
 
-	// cmd_node = NULL;
 	iterate = shell_info->tokens;
-	len = number_of_tokens(shell_info);
-	// cmd_node = ft_calloc(1, sizeof(t_command));
-	// if (!shell_info->first_command)
-	// 	shell_info->first_command = cmd_node;
-	// initialise_cmd_node(cmd_node);
 	set_executable_nodes(shell_info, iterate);
 }
 
@@ -33,8 +25,7 @@ void	initialise_cmd_node(t_command *cmd_node)
 	cmd_node->input_path = NULL;
 	cmd_node->output_path = NULL;
 	cmd_node->is_heredoc = 0;
-	// cmd_node->standard_input = STDIN_FILENO;
-	// cmd_node->standard_output = STDOUT_FILENO;
+	pipe(cmd_node->fd);
 	cmd_node->next = NULL;
 }
 
@@ -127,8 +118,6 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 	else if (iterate->token_type == D_LESS)
 	{
 		cmd_node->is_heredoc = 1;
-		// if (open_file(cmd_node, iterate, D_LESS) == -1)
-		// 	return (NULL);
 	}
 	else if (iterate && iterate->token_type == S_MORE && iterate->next && iterate->next->token_type == WORD) //create open file function to pass enum
 	{
@@ -142,7 +131,6 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 	}
 	else if (iterate && iterate->token_type == D_MORE && iterate->next && iterate->next->token_type == WORD) //create open file function to pass enum
 	{
-		// printf("entered if statement\n");
 		iterate = iterate->next;
 		if (open_file(cmd_node, iterate, D_MORE) == -1)
 		{
