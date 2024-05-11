@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/04/30 19:37:50 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/10 13:58:19 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include "Libft/libft.h"
 # include "ft_printf/ft_printf.h"
 # include <sys/wait.h>
+# include <fcntl.h>
+# include <stdbool.h>
 
 # define SHE 0
 # define DFL 1
@@ -35,37 +37,61 @@ typedef enum e_token_type
 	PIPE,
 	S_QUOTE,
 	D_QUOTE,
-	S_LESS,
-	S_MORE,
-	D_LESS,
-	D_MORE
+	S_LESS, // < input redirection
+	S_MORE, // > output redirection
+	D_LESS, // <<
+	D_MORE  // >>
 }	t_token_type;
 
 typedef struct s_token //token, not token
 {
 	char			*input;
 	int				len;
-	int				i;
+	int				idx;
 	char			*content;
 	t_token_type	token_type;
 	struct s_token	*next;
 	// char			*user_input_element;
 } t_token;
 
+typedef struct s_command
+{
+	// ls -lah LibFt
+	char	*cmd; // "ls"
+	char	**options; // ["-lah", "LibFt"]
+	char	**full_cmd; // ["ls", "-lah", "LibFt"]
+	int		input_fd; // -1 (if no input < OR <<) otherwise set fd to opened file fd
+	int		output_fd; // -f (if no output > OR >>) otherwise set fd to opened file fd
+	char	*output_path; // path to output file
+	char	*input_path; // path to input file
+	int		is_heredoc; // 0 if no << otherwise set to 1
+	int		fd[2];
+	// int		standard_input;
+	// int		standard_output;
+	struct	s_command *next;
+} t_command;
+
+typedef struct s_env_mini
+{
+	char				*name;
+	char				*value;
+	struct s_env_mini	*next;
+}	t_env_mini;
+
 typedef struct s_shell
 {
-	int		argc;
-	char	**argv;
-	char	**env;
-	char	cwd[1024];
-	t_token	*tokens;
-	char	*user_input;
-	char	prompt[1024];
+	int			argc;
+	char		**argv;
+	char		**env;
+	t_env_mini	*env_mini;
+	char		cwd[1024];
+	t_token		*tokens;
+	char		*user_input;
+	char		prompt[1024];
+	t_command	*first_command;
 				//Its in linux/limits.h.
 				// #define PATH_MAX        4096 
-	// char	**user_input_split;
 }	t_shell;
-
 
 //inpt_functions.C
 int		inputis(char *inpt, char *string);
@@ -96,7 +122,15 @@ void	run_echo(char *inpt);
 void	run_cd(char *inpt, t_shell *shell_info);
 
 //ENV.C
-void	run_env(char *inpt, char **env);
+// void	run_env(char *inpt, char **env);
+void	run_env(t_shell *shell_info);
+
+//EXPORT.C
+void	run_export(t_shell *shell_info);
+int		is_al_num_underscore(char *str);
+
+//UNSET.C
+void	run_unset(t_shell *shell_info);
 
 //WHITE_SPACE.C
 char	*rm_starting_ws(char *string);
@@ -105,6 +139,13 @@ char	*multiple_ws_to_single(char	*str);
 //CHECKS.C
 void	print_token(t_token *token);
 void	print_linked_tokens(t_token *token);
+void	print_split(char **str);
+void	print_cmd_list(t_command *cmd_node);
+void	print_split_no_newline(char **str);
+void	print_token_types(t_shell *shell_info);
+
+//DOLLAR_EXPAND.C
+char	*dollar_expand(t_shell *shell_info);
 
 // //PIPEX_FUNCTIONS.C
 char	*get_first_word(char *argv);
@@ -114,15 +155,10 @@ void	free_split_thalia(char **str);
 //MINISHELL.C
 void	inpt_handler(char **argv, char **env, t_shell *info);
 void	initialise_basics(int argc, char **argv, char **env, t_shell *info);
-//int	main(int argc, char **argv, char **env);
 int		create_prompt(t_shell *shell_info);
 
-
 //SET_NODES.C
-// void	input_types(t_shell *info, t_token *first_token);
-// int		set_token_word(t_shell *info, int i, t_token *token, char *inpt);
-// int		set_token_not_word(char *inpt, int i, t_token *token);
-int	create_tokens(t_shell *shell_info);
+int		create_tokens(t_shell *shell_info);
 t_token	*create_single_token(t_shell *shell_info, int i);
 t_token	*create_double_token(t_shell *shell_info, int i);
 
@@ -130,8 +166,30 @@ t_token	*create_double_token(t_shell *shell_info, int i);
 void	token_add_back(t_token **first_token, t_token *new);
 t_token	*token_last(t_token *token);
 int		skip_whitespace(char *inpt, int i);
+int		num_of_remaining_cmds(t_command *cur);
+int		num_of_total_cmds(t_command *cur);
+t_command	*get_last_cmd(t_command *cmd);
+void		close_fds(t_command *cur);
+bool		is_metacharacter(char c);
+bool		is_ws(char c);
+
+//PARSING.C
+void	parse_input(t_shell *shell_info);
+void	parse_tokens(t_shell *shell_info);
+int		number_of_tokens(t_shell *shell_info);
+void	set_executable_nodes(t_command *cmd_node, t_token *iterate);
+t_token	*set_redirections(t_command *cmd_node, t_token *iterate);
+int		open_file(t_command *cmd_node, t_token *iterate, int flag);
+void	initialise_cmd_node(t_command *cmd_node);
+void	init_cmds_in_struct(t_command *cmd_node, char *to_split);
+
+//EXECUTION.C
+void	executor(t_shell *shell_info, int *status, t_command *cur);
+void	init_pipe(t_shell *shell_info, t_command *cur);
+void	handle_redir(t_command *cur);
 
 //FREES
 void	free_tokens(t_token **shell_info);
+void	free_cmd_list(t_command **cmds);
 
 #endif

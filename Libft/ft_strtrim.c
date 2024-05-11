@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 18:26:11 by yowoo             #+#    #+#             */
-/*   Updated: 2023/10/30 13:12:38 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/02 15:33:01 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,9 @@ int	idx_end(const char *s1, const char *set)
 {
 	int		i;
 	int		len;
-	char	*s1_p;
 
 	i = 0;
 	len = ft_strlen(s1);
-	s1_p = (char *)s1;
 	while (i < len)
 	{
 		if (ft_strchr(set, s1[len - 1 - i]) == 0)

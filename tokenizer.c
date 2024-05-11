@@ -17,10 +17,12 @@ t_token	*create_word_token(t_shell *shell_info, int i)
 	int		len;
 	int		start_pos;
 	t_token	*cur;
+	char	*inpt;
 
 	len = 0;
 	start_pos = i;
-	if (shell_info->user_input[i] != '\0' && shell_info->user_input[i] != ' ' && shell_info->user_input[i] != '\t')
+	inpt = shell_info->user_input;
+	if (inpt[i] != '\0' && is_ws(inpt[i]) == false)
 	{
 		cur = ft_calloc(sizeof(t_token), 1);
 		if (!cur)
@@ -29,16 +31,23 @@ t_token	*create_word_token(t_shell *shell_info, int i)
 			return (NULL);
 		}
 	}
-	while (shell_info->user_input[i] != '\0' && shell_info->user_input[i] != ' ' && shell_info->user_input[i] != '\t')
+	while (inpt[i] != '\0' && is_ws(inpt[i]) == false)
 	{
-		i++;
+		if (is_metacharacter(inpt[i]) == true)
+		{
+			// printf("inpt[%d] = %c\tlen = %i\n", i, inpt[i], len);
+			// i--;
+			// len--;
+			break;
+		}
+		i++; //check for < > | ' " for input without gaps
 		len++;
 	}
-	cur->i = start_pos;
-	cur->input = shell_info->user_input;
+	cur->idx = start_pos;
+	cur->input = inpt;
 	cur->token_type = WORD;
 	cur->len = len;
-	cur->content = &shell_info->user_input[start_pos];
+	cur->content = &inpt[start_pos];
 	cur->next = NULL;
 	return (cur);
 }
@@ -46,10 +55,13 @@ t_token	*create_word_token(t_shell *shell_info, int i)
 t_token	*create_single_token(t_shell *shell_info, int i)
 {
 	t_token *cur;
+	char	*inpt;
 
-	if (!(shell_info->user_input[i] == '|') && !(shell_info->user_input[i] == '>') && !(shell_info->user_input[i] == '<') && !(shell_info->user_input[i] == '\'') && !(shell_info->user_input[i] == '"'))
-		return (NULL);
-	if ((shell_info->user_input[i] == '|') || (shell_info->user_input[i] == '>') || (shell_info->user_input[i] == '<') || (shell_info->user_input[i] == '\'') || (shell_info->user_input[i] == '"'))
+	cur = NULL;
+	inpt = shell_info->user_input;
+	// if (!(inpt[i] == '|') && !(inpt[i] == '>') && !(inpt[i] == '<') && !(inpt[i] == '\'') && !(inpt[i] == '"'))
+	// 	return (NULL);
+	if (is_metacharacter(inpt[i]) == true)
 	{
 		cur = ft_calloc(sizeof(t_token), 1);
 		if (!cur)
@@ -57,37 +69,38 @@ t_token	*create_single_token(t_shell *shell_info, int i)
 			// free stuff!!!!
 			return (NULL);
 		}
-		cur->i = i;
-		if (shell_info->user_input[i] == '>')
+		cur->idx = i;
+		if (inpt[i] == '>')
 			cur->token_type = S_MORE;
-		else if (shell_info->user_input[i] == '<')
+		else if (inpt[i] == '<')
 			cur->token_type = S_LESS;
-		else if (shell_info->user_input[i] == '|')
+		else if (inpt[i] == '|')
 			cur->token_type = PIPE;
-		else if (shell_info->user_input[i] == '\'')
+		else if (inpt[i] == '\'')
 			cur->token_type = S_QUOTE;
-		else if (shell_info->user_input[i] == '"')
+		else if (inpt[i] == '"')
 			cur->token_type = D_QUOTE;
 		else
 			cur->token_type = NO_TOKEN;
+		cur->input = inpt;
+		cur->content = &inpt[i];
 		i++;
-		cur->input = shell_info->user_input;
 		cur->len = 1;
-		cur->content = &shell_info->user_input[i];
 		cur->next = NULL;
-		return (cur);
 	}
-	return (NULL);
+	return (cur);
 }
 
 t_token	*create_double_token(t_shell *shell_info, int i)
 {
 	t_token *cur;
+	char	*inpt;
 
 	cur = NULL;
-	// if (!(shell_info->user_input[i] == '>' && shell_info->user_input[i + 1] == '>') && !(shell_info->user_input[i] == '<' && shell_info->user_input[i + 1] == '<'))
+	inpt = shell_info->user_input;
+	// if (!(inpt[i] == '>' && inpt[i + 1] == '>') && !(inpt[i] == '<' && inpt[i + 1] == '<'))
 	// 	return (NULL);
-	if ((shell_info->user_input[i] == '>' && shell_info->user_input[i + 1] == '>') || (shell_info->user_input[i] == '<' && shell_info->user_input[i + 1] == '<'))
+	if ((inpt[i] == '>' && inpt[i + 1] == '>') || (inpt[i] == '<' && inpt[i + 1] == '<'))
 	{
 		cur = ft_calloc(sizeof(t_token), 1);
 		if (!cur)
@@ -95,17 +108,17 @@ t_token	*create_double_token(t_shell *shell_info, int i)
 			// free stuff!!!!
 			return (NULL);
 		}
-		cur->i = i;
-		if (shell_info->user_input[i] == '>' && shell_info->user_input[i + 1] == '>')
-			cur->token_type = S_MORE;
-		else if (shell_info->user_input[i] == '<' && shell_info->user_input[i + 1] == '<')
-			cur->token_type = S_LESS;
+		cur->idx = i;
+		if (inpt[i] == '>' && inpt[i + 1] == '>')
+			cur->token_type = D_MORE;
+		else if (inpt[i] == '<' && inpt[i + 1] == '<')
+			cur->token_type = D_LESS;
 		else
 			cur->token_type = NO_TOKEN;
+		cur->input = inpt;
+		cur->content = &inpt[i];
 		i = i + 2;
-		cur->input = shell_info->user_input;
 		cur->len = 2;
-		cur->content = &shell_info->user_input[i];
 		cur->next = NULL;
 	}
 	return (cur);
@@ -118,16 +131,17 @@ int	create_tokens(t_shell *shell_info)
 {
 	int		i;
 	t_token	*cur;
+	char	*inpt;
 
 	i = 0;
 	cur = NULL;
+	inpt = shell_info->user_input;
 	if (!shell_info->tokens)
 		shell_info->tokens = cur;
-	while (shell_info->user_input && shell_info->user_input[i] != '\0') // && shell_info->user_input[i] != EOF
+	while (inpt && inpt[i] != '\0') // && inpt[i] != EOF
 	{
-		printf("HELLO\n");
-		i = skip_whitespace(shell_info->user_input, i);
-		if (shell_info->user_input[i] == '\0')
+		i = skip_whitespace(inpt, i);
+		if (inpt[i] == '\0')
 			break;
 		cur = create_double_token(shell_info, i);
 		if (cur == NULL)
@@ -141,11 +155,11 @@ int	create_tokens(t_shell *shell_info)
 			free(cur);
 			break;
 		}
-		i = cur->i + cur->len;
+		i = cur->idx + cur->len;
 		token_add_back(&shell_info->tokens, cur);
-		if (shell_info->user_input[i] == '\0')
+		if (inpt[i] == '\0')
 			break;
-		i++;
+		// i++;
 		cur = cur->next;
 	}
 	// print_linked_tokens(shell_info->tokens);
@@ -155,4 +169,5 @@ int	create_tokens(t_shell *shell_info)
 		return (1);
 }
 
-// la -l  > f1 << END | grep hi | cat > out
+// la -l > f1 << END | grep hi | cat > out
+// la -l < f1 < f2 < f3 > f1 << END | grep hi | cat > out
