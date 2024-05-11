@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/09 13:21:58 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/10 13:58:19 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,10 @@ void	run_env(t_shell *shell_info);
 
 //EXPORT.C
 void	run_export(t_shell *shell_info);
+int		is_al_num_underscore(char *str);
+
+//UNSET.C
+void	run_unset(t_shell *shell_info);
 
 //WHITE_SPACE.C
 char	*rm_starting_ws(char *string);
@@ -139,6 +143,9 @@ void	print_split(char **str);
 void	print_cmd_list(t_command *cmd_node);
 void	print_split_no_newline(char **str);
 void	print_token_types(t_shell *shell_info);
+
+//DOLLAR_EXPAND.C
+char	*dollar_expand(t_shell *shell_info);
 
 // //PIPEX_FUNCTIONS.C
 char	*get_first_word(char *argv);
