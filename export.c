@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 17:51:49 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/10 14:11:23 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/11 13:38:24 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	is_al_num_underscore(char *str)
 {
 	if (!str || !*str)
 		return (0);
-	while (*str)
+	while (*str && str)
 	{
 		if (ft_isalnum(*str) || *str == '_')
 			str++;
@@ -117,12 +117,15 @@ void	run_export(t_shell *shell_info)
 		var_value = ft_substr(ptr_to_equal + 1, 0, ft_strlen(ptr_to_equal));
 	}
 	// printf("ivn %s ivv %s\n", var_name, var_value);
+	// printf("isalnu %d\n",  is_al_num_underscore(inpt + 7));
+	// printf("inpt7 %s\n", inpt + 7);
 	if (!var_name || !is_al_num_underscore(var_name))
 		ft_printf("minishell: export: `%s' not a valid identifier\n", inpt + 7);
 	if (inputis(inpt, "export") || inputis(inpt, "export "))
 		run_declare_env(shell_info);
-	else if (inputstartswith(inpt, "export ") && is_al_num_underscore(inpt + 7))
+	else if (inputstartswith(inpt, "export ") && is_al_num_underscore(var_name))
 	{
+		// printf("inside ivn %s ivv %s\n", var_name, var_value);
 		// env_mini = ft_lstnew_envmini(inpt);
 		env_mini = ft_lstnew_envmini(var_name, var_value);
 		ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;

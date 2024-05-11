@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 18:12:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/10 14:24:39 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/11 13:33:08 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 			// free(shell_info);
 			exit(0) ;
 		};
-		dollar_expand(shell_info);
+		// dollar_expand(shell_info);
 		if (!inputis(usr_inpt, ""))
 			add_history(usr_inpt);
 		if (*usr_inpt == ' ')
