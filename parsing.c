@@ -11,11 +11,9 @@ void	parse_tokens(t_shell *shell_info)
 {
 	t_command	*cmd_node;
 	t_token		*iterate;
-	int			len;
 
 	cmd_node = NULL;
 	iterate = shell_info->tokens;
-	len = number_of_tokens(shell_info);
 	cmd_node = ft_calloc(1, sizeof(t_command));
 	if (!shell_info->first_command)
 		shell_info->first_command = cmd_node;
