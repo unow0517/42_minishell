@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   loop.c                                             :+:      :+:    :+:   */
+/*   inpt_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 18:12:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/11 20:37:56 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/13 15:14:32 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	inpt_handler(char **argv, char **env, t_shell *shell_info)
+void	inpt_handler(char **argv, t_shell *shell_info)
 {
 	int			status;
 
@@ -52,8 +52,10 @@ void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 		{
 			printpwd(shell_info);
 		}
-		else if (inputis(shell_info->user_input, "env") | inputis(shell_info->user_input, "env "))
-			run_env(shell_info->user_input, env);
+		else if (inputis(shell_info->user_input, "env ") | inputis(shell_info->user_input, "env"))
+			run_env(shell_info);
+		else if (inputstartswith(shell_info->user_input, "export ") | inputis(shell_info->user_input, "export"))
+			run_export(shell_info);
 		else if (inputstartswith(shell_info->user_input, "history"))
 			print_history(shell_info->user_input);
 		(void)argv;

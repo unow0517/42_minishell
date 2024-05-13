@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/11 19:59:33 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/13 15:10:23 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,19 @@ typedef struct s_command
 	struct	s_command *next;
 } t_command;
 
+typedef struct s_env_mini
+{
+	char				*name;
+	char				*value;
+	struct s_env_mini	*next;
+}	t_env_mini;
+
 typedef struct s_shell
 {
 	int			argc;
 	char		**argv;
 	char		**env;
+	t_env_mini	*env_mini;
 	char		cwd[1024];
 	t_token		*tokens;
 	char		*user_input;
@@ -117,7 +125,7 @@ void	run_echo(char *inpt);
 void	run_cd(char *inpt, t_shell *shell_info);
 
 //ENV.C
-void	run_env(char *inpt, char **env);
+void	run_env(t_shell *shell_info);
 
 //WHITE_SPACE.C
 char	*rm_starting_ws(char *string);
@@ -137,7 +145,7 @@ void	handle_error(char *str);
 void	free_split_thalia(char **str);
 
 //MINISHELL.C
-void	inpt_handler(char **argv, char **env, t_shell *info);
+void	inpt_handler(char **argv, t_shell *shell_info);
 void	initialise_basics(int argc, char **argv, char **env, t_shell *info);
 int		create_prompt(t_shell *shell_info);
 
@@ -178,8 +186,16 @@ void	execution_cases(t_shell *shell_info, int *status);
 pid_t	exec_pipeline(t_shell *shell_info);
 pid_t	exec_single_cmd(t_shell *shell_info, t_command	*cmd_to_exec);
 void	pipe_handling(t_shell *shell_info, t_command *cur);
-void close_pipes(t_shell *shell_info);
+void	close_pipes(t_shell *shell_info);
 
+//EXPORT.C
+void	run_export(t_shell *shell_info);
+
+//DOLLAR_EXPAND.C
+char	*dollar_expand(t_shell *shell_info);
+
+//UNSET.C
+void	run_unset(t_shell *shell_info);
 
 //FREES
 void	free_tokens(t_token **shell_info);

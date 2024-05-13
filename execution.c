@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//YUN: RUN CMD OR PIPE DEPENDING ON THE # OF CMDS
 void	execution_cases(t_shell *shell_info, int *status)
 {
 	pid_t		pid;
