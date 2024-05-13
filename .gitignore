@@ -1,7 +1,3 @@
 *.o
 *.dSYM
 .vscode
-out
-outfile
-f1
-f2

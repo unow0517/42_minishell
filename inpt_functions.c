@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:24:13 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/10 13:52:28 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/04/19 17:53:34 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,24 +49,24 @@ int	inputhas(char *input, char c)
 	return (0);
 }
 
+char	*make_abs_path(char *input)
+{
+	char	*full_path;
+	char	cwd[1024];
+	char	*slash_input;
+
+	getcwd(cwd, sizeof(cwd));
+	if (*input == '/')
+	{
+		full_path = ft_strjoin(cwd, input);
+		return (free(full_path), full_path);
+	}
+	else
+	{
+		slash_input = ft_strjoin("/", input);
+		full_path = ft_strjoin(cwd, slash_input);
+		return (free(slash_input), free(full_path), full_path);
+	}
 
 
-// char	*make_abs_path(char *input)
-// {
-// 	char	*full_path;
-// 	char	cwd[1024];
-// 	char	*slash_input;
-
-// 	getcwd(cwd, sizeof(cwd));
-// 	if (*input == '/')
-// 	{
-// 		full_path = ft_strjoin(cwd, input);
-// 		return (free(full_path), full_path);
-// 	}
-// 	else
-// 	{
-// 		slash_input = ft_strjoin("/", input);
-// 		full_path = ft_strjoin(cwd, slash_input);
-// 		return (free(slash_input), free(full_path), full_path);
-// 	}
-// }
+}
