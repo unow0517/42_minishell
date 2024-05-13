@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:46 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/09 13:54:40 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/11 20:25:00 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,48 +30,20 @@ int	main(int argc, char **argv, char **env)
 		return (EXIT_FAILURE);
 	catchsignal();
 	inpt_handler(argv, env, &shell_info);
-ft_printf("minishell______DONE_________________\n");
 	return (0);
 }
-//FREE ENV_MINI REQUIRED BY EXIT!
 
-//env char ** to linkedlist, necessary for builtins export, unset.
-t_env_mini	*env_to_envmini(char	**env, t_env_mini *env_mini)
-{
-	char		*name;
-	char		*value;
-	t_env_mini	*ptr;
-	char		**ft_splitted;
-
-	ptr = env_mini;
-	while (env && *env)
-	{
-		ft_splitted = ft_split(*env, '=');
-		name = ft_splitted[0];
-		value = ft_splitted[1];
-		env_mini->name = name;
-		env_mini->value = value;
-		env++;
-		if (env && *env)
-		{
-			env_mini->next = malloc(sizeof(t_env_mini));
-			env_mini = env_mini->next;
-		}
-	}
-	return (ptr);
-}
 void	initialise_basics(int argc, char **argv, char **env, t_shell *shell_info)
 {
 	shell_info->argc = argc;
 	shell_info->argv = argv;
 	shell_info->env = env;
-	shell_info->env_mini = malloc(sizeof(t_env_mini));
-	shell_info->env_mini = env_to_envmini(env, shell_info->env_mini);
 	getcwd(shell_info->cwd, sizeof(shell_info->cwd));
 	shell_info->tokens = NULL;
 	shell_info->user_input = NULL;
 	shell_info->first_command = NULL;
-	// shell_info->cwd = ft_strdup(shell_info->cwd); // ft_strdup since cwd is local variable, and it dealloc when fn is finished.
+	shell_info->fd[0] = -1;
+	shell_info->fd[1] = -1;
 }
 
 int	create_prompt(t_shell *shell_info)

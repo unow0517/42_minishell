@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 18:12:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/13 12:42:01 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/13 14:22:06 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,3 +81,4 @@ void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 	free_cmd_list(&shell_info->first_command);
 	}
 }
+
