@@ -4,7 +4,7 @@ void	parse_input(t_shell *shell_info)
 {
 	create_tokens(shell_info);
 	parse_tokens(shell_info);
-	// print_cmd_list(shell_info->first_command);
+	print_cmd_list(shell_info->first_command);
 }
 
 void	parse_tokens(t_shell *shell_info)
@@ -49,6 +49,9 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 		cmd_node->cmd = ft_calloc(1, sizeof(char));
 		while (iterate != NULL && iterate->token_type != PIPE)
 		{
+// printf("iterate->token_type = %i\n", iterate->token_type);
+// print_token(iterate);
+// printf("NOT PIPE ITER\n");
 			iterate = set_redirections(cmd_node, iterate);
 			if (iterate && iterate->token_type == WORD && (cmd_node->cmd == NULL || cmd_node->cmd[0] == '\0') && iterate->token_type != PIPE)
 				cmd_node->cmd = get_first_word(iterate->content);
@@ -61,7 +64,7 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 				free(temp);
 				free(temp1);
 			}
-			if (iterate)
+			if (iterate && is_metacharacter_type(iterate->token_type) == false)
 				iterate = iterate->next;
 		}
 		init_cmds_in_struct(cmd_node, to_split);
@@ -151,13 +154,27 @@ int	open_file(t_command *cmd_node, t_token *iterate, int flag)
 
 	file = get_first_word(iterate->content);
 	if (flag == S_LESS)
+	{
+		if (cmd_node->input_fd != -1)
+			close(cmd_node->input_fd);
 		cmd_node->input_fd = open(file, O_RDONLY);
+	}
 	else if (flag == S_MORE)
+	{
+		if (cmd_node->output_fd != -1)
+			close(cmd_node->output_fd);
 		cmd_node->output_fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	}
 	else if (flag == D_MORE)
+	{
+		if (cmd_node->output_fd != -1)
+			close(cmd_node->output_fd);
 		cmd_node->output_fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	}
 	else if (flag == D_LESS)
 	{
+		if (cmd_node->input_fd != -1)
+			close(cmd_node->input_fd);
 		handle_heredoc(cmd_node, file);
 	}
 	free(file);
@@ -174,30 +191,22 @@ void	handle_heredoc(t_command *cmd_node, char *delimiter)
 	char	*here_line;
 	int		fd;
 
-printf("delimiter = %s\n", delimiter);
 	here_line = NULL;
 	fd = open("/tmp/heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-// printf("fd = %i\n",fd);
 	here_line = readline(">");
-	// ft_putstr_fd(">", fd);
-	// here_line = get_next_line(fd);
 	while (here_line && ft_strncmp(delimiter, here_line, ft_strlen(here_line) != 0))
 	{
-write(2, "DEBUG HEREDOC\n", ft_strlen("DEBUG HEREDOC\n"));
 		ft_putstr_fd(here_line, fd);
 		ft_putstr_fd("\n", fd);
 		free(here_line);
-		// ft_putstr_fd(">", fd);
-		// here_line = get_next_line(fd);
 		here_line = readline(">");
 	}
-write(2, "handle_heredoc YO\n", ft_strlen("handle_heredoc YO\n"));
 	if (here_line)
 		free(here_line);
 	close(fd);
 	cmd_node->input_fd = open("/tmp/heredoc", O_RDONLY);
 	if (cmd_node->input_fd == -1)
-		printf("failed to open tmp/heredoc\n");
+		printf("failed to open /tmp/heredoc\n"); //fix error or return value
 }
 
 int	number_of_tokens(t_shell *shell_info)

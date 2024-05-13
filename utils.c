@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/09 15:08:40 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/13 20:50:09 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,14 @@ int	skip_whitespace(char *inpt, int i)
 bool	is_metacharacter(char c)
 {
 	if (c == '|' || c =='>' || c == '<' || c == '"' || c == '\'')
+		return (true);
+	return (false);
+}
+
+bool	is_metacharacter_type(int i)
+{
+	if (i == PIPE || i == S_QUOTE || i == D_QUOTE || i == S_LESS ||\
+	 i == S_MORE || i == D_LESS || i == D_MORE)
 		return (true);
 	return (false);
 }

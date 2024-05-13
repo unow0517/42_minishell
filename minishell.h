@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/13 17:36:39 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/13 20:50:31 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ bool		is_metacharacter(char c);
 bool		is_ws(char c);
 void	cmd_add_back(t_command **first_token, t_command *new);
 int		handle_exit(int status);
+bool	is_metacharacter_type(int i);
 
 
 //PARSING.C
