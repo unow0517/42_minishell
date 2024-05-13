@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/11 19:59:33 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:06:46 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # include <readline/history.h>
 # include <signal.h>
 # include <termios.h>
-# include "Libft/libft.h"
-# include "ft_printf/ft_printf.h"
+# include "libft.h"
+// # include "ft_printf/ft_printf.h"
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <stdbool.h>

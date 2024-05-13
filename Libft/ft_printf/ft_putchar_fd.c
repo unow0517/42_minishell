@@ -1,34 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_p.c                                      :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/31 11:51:25 by yowoo             #+#    #+#             */
-/*   Updated: 2023/11/17 19:46:10 by yowoo            ###   ########.fr       */
+/*   Created: 2023/11/06 16:55:47 by tsimitop          #+#    #+#             */
+/*   Updated: 2023/11/18 14:42:21 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_printf_p(unsigned long ptr)
+int	ft_putchar_fd(char c, int fd)
 {
-	int	res;
-	int	i;
-
-	i = ft_putstr("0x");
-	if (i == -1)
+	if (write(fd, &c, 1) == -1)
 		return (-1);
-	ft_put_hex_u(ptr);
-	res = hex_len_u(ptr);
-	return (res + 2);
+	return (1);
 }
 
-
-//address == 107(base 10)
-//output = 0x6b(base 16)
-//0x means number behind it is base 16
-
-//012345689abcdef
-//107 = 6 x 16 + 11(b) 
+// return(write(fd, &c, 1));
+/*
+if (write(fd, &c, 1) == -1)
+	return (-1);
+return (1);
+*/

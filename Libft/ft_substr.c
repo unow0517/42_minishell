@@ -5,38 +5,64 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/11 13:01:37 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/06 12:51:44 by tsimitop         ###   ########.fr       */
+/*   Created: 2023/10/20 19:47:07 by tsimitop          #+#    #+#             */
+/*   Updated: 2023/10/28 13:43:01 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
 #include "libft.h"
 
+// Allocates (with malloc(3)) and returns a substring from the string ’s’. The
+// substring begins at index ’start’ and is of maximum size ’len’.
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*substr;
-	size_t	slength;
+	char	*cpy;
 	size_t	i;
+	size_t	len_create;
+	size_t	len_s;
 
-// printf("ft_substr(char const *s, unsigned int start, size_t len) == ft_substr(%s, %i, %zu)\n", s, start, len);
 	i = 0;
-	slength = ft_strlen(s);
-	if (!s)
-		return (NULL);
-	if (len > slength - start)
-		len = slength - start;
-	if (start >= slength)
+	len_s = ft_strlen(s);
+	if (start >= len_s)
 		return (ft_strdup(""));
-	substr = malloc(sizeof(char) * (len + 1));
-	if (!substr)
+	if (len_s - start < len)
+		len_create = len_s - start;
+	else
+		len_create = len;
+	cpy = (char *)malloc(len_create + 1);
+	if (!cpy)
 		return (NULL);
-	while (i < len)
+	while (s[start + i] != '\0' && i < len_create)
 	{
-		substr[i] = s[i + start];
+		cpy[i] = s[start + i];
 		i++;
 	}
-	substr[i] = '\0';
-	return (substr);
+	cpy[i] = '\0';
+	return (cpy);
 }
+
+// #include <stdio.h>
+
+// int main(void)
+// {
+// 	char const *s = "poignant roses making weird curtains";
+// 	unsigned int start = 40;
+// 	size_t len = 50;
+// 	printf("with start 40 %s\n", ft_substr(s, start, len));
+// 	return (0);
+// }
+/*
+Function name 	ft_substr
+Prototype 		char *ft_substr(char const *s, unsigned int start, size_t len);
+Turn in files 	-
+Parameters 		s: The string from which to create the substring.
+				start: The start index of the substring in the string ’s’.
+				len: The maximum length of the substring.
+Return value 	The substring.
+				NULL if the allocation fails.
+External fncs.	malloc
+Description		Allocates (with malloc(3)) and returns a substring from the
+				string ’s’.
+				The substring begins at index ’start’ and is of
+				maximum size ’len’.
+*/

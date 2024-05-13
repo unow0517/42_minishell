@@ -3,45 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 07:38:53 by yowoo             #+#    #+#             */
-/*   Updated: 2023/10/23 15:49:06 by yowoo            ###   ########.fr       */
+/*   Created: 2023/10/18 19:03:29 by tsimitop          #+#    #+#             */
+/*   Updated: 2023/10/28 13:41:45 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_memcmp(const void *str1, const void	*str2, unsigned int n)
-{
-	unsigned char	*ptr1;
-	unsigned char	*ptr2;
+#include "libft.h"
 
-	ptr1 = (unsigned char *) str1;
-	ptr2 = (unsigned char *) str2;
-	while (n--)
+// The memcmp() function compares byte string s1 against byte string s2.
+// Both strings are assumed to be n bytes long.
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
+{
+	unsigned char	str1;
+	unsigned char	str2;
+
+	while (n-- > 0)
 	{
-		if (*ptr1 != *ptr2)
-			return (*ptr1 - *ptr2);
-		else
-		{
-			ptr1++;
-			ptr2++;
-		}
+		str1 = *(unsigned char *)s1++;
+		str2 = *(unsigned char *)s2++;
+		if (str1 != str2)
+			return (str1 - str2);
 	}
 	return (0);
 }
-//different between memcmp vs strmcmp 
-//: memcmp compares regardless of null terminator
-//https://stackoverflow.com/questions/13095513/
-//what-is-the-difference-between-memcmp-strcmp-and-strncmp-in-c
-// #include <stdio.h>
-// #include <string.h>
-// int main(){
-//     char str1[15] = "ABCDEF\0F";
-//     char str2[15] = "ABCDEF\0f";
-//     int res = memcmp(str1, str2, 15);
-//     printf("memcmp is %d\n", res);
-//     int myRes = ft_memcmp(str1,str2,15);
-//     printf("ft_memcmp is %d", myRes);
+/*
+Removed the check for '\0' in the loop because you don't need to stop at
+'\0' when comparing memory blocks. Memory comparison functions like memcmp
+are supposed to compare raw memory, not C-style strings. If you want to
+compare C-style strings, use strcmp or a similar function.
 
-//     return 0;
-// }
+str1 = *(unsigned char*)s1++;	//error: operand of type 'const void'
+								// where arithmetic or pointer type
+								//is required str2 = (unsigned char)*s2++;
+*/

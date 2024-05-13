@@ -3,38 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/09 11:20:54 by yowoo             #+#    #+#             */
-/*   Updated: 2023/10/17 14:25:21 by yowoo            ###   ########.fr       */
+/*   Created: 2023/10/13 12:59:00 by tsimitop          #+#    #+#             */
+/*   Updated: 2023/10/28 13:41:56 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	*ft_memset(void *str, int c, unsigned int n)
-{
-	char	*p;
+#include "libft.h"
 
-	p = (char *)str;
-	while (n > 0)
+// The memset() function writes len bytes of value c
+// (converted to an unsigned char) to the string b.
+void	*ft_memset(void *b, int c, size_t len)
+{
+	size_t			i;
+	unsigned char	*uc;
+
+	i = 0;
+	uc = b;
+	while (i < len)
 	{
-		*p = c;
-		p++;
-		n--;
+		uc[i] = c;
+		i++;
 	}
-	return (str);
+	return (uc);
 }
 
-// #include "libft.h"
-// #include <stdio.h>
-// #include <string.h>
-// int main () {
-//     char str[50] = "today is wednesday";
-//     // char example[] = "15";
-
-//     //strcpy(example,"123123123123123");
-//     puts(str);
-
-//     ft_memset(str,'A','!');
-//     puts(str);
-//     return(0);
+//i < len - 1????
+// int main(void)
+// {
+// 	char str[50] = "'Let's talk about the weather'";
+// 	printf("%s is the sentence before memset\n", str);
+// 	memset(str + 5, '&', 8);
+// 	printf("After memset: %s\n", str);
+// 	return (0);
 // }

@@ -5,32 +5,38 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/25 18:51:28 by tsimitop          #+#    #+#             */
-/*   Updated: 2023/10/28 13:42:06 by tsimitop         ###   ########.fr       */
+/*   Created: 2023/11/06 16:54:26 by tsimitop          #+#    #+#             */
+/*   Updated: 2023/11/18 15:45:32 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-// Outputs the integer ’n’ to the given file descriptor.
-void	ft_putnbr_fd(int n, int fd)
+int	ft_putnbr_fd(long n, int fd)
 {
 	char	digit;
+	int		bytes;
+	int		total_bytes;
 
-	if (n == -2147483648)
-	{
-		write(fd, "-2147483648", 11);
-		return ;
-	}
+	total_bytes = 0;
 	if (n < 0)
 	{
-		write(fd, "-", 1);
+		if (ft_putchar_fd('-', fd) == -1)
+			return (-1);
+		total_bytes++;
 		n = -n;
 	}
 	if (n / 10 > 0)
 	{
-		ft_putnbr_fd(n / 10, fd);
+		bytes = ft_putnbr_fd(n / 10, fd);
+		if (bytes == -1)
+			return (-1);
+		total_bytes += bytes;
 	}
 	digit = (n % 10) + '0';
-	write(fd, &digit, 1);
+	bytes = ft_putchar_fd(digit, fd);
+	if (bytes == -1)
+		return (-1);
+	total_bytes += bytes;
+	return (total_bytes);
 }

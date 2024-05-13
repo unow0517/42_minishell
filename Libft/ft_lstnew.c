@@ -3,37 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/25 11:08:52 by yowoo             #+#    #+#             */
-/*   Updated: 2023/10/25 14:23:55 by yowoo            ###   ########.fr       */
+/*   Created: 2024/03/24 20:07:45 by tsimitop          #+#    #+#             */
+/*   Updated: 2024/03/24 20:07:47 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+// Allocates (with malloc(3)) and returns a new node.The member variable 
+// ’content’ is initialized with the value of the parameter ’content’.
+// The variable ’next’ is initialized to NULL.
 t_list	*ft_lstnew(void *content)
 {
-	t_list	*first_node;
+	t_list	*new_node;
 
-	first_node = (t_list *)malloc(sizeof(t_list));
-	if (!(first_node))
-		return (0);
-	first_node->content = content;
-	first_node->next = 0;
-	return (first_node);
+	new_node = malloc(sizeof(t_list));
+	if (!new_node)
+		return (NULL);
+	new_node -> content = content;
+	new_node -> next = NULL;
+	return (new_node);
 }
-
-// int	main()
-// {
-// 	char str[] = "hello";
-// 	t_list *ptr;
-
-// 	ptr = ft_lstnew(str);
-// 	while(ptr != NULL)
-// 	{
-// 		printf("%s", ptr->content);
-// 		ptr = ptr->next;
-// 	}
-// 	return (0);
-// }
