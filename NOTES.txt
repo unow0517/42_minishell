@@ -23,3 +23,4 @@ while (cmd)
 debug with terminal
 	ps aux | grep minishell
 	lsof -p (PID)       check for fd's, hanging processes etc.
+
