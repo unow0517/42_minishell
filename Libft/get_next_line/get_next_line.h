@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 20:26:13 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/15 23:17:04 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:46:25 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@ size_t	ft_strlen(char *str);
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_strchr(char *s, int c);
-char	*ft_strdup(char *s1);
+char	*ft_strdup_gnl(char *s1);
 
 #endif

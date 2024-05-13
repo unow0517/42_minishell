@@ -19,7 +19,7 @@ SRCS =	cd.c\
 		freeing.c\
 		inpt_handler.c\
 		pipe.c\
-		set_nodes.c\
+		tokenizer.c\
 		unset.c\
 		checks.c\
 		env.c\

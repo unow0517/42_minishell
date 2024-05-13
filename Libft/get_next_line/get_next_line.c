@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 18:12:05 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/16 19:06:53 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:46:35 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	*remaining_line(char *line_const)
 		while (line_const && line_const[i] != '\n')
 			i++;
 		if (line_const[i + 1] != 0)
-			remaining_chars = ft_strdup(&line_const[i + 1]);
+			remaining_chars = ft_strdup_gnl(&line_const[i + 1]);
 	}
 	return (free(line_const), line_const = NULL, remaining_chars);
 }
@@ -104,7 +104,7 @@ char	*get_next_line(int fd)
 	return (current_line);
 }
 
-char	*ft_strdup(char *s1)
+char	*ft_strdup_gnl(char *s1)
 {
 	char	*ptr;
 	size_t	i;

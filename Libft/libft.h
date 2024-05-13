@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 18:51:38 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/13 16:10:08 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:29:19 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,6 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 int		ft_printf(const char *str, ...);
+char	*get_next_line(int fd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:36:23 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/06 19:21:54 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:11:54 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ char	*get_first_word(char *argv)
 	int		i;
 	char	*small_cmd;
 
-//skip whitespace
 	i = 0;
 	while (argv[i] != '\0' && argv[i] != ' ' && argv[i] != '>' && argv[i] != '<' && argv[i] != '|' && argv[i] != '"' && argv[i] != '\'')
 		i++;

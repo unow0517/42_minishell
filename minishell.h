@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/13 16:06:46 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:36:39 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <signal.h>
 # include <termios.h>
 # include "libft.h"
-// # include "ft_printf/ft_printf.h"
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <stdbool.h>
@@ -169,6 +168,7 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate);
 int		open_file(t_command *cmd_node, t_token *iterate, int flag);
 void	initialise_cmd_node(t_command *cmd_node);
 void	init_cmds_in_struct(t_command *cmd_node, char *to_split);
+void	handle_heredoc(t_command *cmd_node, char *delimiter);
 
 //EXECUTION.C
 void	executor(t_shell *shell_info, int *status, t_command *cur);

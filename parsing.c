@@ -117,7 +117,10 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 	}
 	else if (iterate->token_type == D_LESS)
 	{
+		iterate = iterate->next;
 		cmd_node->is_heredoc = 1;
+		open_file(cmd_node, iterate, D_LESS);
+		iterate = iterate->next;
 	}
 	else if (iterate && iterate->token_type == S_MORE && iterate->next && iterate->next->token_type == WORD) //create open file function to pass enum
 	{
@@ -155,7 +158,7 @@ int	open_file(t_command *cmd_node, t_token *iterate, int flag)
 		cmd_node->output_fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else if (flag == D_LESS)
 	{
-		//handle heredoc
+		handle_heredoc(cmd_node, file);
 	}
 	free(file);
 	if ((flag == S_MORE || flag == D_MORE) && cmd_node->output_fd == -1) // add checks
@@ -164,6 +167,37 @@ int	open_file(t_command *cmd_node, t_token *iterate, int flag)
 		return (-1);
 	else
 		return (0);
+}
+
+void	handle_heredoc(t_command *cmd_node, char *delimiter)
+{
+	char	*here_line;
+	int		fd;
+
+printf("delimiter = %s\n", delimiter);
+	here_line = NULL;
+	fd = open("/tmp/heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+// printf("fd = %i\n",fd);
+	here_line = readline(">");
+	// ft_putstr_fd(">", fd);
+	// here_line = get_next_line(fd);
+	while (here_line && ft_strncmp(delimiter, here_line, ft_strlen(here_line) != 0))
+	{
+write(2, "DEBUG HEREDOC\n", ft_strlen("DEBUG HEREDOC\n"));
+		ft_putstr_fd(here_line, fd);
+		ft_putstr_fd("\n", fd);
+		free(here_line);
+		// ft_putstr_fd(">", fd);
+		// here_line = get_next_line(fd);
+		here_line = readline(">");
+	}
+write(2, "handle_heredoc YO\n", ft_strlen("handle_heredoc YO\n"));
+	if (here_line)
+		free(here_line);
+	close(fd);
+	cmd_node->input_fd = open("/tmp/heredoc", O_RDONLY);
+	if (cmd_node->input_fd == -1)
+		printf("failed to open tmp/heredoc\n");
 }
 
 int	number_of_tokens(t_shell *shell_info)
