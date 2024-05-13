@@ -10,11 +10,15 @@ void	execution_cases(t_shell *shell_info, int *status)
 		pid = exec_single_cmd(shell_info, shell_info->first_command);
 	else
 		pid = exec_pipeline(shell_info);
-	while (waitpid(-1, NULL, WNOHANG) != -1) //WUNTRACED
+	//YUN: -1 : WAITING FOR ANY CHILD PROC. IF CHILD PROCESS IS SUCCESSFULLY MADE THEN ?
+	//YUN: WNOHANG return immediately if no child has exited.
+	//YUN: ; = DOING NOTHING?
+	while (waitpid(-1, NULL, WNOHANG) != -1) //WUNTRACED 
 		;
 	*status = handle_exit(*status);
 }
 
+//YUN: ITERATE TO RUN COMMANDS, shell_info->first_command IS LINKED LIST OF CMD STRUCTS
 pid_t	exec_pipeline(t_shell *shell_info)
 {
 	t_command	*iterate_cmd;
@@ -26,6 +30,7 @@ pid_t	exec_pipeline(t_shell *shell_info)
 		pid = exec_single_cmd(shell_info, iterate_cmd);
 		iterate_cmd = iterate_cmd->next;
 	}
+	//YUN: CLOSE FILE DESCRIPTOR[0], [1] OF LINKED LIST OF CMD STRUCTS
 	close_pipes(shell_info);
 	return (pid);
 }
