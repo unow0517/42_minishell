@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 13:39:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/11 13:08:30 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/13 12:56:55 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,22 @@ int	is_al_num_udsc_c(char c)
 int	varname_len(char *str)
 {
 	int			i;
+	// char		*ptr;
 
 	i = 0;
 	while (*str && str)
 	{
 		if (*str == '$')
-			str++;
-		while (is_al_num_udsc_c(*str))
 		{
-			i++;
 			str++;
+			while (is_al_num_udsc_c(*str))
+			{
+				i++;
+				str++;
+			}
+			if (!is_al_num_udsc_c(*str))
+				break ;
 		}
-		if (!is_al_num_udsc_c(*str))
-			break ;
 		str++;
 	}
 	return (i);
@@ -76,10 +79,11 @@ char	*replace_expand(char *inpt, char *var_value, int var_name_len)
 	var_value_len = ft_strlen(var_value);
 	str_till_dollar = ft_substr(inpt, 0, ft_strchr(inpt, '$') - inpt);
 	str_after_varname = ft_strchr(inpt, '$') + var_name_len + 1;
-	ft_printf("len %d\n", var_name_len);
+		ft_printf("len %d\n", var_name_len);
 	ft_printf("std %s\n", str_till_dollar);
 	ft_printf("sav %s\n", str_after_varname);
 	join1 = ft_strjoin(str_till_dollar, var_value);
+	ft_printf("join1 %s\n", join1);
 
 	return (join1);
 }
@@ -90,7 +94,7 @@ char	*dollar_expand(t_shell *shell_info)
 	char		*inpt;
 	char		*var_value;
 	int			len;
-	// char		*replaced;
+	char		*replaced;
 	
 	len = 0;
 	inpt = NULL;
@@ -104,7 +108,7 @@ char	*dollar_expand(t_shell *shell_info)
 	ft_printf("lens %d\n", len);
 	var_value = varvalue(len, inpt, env_mini);
 	ft_printf("vv %s\n", var_value);
-	// replaced = replace_expand(inpt, var_value, len);
+	replaced = replace_expand(inpt, var_value, len);
 	// ft_printf("rp %s\n", replaced);
 
 	// while (*inpt)
