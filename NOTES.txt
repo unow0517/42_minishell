@@ -37,3 +37,8 @@ quote handling
 	int iter(char *str, char c)
 	{
 	}
+
+
+
+SEGFAULT
+	< hey cat > out

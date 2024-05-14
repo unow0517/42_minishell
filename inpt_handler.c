@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   loop.c                                             :+:      :+:    :+:   */
+/*   inpt_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 18:12:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/11 20:37:56 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/14 16:04:16 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@ void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 {
 	int			status;
 
+	status = 0;
 	shell_info->user_input = NULL;
 	while (1)
 	{
 		signal(SIGINT, sighandler);
 		shell_info->user_input = readline(shell_info->prompt);
 		parse_input(shell_info);
+printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
 		execution_cases(shell_info, &status);
 		if (!shell_info->user_input)
 		{

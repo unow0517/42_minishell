@@ -9,7 +9,7 @@ void	execution_cases(t_shell *shell_info, int *status)
 		pid = exec_single_cmd(shell_info, shell_info->first_command);
 	else
 		pid = exec_pipeline(shell_info);
-	while (waitpid(-1, NULL, WNOHANG) != -1) //WUNTRACED
+	while (waitpid(-1, status, WNOHANG) != -1) //WUNTRACED
 		;
 	*status = handle_exit(*status);
 }
@@ -44,13 +44,14 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command	*cmd_to_exec)
 	{
 		pipe_handling(shell_info, cmd_to_exec);
 		handle_redir(shell_info, cmd_to_exec);
-		full_path = find_cmd_in_env(cmd_to_exec->cmd, shell_info->env);
-		if (!full_path)
-			exit (127);
-// sleep(999999999);
-		execve(full_path, cmd_to_exec->full_cmd, shell_info->env);
-		// printf("passed execve\n");
-		perror("execve");
+		if (cmd_to_exec->file_not_found == 0)
+		{
+			full_path = find_cmd_in_env(cmd_to_exec->cmd, shell_info->env);
+			if (!full_path)
+				exit (127);
+			execve(full_path, cmd_to_exec->full_cmd, shell_info->env);
+			perror("execve");
+		}
 		close_fds(shell_info, cmd_to_exec);
 		exit(EXIT_FAILURE);
 	}

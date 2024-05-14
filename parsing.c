@@ -4,6 +4,7 @@ void	parse_input(t_shell *shell_info)
 {
 	create_tokens(shell_info);
 	parse_tokens(shell_info);
+	// print_token_types(shell_info);
 	print_cmd_list(shell_info->first_command);
 }
 
@@ -26,6 +27,8 @@ void	initialise_cmd_node(t_command *cmd_node)
 	cmd_node->output_path = NULL;
 	cmd_node->is_heredoc = 0;
 	pipe(cmd_node->fd);
+	cmd_node->file_not_found = 0;
+	cmd_node->filename = NULL;
 	cmd_node->next = NULL;
 }
 
@@ -38,6 +41,7 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 
 	while (iterate != NULL)
 	{
+// printf("CMD!!!!!!!!!!!!!!!\n");
 		if (iterate->token_type == PIPE)
 			iterate = iterate->next;
 		to_split = "";
@@ -49,10 +53,24 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 		cmd_node->cmd = ft_calloc(1, sizeof(char));
 		while (iterate != NULL && iterate->token_type != PIPE)
 		{
+// printf("CMD PART\n");
 // printf("iterate->token_type = %i\n", iterate->token_type);
 // print_token(iterate);
 // printf("NOT PIPE ITER\n");
 			iterate = set_redirections(cmd_node, iterate);
+			// if (cmd_node->file_not_found == 1)
+			// {
+			// 	while (iterate && iterate->token_type != PIPE)
+			// 		iterate = iterate->next;
+			// 	// free_cmd_list(&shell_info->first_command);
+			// 	// if (iterate != NULL)
+			// 	// {
+			// 	// 	cmd_node = ft_calloc(1, sizeof(t_command));
+			// 	// 	initialise_cmd_node(cmd_node);
+			// 	// 	cmd_node->cmd = ft_calloc(1, sizeof(char));
+			// 	// 	break ;
+			// 	// }
+			// }
 			if (iterate && iterate->token_type == WORD && (cmd_node->cmd == NULL || cmd_node->cmd[0] == '\0') && iterate->token_type != PIPE)
 				cmd_node->cmd = get_first_word(iterate->content);
 			else if (iterate && iterate->token_type == WORD && cmd_node->cmd != NULL && cmd_node->cmd[0] != '\0' && iterate->token_type != PIPE)
@@ -111,10 +129,15 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 	if (iterate->token_type == S_LESS)
 	{
 		iterate = iterate->next;
-		if (open_file(cmd_node, iterate, S_LESS) == -1)
+		if (cmd_node->file_not_found == 0)
+			cmd_node->filename = get_first_word(iterate->content);
+		if (cmd_node->file_not_found == 0)
 		{
-			printf("failed to open file\n");
-			return (init_tok);// fix return/exit and frees
+			if (open_file(cmd_node, iterate, S_LESS) == -1 || access(get_first_word(iterate->content), F_OK) == -1)
+			{
+				cmd_node->file_not_found = 1;
+				file_error(cmd_node);
+			}
 		}
 		iterate = iterate->next;
 	}
@@ -122,26 +145,38 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 	{
 		iterate = iterate->next;
 		cmd_node->is_heredoc = 1;
-		open_file(cmd_node, iterate, D_LESS);
+		// cmd_node->filename = get_first_word(iterate->content);
+		// if (cmd_node->file_not_found == 0)
+		// {
+			if (open_file(cmd_node, iterate, D_LESS) == -1 || access("/tmp/heredoc", F_OK) == -1)
+			{
+				cmd_node->file_not_found = 1;
+				heredoc_error(cmd_node);
+			}
+		// }
 		iterate = iterate->next;
 	}
 	else if (iterate && iterate->token_type == S_MORE && iterate->next && iterate->next->token_type == WORD) //create open file function to pass enum
 	{
 		iterate = iterate->next;
-		if (open_file(cmd_node, iterate, S_MORE) == -1)
+		if (cmd_node->file_not_found == 0)
+			cmd_node->filename = get_first_word(iterate->content);
+		if (cmd_node->file_not_found == 0)
 		{
-			printf("failed to open file\n");
-			return (init_tok);// fix return/exit and frees
+			if (open_file(cmd_node, iterate, S_MORE) == -1 || access(get_first_word(iterate->content), F_OK) == -1)
+				file_error(cmd_node);
 		}
 		iterate = iterate->next;
 	}
 	else if (iterate && iterate->token_type == D_MORE && iterate->next && iterate->next->token_type == WORD) //create open file function to pass enum
 	{
 		iterate = iterate->next;
-		if (open_file(cmd_node, iterate, D_MORE) == -1)
+		if (cmd_node->file_not_found == 0)
+			cmd_node->filename = get_first_word(iterate->content);
+		if (cmd_node->file_not_found == 0)
 		{
-			printf("failed to open file\n");
-			return (init_tok);// fix return/exit and frees
+			if (open_file(cmd_node, iterate, D_MORE) == -1 || access(get_first_word(iterate->content), F_OK) == -1)
+				file_error(cmd_node);
 		}
 		iterate = iterate->next;
 	}
