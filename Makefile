@@ -21,7 +21,10 @@ PRINTF_AR = ft_printf/libftprintf.a
 all: $(LIBFT_AR) $(PRINTF_AR) $(NAME)
 
 $(NAME): $(SRC)
-	@$(CC) $(CFLAGS) $(SRC) $(LIBFT_AR) $(PRINTF_AR) -o $(NAME)
+	@$(CC) $(CFLAGS) $(SRC) $(LIBFT_AR) $(PRINTF_AR) -o $(NAME) -lreadline 
+
+#for wsl
+# https://stackoverflow.com/questions/53507756/undefined-reference-to-readline-in-c-file-on-ubuntu-18-04-libreadline-dev-ins
 
 $(LIBFT_AR):
 	cd Libft && make

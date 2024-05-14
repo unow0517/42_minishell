@@ -7,15 +7,19 @@ void	execution_cases(t_shell *shell_info, int *status)
 	
 	//builtins
 	if (num_of_total_cmds(shell_info->first_command) == 1)
+		// pid = exec_single_cmd(shell_info, shell_info->first_command);
+    //YUN: execution.c:6:25: error: variable ‘pid’ set but not used [-Werror=unused-but-set-variable]
 		pid = exec_single_cmd(shell_info, shell_info->first_command);
 	else
 		pid = exec_pipeline(shell_info);
 	//YUN: -1 : WAITING FOR ANY CHILD PROC. IF CHILD PROCESS IS SUCCESSFULLY MADE THEN ?
 	//YUN: WNOHANG return immediately if no child has exited.
 	//YUN: ; = DOING NOTHING?
+  //YUN: some builtin fns do not need child process.
 	while (waitpid(-1, NULL, WNOHANG) != -1) //WUNTRACED 
 		;
-	*status = handle_exit(*status);
+  ft_printf("pid execution.c %d", pid); // YUN : TO AVOID ERR IN LINUX
+  *status = handle_exit(*status);
 }
 
 //YUN: ITERATE TO RUN COMMANDS, shell_info->first_command IS LINKED LIST OF CMD STRUCTS

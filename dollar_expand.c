@@ -70,22 +70,43 @@ char	*varvalue(int var_name_len, char *str, t_env_mini *env_mini)
 //MALLOC!
 char	*replace_expand(char *inpt, char *var_value, int var_name_len)
 {
-	int		var_value_len;
+	// int		var_value_len;
 	char	*str_till_dollar;
 	char	*str_after_varname;
 	char	*join1;
-	// char	*join2;
-	
-	var_value_len = ft_strlen(var_value);
-	str_till_dollar = ft_substr(inpt, 0, ft_strchr(inpt, '$') - inpt);
-	str_after_varname = ft_strchr(inpt, '$') + var_name_len + 1;
-		ft_printf("len %d\n", var_name_len);
-	ft_printf("std %s\n", str_till_dollar);
-	ft_printf("sav %s\n", str_after_varname);
-	join1 = ft_strjoin(str_till_dollar, var_value);
-	ft_printf("join1 %s\n", join1);
+	char	*join2;
 
-	return (join1);
+	
+	// var_value_len = ft_strlen(var_value);
+	// str_till_dollar = ft_substr(inpt, 0, ft_strchr(inpt, '$') - inpt);
+	if (ft_strchr(inpt, '$'))
+  {
+    str_till_dollar = ft_substr(inpt, 0, ft_strchr(inpt, '$') - inpt);
+    str_after_varname = ft_strchr(inpt, '$') + var_name_len + 1;
+  }
+  else
+  {
+    str_till_dollar = 0;
+    str_after_varname = 0;
+  }
+  // ft_printf("inptrp %s\n", inpt);
+  // ft_printf("len %d\n", var_name_len);
+	// ft_printf("std %s\n", str_till_dollar);
+	// ft_printf("sav %s\n", str_after_varname);
+  if (str_till_dollar && str_after_varname && var_value)
+  {
+    join1 = ft_strjoin(str_till_dollar, var_value);
+    join2 = ft_strjoin(join1, str_after_varname);
+  }
+  else if (!var_value)
+  {
+    return (str_till_dollar);
+  }
+  else
+    return ("");
+  // ft_printf("join2 %s\n", join2);
+
+	return (free(join1), join2);
 }
 
 char	*dollar_expand(t_shell *shell_info)
@@ -101,32 +122,24 @@ char	*dollar_expand(t_shell *shell_info)
 	if (shell_info->user_input)
 		inpt = shell_info->user_input;
 	// 			ft_printf("i %d\n", i);
-	ft_printf("inpt %s\n", inpt);
+	// ft_printf("inpt %s\n", inpt);
 	// ft_printf("isalnumun %s\n", is_al_num_underscore(0));
 	env_mini = shell_info->env_mini;
 	len = varname_len(inpt);
-	ft_printf("lens %d\n", len);
+	// ft_printf("lens %d\n", len);
+  if (!len && ft_strchr(inpt, '$'))
+    return (inpt);
+    // ft_printf("minishell: $: command not found\n");
 	var_value = varvalue(len, inpt, env_mini);
-	ft_printf("vv %s\n", var_value);
+	// ft_printf("vv %s\n", var_value);
 	replaced = replace_expand(inpt, var_value, len);
-	// ft_printf("rp %s\n", replaced);
-
-	// while (*inpt)
-	// {
-	// 	len = varname_len(inpt);
-	// 	ft_printf("lens %d\n", len);
-	// 	var_value = varvalue(len, inpt, env_mini);
-	// 	replace_expand(inpt, var_value, len);
-	// 	inpt++;
-	// }
-
-	// env_mini = shell_info->env_mini;
-	// while (env_mini)
-	// {
-	// 	if (ft_strncmp(env_mini->name, str, ft_strlen(str)) == 0)
-	// 		env_mini->value;
-	// }
-	return (inpt);
+  	// ft_printf("rep %s\n", replaced);
+	if (replaced)
+    return (replaced);
+  else
+    return (inpt);
+	// return (replaced);
 }
 
 //$? required
+//$$$ =>in bash 882882?
