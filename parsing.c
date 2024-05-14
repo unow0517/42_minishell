@@ -41,7 +41,6 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 
 	while (iterate != NULL)
 	{
-// printf("CMD!!!!!!!!!!!!!!!\n");
 		if (iterate->token_type == PIPE)
 			iterate = iterate->next;
 		to_split = "";
@@ -53,24 +52,7 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 		cmd_node->cmd = ft_calloc(1, sizeof(char));
 		while (iterate != NULL && iterate->token_type != PIPE)
 		{
-// printf("CMD PART\n");
-// printf("iterate->token_type = %i\n", iterate->token_type);
-// print_token(iterate);
-// printf("NOT PIPE ITER\n");
 			iterate = set_redirections(cmd_node, iterate);
-			// if (cmd_node->file_not_found == 1)
-			// {
-			// 	while (iterate && iterate->token_type != PIPE)
-			// 		iterate = iterate->next;
-			// 	// free_cmd_list(&shell_info->first_command);
-			// 	// if (iterate != NULL)
-			// 	// {
-			// 	// 	cmd_node = ft_calloc(1, sizeof(t_command));
-			// 	// 	initialise_cmd_node(cmd_node);
-			// 	// 	cmd_node->cmd = ft_calloc(1, sizeof(char));
-			// 	// 	break ;
-			// 	// }
-			// }
 			if (iterate && iterate->token_type == WORD && (cmd_node->cmd == NULL || cmd_node->cmd[0] == '\0') && iterate->token_type != PIPE)
 				cmd_node->cmd = get_first_word(iterate->content);
 			else if (iterate && iterate->token_type == WORD && cmd_node->cmd != NULL && cmd_node->cmd[0] != '\0' && iterate->token_type != PIPE)

@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/14 17:23:22 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/14 19:35:17 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,7 @@ void close_pipes(t_shell *shell_info);
 //ERRORS
 void	file_error(t_command *cmd_node);
 void	heredoc_error(t_command *cmd_node);
+void	cmd_error(t_command *cmd_node);
 
 
 

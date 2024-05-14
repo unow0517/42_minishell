@@ -32,7 +32,7 @@ pid_t	exec_pipeline(t_shell *shell_info)
 pid_t	exec_single_cmd(t_shell *shell_info, t_command	*cmd_to_exec)
 {
 	pid_t		pid;
-	char		*full_path;  // ADD TO STRUCT!
+	char		*full_path;
 
 	pid = fork();
 	if (pid == -1)
@@ -48,7 +48,7 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command	*cmd_to_exec)
 		{
 			full_path = find_cmd_in_env(cmd_to_exec->cmd, shell_info->env);
 			if (!full_path)
-				exit (127);
+				cmd_error(cmd_to_exec); // exit (127);
 			execve(full_path, cmd_to_exec->full_cmd, shell_info->env);
 			perror("execve");
 		}

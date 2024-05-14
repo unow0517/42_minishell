@@ -17,3 +17,11 @@ void	heredoc_error(t_command *cmd_node)
 	ft_putstr_fd(": ", 2);
 	perror("");
 }
+
+void	cmd_error(t_command *cmd_node)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd_node->cmd, 2);
+	ft_putstr_fd(": command not found\n", 2);
+	exit(127);
+}

@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:11:21 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/11 20:10:48 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/14 19:30:48 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,11 @@ char	*find_cmd_in_env(char *cmd, char **env)
 
 	i = 0;
 	path_from_env = "PATH=";
+	if (ft_strchr(cmd, '/') != NULL)
+	{
+		cmd = get_first_word(cmd);
+		return (cmd);
+	}
 	while (env[i] && ft_strncmp(env[i], path_from_env, 5) != 0)
 		i++;
 	path_from_env = env[i];
