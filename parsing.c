@@ -194,8 +194,12 @@ void	handle_heredoc(t_command *cmd_node, char *delimiter)
 	here_line = NULL;
 	fd = open("/tmp/heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	here_line = readline(">");
-	while (here_line && ft_strncmp(delimiter, here_line, ft_strlen(here_line) != 0))
+	while (here_line)
 	{
+		if (here_line[0] != '\0' && ft_strncmp(delimiter, here_line, \
+		ft_strlen(delimiter)) == 0 && ft_strncmp(delimiter, here_line, \
+		ft_strlen(here_line)) == 0)
+			break ;
 		ft_putstr_fd(here_line, fd);
 		ft_putstr_fd("\n", fd);
 		free(here_line);
