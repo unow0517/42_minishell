@@ -35,7 +35,8 @@ SRCS =	cd.c\
 		pwd.c\
 		tokens.c\
 		white_space.c\
-		errors.c
+		errors.c\
+		quotes.c
 
 OBJ = $(SRCS:.c=.o)
 

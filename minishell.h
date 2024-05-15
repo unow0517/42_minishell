@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/15 17:28:12 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/15 19:30:34 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,5 +196,9 @@ void	unexpected_token(t_shell *shell_info, char *flag, int *status);
 //FREES
 void	free_tokens(t_token **shell_info);
 void	free_cmd_list(t_command **cmds);
+
+//QUOTES
+char *quote_handler(t_shell *shell_info, t_token *iterate, char *quoted_str, t_token_type flag);
+t_token	*skip_quoted_str(t_token *to_skip, t_token_type flag);
 
 #endif

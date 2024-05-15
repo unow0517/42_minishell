@@ -40,9 +40,12 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 	char		*to_split;
 	char		*temp;
 	char		*temp1;
+	// char		*temp2;
+	char		*quoted_str;
 
 	while (iterate != NULL)
 	{
+		quoted_str = NULL;
 		if (iterate->token_type == PIPE)
 			iterate = iterate->next;
 		to_split = "";
@@ -54,17 +57,61 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 		cmd_node->cmd = ft_calloc(1, sizeof(char));
 		while (iterate != NULL && iterate->token_type != PIPE)
 		{
+printf("HEYYYYYYYYY\n");
 			iterate = set_redirections(cmd_node, iterate);
-			if (iterate && iterate->token_type == WORD && (cmd_node->cmd == NULL || cmd_node->cmd[0] == '\0') && iterate->token_type != PIPE)
-				cmd_node->cmd = get_first_word(iterate->content);
-			else if (iterate && iterate->token_type == WORD && cmd_node->cmd != NULL && cmd_node->cmd[0] != '\0' && iterate->token_type != PIPE)
+			if (iterate && (iterate->token_type == WORD || iterate->token_type == D_QUOTE || iterate->token_type == S_QUOTE) && (cmd_node->cmd == NULL || cmd_node->cmd[0] == '\0') && iterate->token_type != PIPE)
 			{
-				temp = ft_strjoin(to_split, " ");
-				temp1 = get_first_word(iterate->content); //-l
-				to_split = ft_strjoin(temp, get_first_word(iterate->content));
-				to_split = ft_strjoin(temp, temp1);
-				free(temp);
-				free(temp1);
+				if (iterate->token_type == WORD)
+					cmd_node->cmd = get_first_word(iterate->content);
+				else if (iterate->token_type == D_QUOTE)
+				{
+					iterate = iterate->next;
+					cmd_node->cmd = quote_handler(shell_info, iterate, quoted_str, D_QUOTE);
+					iterate = skip_quoted_str(iterate, D_QUOTE);
+				}
+				else if (iterate->token_type == S_QUOTE)
+				{
+					iterate = iterate->next;
+					cmd_node->cmd = quote_handler(shell_info, iterate, quoted_str, S_QUOTE);
+					iterate = skip_quoted_str(iterate, S_QUOTE);
+				}
+printf("cmd_node->cmd = %s\n", cmd_node->cmd);
+			}
+			else if (iterate && (iterate->token_type == WORD || iterate->token_type == D_QUOTE || iterate->token_type == S_QUOTE) && cmd_node->cmd != NULL && cmd_node->cmd[0] != '\0' && iterate->token_type != PIPE)
+			{
+				if (iterate->token_type == D_QUOTE) //make sure they are duplicates
+				{
+					iterate = iterate->next;
+					quoted_str = quote_handler(shell_info, iterate, quoted_str, D_QUOTE);
+					temp = ft_strjoin(to_split, " ");
+					temp1 = quoted_str; //-l
+					to_split = ft_strjoin(temp, quoted_str);
+					to_split = ft_strjoin(temp, temp1);
+					free(temp);
+					// free(temp1);
+					iterate = skip_quoted_str(iterate, D_QUOTE);
+				}
+				else if (iterate->token_type == S_QUOTE) //make sure they are duplicates
+				{
+					iterate = iterate->next;
+					quoted_str = quote_handler(shell_info, iterate, quoted_str, S_QUOTE);
+					temp = ft_strjoin(to_split, " ");
+					temp1 = quoted_str; //-l
+					to_split = ft_strjoin(temp, quoted_str);
+					to_split = ft_strjoin(temp, temp1);
+					free(temp);
+					// free(temp1);
+					iterate = skip_quoted_str(iterate, S_QUOTE);
+				}
+				else
+				{
+					temp = ft_strjoin(to_split, " ");
+					temp1 = get_first_word(iterate->content); //-l
+					to_split = ft_strjoin(temp, get_first_word(iterate->content));
+					to_split = ft_strjoin(temp, temp1);
+					free(temp);
+					free(temp1);
+				}
 			}
 			if (iterate && is_metacharacter_type(iterate->token_type) == false)
 				iterate = iterate->next;
