@@ -87,7 +87,8 @@ typedef struct s_shell
 	char		**env;
 	t_env_mini	*env_mini;
 	char		cwd[1024];
-	t_token		*tokens;
+  char    oldpwd[1024];
+  t_token		*tokens;
 	char		*user_input;
 	char		prompt[1024];
 	t_command	*first_command;
@@ -110,7 +111,7 @@ void	sigchecker(int sigint, int sigquit);
 void	catchsignal(void);
 
 //PWD.C
-void	printpwd(t_shell *shell_info);
+void	run_pwd(t_shell *shell_info);
 
 //PIPE.C
 void	execute(char *full_path, char *argv, char **env);
@@ -189,6 +190,8 @@ void	pipe_handling(t_shell *shell_info, t_command *cur);
 void	close_pipes(t_shell *shell_info);
 
 //EXPORT.C
+t_env_mini *ft_lstnew_envmini(char *name, char *value);
+t_env_mini *ft_lstlast_envmini(t_env_mini *lst);
 void	run_export(t_shell *shell_info);
 
 //DOLLAR_EXPAND.C

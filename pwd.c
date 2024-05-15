@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 //pwd asdf => pwd should work 
-void	printpwd(t_shell *shell_info)
+void	run_pwd(t_shell *shell_info)
 {
 	ft_printf("%s\n", shell_info->cwd);
 }

@@ -65,7 +65,7 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 		else if (inputstartswith(shell_info->user_input, "cd "))
 			run_cd(shell_info->user_input, shell_info);
 		else if (inputstartswith(shell_info->user_input, "pwd ") | inputis(shell_info->user_input, "pwd"))
-			printpwd(shell_info);
+			run_pwd(shell_info);
 		else if (inputis(shell_info->user_input, "env ") | inputis(shell_info->user_input, "env"))
 			run_env(shell_info);
 		else if (inputstartswith(shell_info->user_input, "export ") | inputis(shell_info->user_input, "export"))
