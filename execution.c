@@ -18,7 +18,8 @@ void	execution_cases(t_shell *shell_info, int *status)
   //YUN: some builtin fns do not need child process.
 	while (waitpid(-1, NULL, WNOHANG) != -1) //WUNTRACED 
 		;
-  ft_printf("pid execution.c %d", pid); // YUN : TO AVOID ERR IN LINUX
+  // ft_printf("pid execution.c %d", pid); // YUN : TO AVOID ERR IN LINUX
+  (void)pid;
   *status = handle_exit(*status);
 }
 
@@ -56,7 +57,10 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command	*cmd_to_exec)
 		handle_redir(shell_info, cmd_to_exec);
 		full_path = find_cmd_in_env(cmd_to_exec->cmd, shell_info->env);
 		if (!full_path)
+    {
+      ft_printf("minishell: %s: command not found\n", shell_info->user_input);
 			exit (127);
+    }
 // sleep(999999999);
 		execve(full_path, cmd_to_exec->full_cmd, shell_info->env);
 		// printf("passed execve\n");

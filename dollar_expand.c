@@ -143,3 +143,4 @@ char	*dollar_expand(t_shell *shell_info)
 
 //$? required
 //$$$ =>in bash 882882?
+//expand is case sensitive
