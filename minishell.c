@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:46 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/13 15:42:58 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/15 16:29:40 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	initialise_basics(int argc, char **argv, char **env, t_shell *shell_info)
 	shell_info->first_command = NULL;
 	shell_info->fd[0] = -1;
 	shell_info->fd[1] = -1;
+	shell_info->syntax_error = false;
 }
 
 int	create_prompt(t_shell *shell_info)

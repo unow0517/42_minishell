@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 18:12:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/14 16:04:16 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:31:55 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	inpt_handler(char **argv, char **env, t_shell *shell_info)
 	{
 		signal(SIGINT, sighandler);
 		shell_info->user_input = readline(shell_info->prompt);
-		parse_input(shell_info);
+		parse_input(shell_info, &status);
 printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
 		execution_cases(shell_info, &status);
 		if (!shell_info->user_input)
@@ -61,5 +61,7 @@ printf("exit status = %i\n", status); //if echo $? set status to NULL at the end
 		(void)argv;
 	free_tokens(&shell_info->tokens);
 	free_cmd_list(&shell_info->first_command);
+	printf("shell_info->syntax_error = %i\n", shell_info->syntax_error);
+	shell_info->syntax_error = false;
 	}
 }

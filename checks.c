@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 13:39:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/14 17:23:44 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:27:20 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,3 +110,62 @@ void	print_token_types(t_shell *shell_info)
 	}
 	printf("\n");
 }
+
+void	syntax_error_check(t_shell *shell_info, int *status)
+{
+	t_token	*iter;
+
+	if (!shell_info->tokens)
+		return ;
+	iter = shell_info->tokens;
+	if ((iter->token_type == PIPE && !iter->next) || (iter->token_type == PIPE && iter->next->token_type != PIPE))
+		unexpected_token(shell_info, "|", status); // bash: syntax error near unexpected token `|';
+	else if (iter->token_type == PIPE && iter->next && iter->next->token_type == PIPE)
+		unexpected_token(shell_info, "||", status);
+	else if (is_redir(iter->token_type) == true && !iter->next)
+		unexpected_token(shell_info, "newline", status);
+	else
+	{
+		while (iter && iter->next)
+		{
+			if (is_redir(iter->token_type) && is_redir(iter->next->token_type))
+			{
+				if (iter->next->token_type == D_LESS || iter->next->token_type == S_LESS)
+					unexpected_token(shell_info, "<", status);
+				else if (iter->next->token_type == D_MORE || iter->next->token_type == S_MORE)
+					unexpected_token(shell_info, ">", status);
+				iter = iter->next;
+			}
+			if (iter->token_type == PIPE && iter->next && iter->next->token_type == PIPE)
+			{
+				if (shell_info->tokens->token_type == WORD)
+					unexpected_token(shell_info, get_first_word(shell_info->tokens->content), status);
+				else
+					unexpected_token(shell_info, "|", status);
+				iter = iter->next;
+			}
+			iter = iter->next;
+		}
+	}
+}
+
+// bash: syntax error near unexpected token `newline'
+// bash-3.2$ < out < out |
+// > 
+// > <
+// bash: syntax error near unexpected token `newline'
+// bash-3.2$ |
+// bash: syntax error near unexpected token `|'
+// bash-3.2$ ls |
+// > |
+// bash: syntax error near unexpected token `|'
+// bash-3.2$ |
+// bash: syntax error near unexpected token `|'
+// bash-3.2$ |||||
+// bash: syntax error near unexpected token `||'
+// bash-3.2$ ||||||||||||
+// bash: syntax error near unexpected token `||'
+// bash-3.2$ |||||||||
+// bash: syntax error near unexpected token `||'
+// bash-3.2$ | ls
+// bash: syntax error near unexpected token `|'

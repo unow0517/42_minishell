@@ -1,11 +1,13 @@
 #include "minishell.h"
 
-void	parse_input(t_shell *shell_info)
+void	parse_input(t_shell *shell_info, int *status)
 {
 	create_tokens(shell_info);
-	parse_tokens(shell_info);
+	syntax_error_check(shell_info, status);
+	if (shell_info->syntax_error == false)
+		parse_tokens(shell_info);
 	// print_token_types(shell_info);
-	print_cmd_list(shell_info->first_command);
+	// print_cmd_list(shell_info->first_command);
 }
 
 void	parse_tokens(t_shell *shell_info)

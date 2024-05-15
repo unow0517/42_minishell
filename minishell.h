@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/14 19:35:17 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:28:12 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef struct s_shell
 	char		prompt[1024];
 	t_command	*first_command;
 	int			fd[2];
+	bool		syntax_error;
 				//Its in linux/limits.h.
 				// #define PATH_MAX        4096 
 }	t_shell;
@@ -130,6 +131,7 @@ void	print_split(char **str);
 void	print_cmd_list(t_command *cmd_node);
 void	print_split_no_newline(char **str);
 void	print_token_types(t_shell *shell_info);
+void	syntax_error_check(t_shell *shell_info, int *status);
 
 // //PIPEX_FUNCTIONS.C
 char	*get_first_word(char *argv);
@@ -159,10 +161,12 @@ bool		is_ws(char c);
 void	cmd_add_back(t_command **first_token, t_command *new);
 int		handle_exit(int status);
 bool	is_metacharacter_type(int i);
+int	token_count(t_shell *shell_info);
+bool	is_redir(int i);
 
 
 //PARSING.C
-void	parse_input(t_shell *shell_info);
+void	parse_input(t_shell *shell_info, int *status);
 void	parse_tokens(t_shell *shell_info);
 int		number_of_tokens(t_shell *shell_info);
 void	set_executable_nodes(t_shell *shell_info, t_token *iterate);
@@ -186,7 +190,7 @@ void close_pipes(t_shell *shell_info);
 void	file_error(t_command *cmd_node);
 void	heredoc_error(t_command *cmd_node);
 void	cmd_error(t_command *cmd_node);
-
+void	unexpected_token(t_shell *shell_info, char *flag, int *status);
 
 
 //FREES
