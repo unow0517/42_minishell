@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 13:39:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/16 17:32:12 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/16 20:48:34 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,21 +130,26 @@ void	syntax_error_check(t_shell *shell_info, int *status)
 		{
 			if (is_redir(iter->token_type) && is_redir(iter->next->token_type))
 			{
-				if (iter->next->token_type == D_LESS || iter->next->token_type == S_LESS)
+				if ((iter->token_type == S_MORE && iter->next->token_type == S_LESS) || (iter->token_type == S_LESS && iter->next->token_type == S_MORE))
+					unexpected_token(shell_info, "<>", status);
+				else if (iter->next->token_type == D_LESS || iter->next->token_type == S_LESS)
 					unexpected_token(shell_info, "<", status);
 				else if (iter->next->token_type == D_MORE || iter->next->token_type == S_MORE)
 					unexpected_token(shell_info, ">", status);
-				iter = iter->next;
+				while (iter && is_redir(iter->token_type))
+					iter = iter->next;
 			}
-			if (iter->token_type == PIPE && iter->next && iter->next->token_type == PIPE)
+			else if (iter->token_type == PIPE && iter->next && iter->next->token_type == PIPE)
 			{
 				if (shell_info->tokens->token_type == WORD)
 					unexpected_token(shell_info, get_first_word(shell_info->tokens->content), status);
 				else
 					unexpected_token(shell_info, "|", status);
-				iter = iter->next;
+				while (iter && iter->token_type == PIPE)
+					iter = iter->next;
 			}
-			iter = iter->next;
+			if (iter)
+				iter = iter->next;
 		}
 	}
 }
