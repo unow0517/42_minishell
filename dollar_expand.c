@@ -109,6 +109,7 @@ char	*replace_expand(char *inpt, char *var_value, int var_name_len)
 	return (free(join1), join2);
 }
 
+//when user_input is 0
 char	*dollar_expand(t_shell *shell_info)
 {
 	t_env_mini	*env_mini;
@@ -121,6 +122,8 @@ char	*dollar_expand(t_shell *shell_info)
 	inpt = NULL;
 	if (shell_info->user_input)
 		inpt = shell_info->user_input;
+	else
+		return (NULL);
 	// 			ft_printf("i %d\n", i);
 	// ft_printf("inpt %s\n", inpt);
 	// ft_printf("isalnumun %s\n", is_al_num_underscore(0));

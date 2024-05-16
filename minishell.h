@@ -87,8 +87,8 @@ typedef struct s_shell
 	char		**env;
 	t_env_mini	*env_mini;
 	char		cwd[1024];
-  char    oldpwd[1024];
-  t_token		*tokens;
+	char    	oldpwd[1024];
+	t_token		*tokens;
 	char		*user_input;
 	char		prompt[1024];
 	t_command	*first_command;

@@ -3,8 +3,8 @@
 //YUN: RUN CMD OR PIPE DEPENDING ON THE # OF CMDS
 void	execution_cases(t_shell *shell_info, int *status)
 {
-	pid_t		pid;
-	
+	pid_t	pid;
+
 	//builtins
 	if (num_of_total_cmds(shell_info->first_command) == 1)
 		// pid = exec_single_cmd(shell_info, shell_info->first_command);
@@ -40,7 +40,7 @@ pid_t	exec_pipeline(t_shell *shell_info)
 	return (pid);
 }
 
-pid_t	exec_single_cmd(t_shell *shell_info, t_command	*cmd_to_exec)
+pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 {
 	pid_t		pid;
 	char		*full_path;  // ADD TO STRUCT!
@@ -51,24 +51,24 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command	*cmd_to_exec)
 		perror("fork failed");
 		exit (EXIT_FAILURE);
 	}
-	if (pid == 0)
+	if (pid == 0) //YUN:CODE IS RUNNING IN CHILD PROCESS
 	{
 		pipe_handling(shell_info, cmd_to_exec);
 		handle_redir(shell_info, cmd_to_exec);
 		full_path = find_cmd_in_env(cmd_to_exec->cmd, shell_info->env);
 		if (!full_path)
-    {
-      ft_printf("minishell: %s: command not found\n", shell_info->user_input);
+		{
+			ft_printf("minishell: %s: command not found\n", shell_info->user_input);
 			exit (127);
-    }
-// sleep(999999999);
+		}
+		// sleep(999999999);
 		execve(full_path, cmd_to_exec->full_cmd, shell_info->env);
 		// printf("passed execve\n");
 		perror("execve");
 		close_fds(shell_info, cmd_to_exec);
 		exit(EXIT_FAILURE);
 	}
-	else
+	else //YUN: CODE IS RUNNING ON PARENT PROCESS, RETEURNS CHILD PROCESS
 	{
 		close_fds(shell_info, cmd_to_exec);
 		return (pid);
@@ -89,9 +89,9 @@ void	pipe_handling(t_shell *shell_info, t_command *cur)
 	close_pipes(shell_info);
 }
 
-void close_pipes(t_shell *shell_info)
+void	close_pipes(t_shell *shell_info)
 {
-	t_command *iterate;
+	t_command	*iterate;
 
 	iterate = shell_info->first_command;
 	while (iterate)
