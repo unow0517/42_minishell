@@ -51,3 +51,5 @@ void	run_unset(t_shell *shell_info)
 		}
 	}
 }
+
+//ft_split free required!
