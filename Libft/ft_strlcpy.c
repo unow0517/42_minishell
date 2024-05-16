@@ -3,85 +3,66 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 12:42:08 by tsimitop          #+#    #+#             */
-/*   Updated: 2023/10/28 13:42:36 by tsimitop         ###   ########.fr       */
+/*   Created: 2023/10/09 14:43:49 by yowoo             #+#    #+#             */
+/*   Updated: 2023/10/30 13:04:19 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
+#include <string.h>
 #include "libft.h"
 
-// strlcpy() copies up to dstsize - 1 characters from the string src to dst,
-// NUL-terminating the result if dstsize is not 0.
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+size_t	ft_strlcpy(char *dst, const char *src, unsigned int n)
 {
-	size_t	i;
-	size_t	len;
+	size_t	result;
+	char	*srcp;
 
-	len = ft_strlen(src);
-	i = 0;
-	if (dstsize != 0)
+	srcp = (char *)src;
+	while (*srcp != '\0' && n >= ft_strlen(src) + 1)
+		*dst++ = *srcp++;
+	if (*srcp == '\0')
 	{
-		while (i < dstsize - 1 && i < len)
-		{
-			dst[i] = src[i];
-			i++;
-		}
-		dst[i] = 0;
+		*dst = '\0';
+		result = ft_strlen(src);
 	}
-	return (len);
+	if (n == 0)
+		return (ft_strlen(src));
+	while (*srcp != '\0' && n < ft_strlen(src) + 1 && n)
+	{
+		*dst++ = *srcp++;
+		n--;
+	}
+	if (n == 0)
+	{
+		*(dst - 1) = '\0';
+		result = ft_strlen(src);
+	}
+	return (result);
 }
 
-// size_t	ft_strlen(const char *str);
-
-// size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
-// {
-// 	size_t	i;
-
-// 	i = 0;
-// 	if (dstsize == '\0')
-// 	{
-// 		dst[i] = '\0';
-// 	}
-// 	while (i < (dstsize - 1) && (dstsize > '\0') && src[i] != '\0')
-// 	{
-// 		dst[i] = src[i];
-// 		i++;
-// 	}
-// 	dst[i] = '\0';
-// 	return (ft_strlen(src));
+//test dest is rrrrrr
+//returns length of intended string;
+//length is always needed
+//when n = 0, return length, dest stays same. = PASS
+//when n = 1, dest is ^@rrrrr
+//when n > 1, dest is src, with length -1
+//when n < length of dest, rest of dest should be kept
+//length is including '\0'
+// int main(){
+//     int n = 0;
+//     char src[50] = "aaa";
+//     char dest[15] = "rrrrrr";
+//     printf("n: %d\n",n);
+//     printf("srclen: %lu\n\n",strlen(src));
+//     printf("strlcpy: %lu\n",strlcpy(dest,src,n));
+//     puts(dest);
+//     char dest_1[15] = "rrrrrr";;
+//     printf("ft_strlcpy: %lu\n",ft_strlcpy(dest_1,src,n));
+//     puts(dest_1);
 // }
-
-// #include <string.h>
-// #include <stdio.h>
-
-// int	main(void)
-// {
-// // 	char	s1[61] = "small sentence";
-// // 	char	s2[15] = "larger sentence";
-// 	// char dest[14] = "a";
-// 	char dest[10];
-// 	memset(dest, 'A', 10);
-
-// 	// ssize_t ho = strlcpy(dest, "coucou", -1);
-// 	// printf("%lu\n%s\n\n", ho, dest);
-// 	ssize_t	hi = ft_strlcpy(dest, "coucou", -1);
-// 	printf("%lu\n%s\n\n", hi, dest);
-// 	printf("%d\n%d\n\n", (dest[0] == 'c'), dest);
-// 	if (dest[0] == 'c' && dest[1] == 0  && dest[2] == 'A')
-
-// 	return (0);
-// }
-
-// size_t	ft_strlen(const char *str)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (str[i] != '\0')
-// 	{
-// 		i++;
-// 	}
-// 	return (i);
-// }
+//length should be returned in any case
+//strlcpy = output is the length it tries to copy, 
+//if dest is shorter than intended length => error
+//content of dest has nothing to do with strlcpy

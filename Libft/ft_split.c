@@ -3,124 +3,95 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/22 13:30:11 by tsimitop          #+#    #+#             */
-/*   Updated: 2023/10/28 13:42:14 by tsimitop         ###   ########.fr       */
+/*   Created: 2023/10/12 11:31:29 by yowoo             #+#    #+#             */
+/*   Updated: 2024/04/29 13:00:32 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "libft.h"
 
-static char	*substrings(char const *s, char c, char **array);
-
-static char	**freeing(char **array, int i);
-
-static int	ft_count(char const *s, char c)
+static int	cntwords(char const *s, char c)
 {
-	int		i;
-	int		count;
+	int	cnt;
 
-	i = 0;
-	count = 0;
-	while (s && s[i] != '\0')
+	cnt = 0;
+	while (*s != '\0')
 	{
-		while (s[i] != '\0' && s[i] == c)
-			i++;
-		if ((s[i] != '\0' && s[i] != c))
-			count++;
-		while (s[i] != '\0' && s[i] != c)
-			i++;
+		if (*s != c && (*(s + 1) == c || *(s + 1) == '\0'))
+			cnt++;
+		s++;
 	}
-	return (count);
+	return (cnt);
 }
 
-// Allocates (with malloc(3)) and returns an array of strings obtained by
-// splitting ’s’ using the character ’c’ as a delimiter. The array must end
-// with a NULL pointer.
-char	**ft_split(char const *s, char c)
+static int	get_start(const char *s, char c)
 {
-	char	**array;
+	int	cnt;
 
-	array = (char **)ft_calloc(ft_count(s, c) + 1, sizeof(char *));
-	if (!array)
-		return (NULL);
-	substrings(s, c, array);
-	return (array);
+	cnt = 0;
+	while (s[cnt] != '\0')
+	{
+		if (s[cnt] != c)
+			return (cnt);
+		cnt++;
+	}
+	return (cnt);
 }
 
-static char	*substrings(char const *s, char c, char **array)
+static int	get_len(const char *s, char c)
 {
-	int	i;
-	int	start;
-	int	end;
+	int	cnt;
 
-	i = 0;
-	start = 0;
-	while (ft_count(s, c) > i)
+	cnt = 0;
+	while (s[cnt] != '\0')
 	{
-		while (s[start] == c)
-			start++;
-		end = start;
-		while (s[end] != c && s[end] != '\0')
-			end++;
-		array[i] = ft_substr(s, start, (end - start));
-		if (!array[i])
-			freeing(array, i);
-		start = end;
-		i++;
+		if (s[cnt] == c)
+			return (cnt);
+		cnt++;
 	}
-	return (array[i]);
+	return (cnt);
 }
 
-static char	**freeing(char **array, int i)
+static char	**free_mem(char **s, int count)
 {
-	while (array[i > 0])
+	while (count >= 0)
 	{
-		i--;
-		free(array[i - 1]);
+		free(s[count]);
+		count--;
 	}
-	free(array);
+	free(s);
 	return (NULL);
 }
 
-// #include <stdio.h>
+char	**ft_split(char const *s, char c)
+{
+	char	**array;
+	int		cnt;
+	int		start;
+	int		len;
+	int		i;
 
-// int main(void)
-// {
-//     char const *s = "This is a test string";
-//     char c = ' ';
-
-//     char **result = ft_split("hello!", ' ');
-//     if (result)
-// 	{
-//         int i = 0;
-//         while (result[i])
-// 		{
-//             printf("%s\n", result[i]);
-//             i++;
-//         }
-//     }
-//     return (0);
-// }
-/*
-in ft count
-if ((s[i] != '\0' && s[i] != c)) || (i == 0) first one creates error,
-second not needed
-*/
-/*
-Turn in files -
-Parameters 			s: The string to be split.
-					c: The delimiter character.
-Return value 		The array of new strings resulting from the split.
-					NULL if the allocation fails.
-External functs. 	malloc, free
-Description 		Allocates (with malloc(3)) and returns an array
-					of strings obtained by splitting ’s’ using the
-					character ’c’ as a delimiter. The array must end
-					with a NULL pointer.
-
-*/
-
-// printf("s[%d] = '%c'\n\n", i, s[i]);							TEST COUNT
-// printf("temp = '%c'\ns[%d] = '%c'\n\n", temp, i, s[i]);		TEST COUNT
+	i = 0;
+	start = 0;
+	cnt = cntwords(s, c);
+	array = malloc((cntwords(s, c) + 1) * sizeof(char *));
+	if (!array)
+		return (0);
+	while (i < cnt)
+	{
+		start = start + get_start(s + start, c);
+		len = get_len(s + start, c);
+		array[i] = ft_substr(s, start, len);
+		if (array[i] == NULL)
+			return (free_mem(array, i));
+		start = start + len + 1;
+		i++;
+	}
+	array[i] = NULL;
+	return (array);
+}

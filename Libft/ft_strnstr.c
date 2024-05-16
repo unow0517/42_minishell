@@ -3,96 +3,82 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/18 19:24:17 by tsimitop          #+#    #+#             */
-/*   Updated: 2023/10/28 13:42:51 by tsimitop         ###   ########.fr       */
+/*   Created: 2023/10/10 07:53:17 by yowoo             #+#    #+#             */
+/*   Updated: 2023/10/26 14:58:30 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <string.h>
+#include <stdio.h>
 
-/**
- * @brief This is the function to find a needle in a haystack
- * 
- * @param haystack string which will be searched
- * @param needle string to find
- * @param len length within it should search
- * @return char* Pointer to the start of the needle within the haystack or NULL
- */
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
-	size_t	i;
-	size_t	len_needle;
+	size_t		i;
+	size_t		j;
 
 	i = 0;
-	len_needle = ft_strlen(needle);
-	if (ft_strncmp(needle, "", len_needle) == 0)
+	if (*needle == '\0' || needle == NULL)
 		return ((char *)haystack);
-	if (ft_strncmp(haystack, "", len_needle) == 0)
-		return (NULL);
-	while (i + len_needle <= len)
+	while (haystack[i] != '\0' && i < len)
 	{
-		if (ft_strncmp(haystack + i, needle, len_needle) == 0)
-			return ((char *)haystack + i);
+		j = 0;
+		while (needle[j] == haystack[i + j] && i + j < len)
+		{
+			if (needle[j + 1] == '\0')
+			{
+				return ((char *)haystack + i);
+			}
+			j++;
+		}
 		i++;
 	}
 	return (NULL);
 }
 
-// char *ft_strnstr(const char *haystack, const char *needle, size_t len)FINAL
+// char	*ft_strnstr(const char *big, const char *little, unsigned long n)
 // {
-// 	size_t i;
-// 	size_t len_needle;	
-// 	i = 0;
-// 	len_needle = ft_strlen(needle);
-// 	if (ft_strncmp(needle, "", len_needle) == 0)
-// 		return ((char *)haystack);
-// 	if (ft_strncmp(haystack, "", len_needle) == 0)
-// 		return (NULL);
-// 	// if (len_needle == 0)
-// 	// 	return (char *)haystack;	//this is useless
-// 	while (i + len_needle <= len) //<=!!!
+// 	char			*bptr;
+// 	char			*lptr;
+// 	char			*start;
+// 	unsigned long	cnt;
+// 	unsigned long	n1 = n;
+
+// 	if (*little == '\0')
+// 		return ((char *)big);
+// 	if (*big == '\0')
+// 		return (0);
+// 	bptr = (char *)big;
+// 	lptr = (char *)little;
+// 	cnt = 0;
+// 	while (n && *bptr != '\0')
 // 	{
-// 		if (ft_strncmp(haystack + i, needle, len_needle) == 0) {
-// 			// return (char *)(haystack + i);	chat gpt's
-// 			return ((char *)haystack + i);		// mine (they are both right)
-// 		}
-// 		i++;
-// 	}
-// 	return NULL; // Needle not found
-// }
-// if (ft_strncmp(needle, "", len_needle) == 0) //if those 2 if's missing it 
-// doesn't segfault, without this doesn't work with empty strings
-	// return ((char *)haystack);
-// if (ft_strncmp(haystack, "", len_needle) == 0) //second if
-	// return (NULL);
-
-// char	*ft_strnstr(const char *haystack, const char *needle, size_t len) //MINE
-// {
-// 	size_t i;
-// 	size_t len_needle;
-
-// 	i = 0;
-// 	len_needle = ft_strlen(needle); // needs to be on top to segfault if it's
-// 									NULL, pointer doesnt exist
-// 	if (ft_strncmp(needle, "", len_needle) == 0)
-// 		return ((char *)haystack);
-// 	if (ft_strncmp(haystack, "", len_needle) == 0)
-// 		return (NULL);
-// 	// ft_strlen(haystack);	checks if it's empty -> MAKES NO DIFFERENCE
-// 	if (haystack == needle)
+// 		start = bptr;
+// 		while (*bptr == *lptr && bptr - big + cnt < n1 && *lptr != '\0')
 // 		{
-// 			if (ft_strncmp(haystack, needle, len_needle) == 0)
-// 				return ((char *)haystack);
-// 			if (ft_strncmp(haystack, needle, len_needle) != 0)
-// 				return (NULL);
+// 			cnt++;
+// 			bptr++;
+// 			lptr++;
 // 		}
-// 	while (i + len_needle <= len)the <= was the problem, both functions work now
-// 	{
-// 		if (ft_strncmp(haystack + i, needle, len_needle) == 0)
-// 			return ((char *)haystack + i);
-// 		i++;
+// 		cnt = 0;
+// 		if (*lptr == '\0')
+// 			return (start);
+// 		n--;
+// 		bptr = start + 1;
+// 		lptr = (char *)little;
 // 	}
-// 	return (NULL);
+// 	return (0);
 // }
+
+// int main(){
+//     char big[] = "aaabcabcd";
+//     char small[] = "aaabc";
+
+//     int len = 5;
+//     char* res = strnstr(big, small, len);
+//     printf("strnstr is: %s\n",res);
+//     char* myRes = ft_strnstr(big, small, len);
+//     printf("my_strnstr is: %s",myRes);
+// }
+// // after null-term. is not taken into account

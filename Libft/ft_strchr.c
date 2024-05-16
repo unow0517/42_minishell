@@ -3,33 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/18 14:31:14 by tsimitop          #+#    #+#             */
-/*   Updated: 2023/11/24 17:04:21 by tsimitop         ###   ########.fr       */
+/*   Created: 2023/10/09 17:40:33 by yowoo             #+#    #+#             */
+/*   Updated: 2023/10/24 10:34:16 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-// The strchr() function locates the first occurrence of c (converted to a char)
-// in the string pointed to by s.
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr(const char *str, int c)
 {
-	int	i;
+	char	*ptr;
 
-	i = 0;
-	while (s[i] != '\0')
+	ptr = (char *) str;
+	while (*ptr != '\0')
 	{
-		if (s[i] == (char)c)
-		{
-			return ((char *)&s[i]);
-		}
-		i++;
+		if (*ptr != (char)c)
+			ptr++;
+		else
+			return (ptr);
 	}
-	if ((char)c == '\0')
+	if (*ptr == (char)c)
 	{
-		return ((char *)&s[i]);
+		return (ptr);
 	}
-	return (NULL);
+	return (0);
 }
+
+// use new ptr to not discards 'cnost char *' qualifiers
+
+// #include <stdio.h>
+// #include <string.h>
+
+// int main () {
+//    const char str[] = "abcs";
+//    const char ch = 't';
+//    char *ret;
+
+//    ret = strchr(str, ch);
+
+//    printf("String after |%c| is - |%s|\n", ch, ret);
+
+//    char* ft_ret;
+
+//    ft_ret = ft_strchr(str,ch);
+
+//    printf("String after |%c| is - |%s|\n", ch, ft_ret);
+
+//    return(0);
+// }

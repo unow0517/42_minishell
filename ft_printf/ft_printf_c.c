@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   ft_printf_c.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/09 11:20:48 by yowoo             #+#    #+#             */
-/*   Updated: 2023/10/17 12:38:30 by yowoo            ###   ########.fr       */
+/*   Created: 2023/10/31 10:00:40 by yowoo             #+#    #+#             */
+/*   Updated: 2024/01/15 15:34:17 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isdigit(int c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
-}
+#include "ft_printf.h"
 
-// return ((c >= '0' && c <= '9')? 1:0);
-// #include <stdio.h>
-// int main(){
-//     int result = ft_isdigit('a');
-//     printf("%d",result);
-// }
+int	ft_printf_c(char c)
+{
+	int	i;
+
+	i = write(1, &c, 1);
+	if (i == -1)
+		return (-1);
+	return (i);
+}

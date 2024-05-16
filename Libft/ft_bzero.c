@@ -3,26 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/17 15:27:42 by tsimitop          #+#    #+#             */
-/*   Updated: 2023/10/28 13:41:10 by tsimitop         ###   ########.fr       */
+/*   Created: 2023/10/16 16:41:54 by yowoo             #+#    #+#             */
+/*   Updated: 2023/10/30 13:09:25 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-// The bzero() function writes n zeroed bytes to the string s.
-void	ft_bzero(void *s, size_t n)
+void	ft_bzero(void *str, unsigned int n)
 {
-	size_t			i;
-	unsigned char	*uc;
+	unsigned char	*p;
 
-	i = 0;
-	uc = s;
-	while (i < n)
+	p = str;
+	while (n > 0)
 	{
-		uc[i] = 0;
-		i++;
+		*p = '\0';
+		p++;
+		n--;
 	}
 }
+
+// #include <stdio.h>
+// #include <string.h>
+// int main(){
+//     char str[50];
+
+//     strcpy(str,"This is string.h library function@@!");
+//     puts(str);
+
+//     ft_bzero(str,7);
+//     puts(str+7);
+//     return(0);
+// }
+//bzero does not return value

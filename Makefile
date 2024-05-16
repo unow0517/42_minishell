@@ -1,72 +1,30 @@
-################################################################################
-#									CONSTANTS								   #
-################################################################################
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
-LIBS = libft.h minishell.h
-LIBFT_PATH = ./Libft
-LIBFT := $(LIBFT_PATH)/libft.a
-LDFLAGS = -L $(LIBFT_PATH) -lft -lreadline
-
 NAME = minishell
+CC = gcc
+SRC = errors.c quotes.c execution.c parsing.c inpt_handler.c freeing.c minishell.c inpt_functions.c history.c sig_functions.c pwd.c pipe.c echo.c cd.c env.c white_space.c tokenizer.c pipex_functions.c checks.c utils.c
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+RM = rm -rf
+LIBFT_AR = Libft/libft.a
+PRINTF_AR = ft_printf/libftprintf.a
 
-################################################################################
-#									MAIN PART								   #
-################################################################################
+all: $(LIBFT_AR) $(PRINTF_AR) $(NAME)
 
-SRCS =	cd.c\
-		echo.c\
-		freeing.c\
-		inpt_handler.c\
-		pipe.c\
-		tokenizer.c\
-		unset.c\
-		checks.c\
-		env.c\
-		history.c\
-		minishell.c\
-		pipex_functions.c\
-		sig_functions.c\
-		utils.c\
-		dollar_expand.c\
-		execution.c\
-		inpt_functions.c\
-		parsing.c\
-		pwd.c\
-		tokens.c\
-		white_space.c\
-		errors.c\
-		quotes.c
+$(NAME): $(SRC)
+	@$(CC) $(CFLAGS) $(SRC) $(LIBFT_AR) $(PRINTF_AR) -o $(NAME) -lreadline
 
-OBJ = $(SRCS:.c=.o)
+$(LIBFT_AR):
+	cd Libft && make
 
-all : $(LIBFT) $(NAME)
+$(PRINTF_AR):
+	cd ft_printf && make
 
-$(NAME) : $(OBJ)
-	@$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@
+clean:
+	cd Libft && make clean
+	cd ft_printf && make clean
+	@$(RM) $(NAME)
 
-$(OBJ) : %.o : %.c
-	@$(CC) -c $(CFLAGS) -I$(LIBFT_PATH) $< -o $@
+fclean: clean
+	@$(RM) $(LIBFT_AR)
+	@$(RM) $(PRINTF_AR)
+	@$(RM) $(NAME)
 
-clean :
-	@echo "Removing $(OBJ)"
-	@rm -f $(OBJ)
-	@make -C $(LIBFT_PATH) clean
-
-fclean : clean
-	@echo "Removing $(NAME)"
-	@rm -f $(NAME)
-	@make -C $(LIBFT_PATH) fclean
-
-re : fclean all
-
-################################################################################
-#									LIBFT									   #
-################################################################################
-
-$(LIBFT):
-	@echo "Building libft..."
-	@make -C $(LIBFT_PATH) --no-print-directory
-
-.PHONY :
-	all clean fclean re
+re: fclean all
