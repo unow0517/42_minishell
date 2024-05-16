@@ -14,14 +14,14 @@
 
 int	inputis(char *inpt, char *string)
 {
-	int	len;
+	// int	len;
 
-	len = 0;
-	if (ft_strlen(inpt) < ft_strlen(string))
-		len = ft_strlen(string);
-	else
-		len = ft_strlen(inpt);
-	if (ft_strncmp(inpt, string, len) == 0)
+	// len = 0;
+	// if (ft_strlen(inpt) < ft_strlen(string))
+	// 	len = ft_strlen(string);
+	// else
+	// 	len = ft_strlen(inpt);
+  if ((!ft_strncmp(inpt, string, ft_strlen(inpt))) && (ft_strlen(inpt) == ft_strlen(string)))
 		return (1);
 	else
 		return (0);

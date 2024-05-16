@@ -22,9 +22,11 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 		signal(SIGINT, sighandler);
 		shell_info->user_input = readline(shell_info->prompt);
 		parse_input(shell_info);
+
     // shell_info->user_input = dollar_expand(shell_info);
 		// execution_cases(shell_info, &status);
-		if (!shell_info->user_input)
+		
+    if (!shell_info->user_input)
 		{
 			// free(shell_info);
 			exit(0) ;
@@ -48,18 +50,8 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 			rl_on_new_line();
 			rl_redisplay();
 		}
-      shell_info->user_input = dollar_expand(shell_info);
-    // ft_printf("inpt %s\n", shell_info->user_input);
-    // if (inputstartswith(shell_info->user_input, "$ ") | inputis(shell_info->user_input, "$"))
-    // {
-    // }
-    //   ft_printf("minishell: $: command not found\n");
-
-		// if (inputis(shell_info->user_input, ""))
-		// {
-		// 	rl_on_new_line();
-		// 	rl_redisplay();
-		// } 
+    
+    shell_info->user_input = dollar_expand(shell_info);
 		if (inputstartswith(shell_info->user_input, "echo "))
 			run_echo(shell_info->user_input);
 		else if (inputstartswith(shell_info->user_input, "cd "))
@@ -70,6 +62,8 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 			run_env(shell_info);
 		else if (inputstartswith(shell_info->user_input, "export ") | inputis(shell_info->user_input, "export"))
 			run_export(shell_info);
+    else if (inputstartswith(shell_info->user_input, "unset ") | inputis(shell_info->user_input, "unset"))
+			run_unset(shell_info);
 		else if (inputstartswith(shell_info->user_input, "history"))
 			print_history(shell_info->user_input);
     else if (!inputis(shell_info->user_input, ""))

@@ -14,20 +14,22 @@
 
 void	rm_in_lnli(char *str, t_env_mini *lnli)
 {
-	if (ft_strncmp(lnli->name, str, ft_strlen(str)) == 0)
-	{
-		free(lnli);
-		lnli = lnli->next;
-	}
+  t_env_mini *prev;
+
 	while (lnli)
 	{
-		if (ft_strncmp(lnli->name, str, ft_strlen(str)) == 0)
-		{
-			
-		}
-		lnli=lnli->next;
+    if (inputis(lnli->name, str))
+	  {
+      prev->next = lnli->next;
+      free(lnli);
+      break;
+    }
+    prev = lnli;
+    if (lnli->next)
+      lnli=lnli->next;
 	}
 }
+
 void	run_unset(t_shell *shell_info)
 {
 	char		*inpt;

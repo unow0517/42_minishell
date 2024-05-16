@@ -12,7 +12,7 @@
 
 NAME = minishell
 CC = gcc
-SRC = execution.c parsing.c inpt_handler.c freeing.c minishell.c inpt_functions.c history.c sig_functions.c pwd.c pipe.c echo.c cd.c env.c white_space.c set_nodes.c pipex_functions.c checks.c utils.c dollar_expand.c export.c
+SRC = execution.c parsing.c inpt_handler.c freeing.c minishell.c inpt_functions.c history.c sig_functions.c pwd.c pipe.c echo.c cd.c env.c white_space.c set_nodes.c pipex_functions.c checks.c utils.c dollar_expand.c export.c unset.c
 CFLAGS = -Wall -Wextra -Werror -g -lreadline #-fsanitize=address
 RM = rm -rf
 LIBFT_AR = Libft/libft.a
