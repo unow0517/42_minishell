@@ -1,19 +1,7 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/04/12 17:57:56 by yowoo             #+#    #+#              #
-#    Updated: 2024/05/13 15:03:49 by yowoo            ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = minishell
 CC = gcc
-SRC = execution.c parsing.c inpt_handler.c freeing.c minishell.c inpt_functions.c history.c sig_functions.c pwd.c pipe.c echo.c cd.c env.c white_space.c set_nodes.c pipex_functions.c checks.c utils.c dollar_expand.c export.c unset.c
-CFLAGS = -Wall -Wextra -Werror -g -lreadline #-fsanitize=address
+SRC = errors.c quotes.c execution.c parsing.c inpt_handler.c freeing.c minishell.c inpt_functions.c history.c sig_functions.c pwd.c pipe.c echo.c cd.c env.c white_space.c tokenizer.c pipex_functions.c checks.c utils.c dollar_expand.c export.c unset.c
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 RM = rm -rf
 LIBFT_AR = Libft/libft.a
 PRINTF_AR = ft_printf/libftprintf.a
@@ -21,7 +9,7 @@ PRINTF_AR = ft_printf/libftprintf.a
 all: $(LIBFT_AR) $(PRINTF_AR) $(NAME)
 
 $(NAME): $(SRC)
-	@$(CC) $(CFLAGS) $(SRC) $(LIBFT_AR) $(PRINTF_AR) -o $(NAME) -lreadline 
+	@$(CC) $(CFLAGS) $(SRC) $(LIBFT_AR) $(PRINTF_AR) -o $(NAME) -lreadline -lreadline 
 
 #for wsl
 # https://stackoverflow.com/questions/53507756/undefined-reference-to-readline-in-c-file-on-ubuntu-18-04-libreadline-dev-ins

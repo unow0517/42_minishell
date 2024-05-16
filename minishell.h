@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/13 15:10:23 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/16 18:26:23 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,9 @@ typedef struct s_command
 	char	*input_path; // path to input file
 	int		is_heredoc; // 0 if no << otherwise set to 1
 	int			fd[2];
-
+	int		file_not_found;
+	char	*filename;
+	// bool	is_builtin //==false when not builtin
 	// int		standard_input;
 	// int		standard_output;
 	struct	s_command *next;
@@ -93,6 +95,7 @@ typedef struct s_shell
 	char		prompt[1024];
 	t_command	*first_command;
 	int			fd[2];
+	bool		syntax_error;
 				//Its in linux/limits.h.
 				// #define PATH_MAX        4096 
 }	t_shell;
@@ -139,6 +142,7 @@ void	print_split(char **str);
 void	print_cmd_list(t_command *cmd_node);
 void	print_split_no_newline(char **str);
 void	print_token_types(t_shell *shell_info);
+void	syntax_error_check(t_shell *shell_info, int *status);
 
 // //PIPEX_FUNCTIONS.C
 char	*get_first_word(char *argv);
@@ -167,10 +171,13 @@ bool		is_metacharacter(char c);
 bool		is_ws(char c);
 void	cmd_add_back(t_command **first_token, t_command *new);
 int		handle_exit(int status);
+bool	is_metacharacter_type(int i);
+int	token_count(t_shell *shell_info);
+bool	is_redir(int i);
 
 
 //PARSING.C
-void	parse_input(t_shell *shell_info);
+void	parse_input(t_shell *shell_info, int *status);
 void	parse_tokens(t_shell *shell_info);
 int		number_of_tokens(t_shell *shell_info);
 void	set_executable_nodes(t_shell *shell_info, t_token *iterate);
@@ -178,6 +185,7 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate);
 int		open_file(t_command *cmd_node, t_token *iterate, int flag);
 void	initialise_cmd_node(t_command *cmd_node);
 void	init_cmds_in_struct(t_command *cmd_node, char *to_split);
+void	handle_heredoc(t_command *cmd_node, char *delimiter);
 
 //EXECUTION.C
 void	executor(t_shell *shell_info, int *status, t_command *cur);
@@ -187,7 +195,13 @@ void	execution_cases(t_shell *shell_info, int *status);
 pid_t	exec_pipeline(t_shell *shell_info);
 pid_t	exec_single_cmd(t_shell *shell_info, t_command	*cmd_to_exec);
 void	pipe_handling(t_shell *shell_info, t_command *cur);
-void	close_pipes(t_shell *shell_info);
+void close_pipes(t_shell *shell_info);
+
+//ERRORS
+void	file_error(t_command *cmd_node);
+void	heredoc_error(t_command *cmd_node);
+void	cmd_error(t_command *cmd_node);
+void	unexpected_token(t_shell *shell_info, char *flag, int *status);
 
 //EXPORT.C
 t_env_mini *ft_lstnew_envmini(char *name, char *value);
@@ -203,5 +217,9 @@ void	run_unset(t_shell *shell_info);
 //FREES
 void	free_tokens(t_token **shell_info);
 void	free_cmd_list(t_command **cmds);
+
+//QUOTES
+char *quote_handler(t_shell *shell_info, t_token *iterate, char *quoted_str, t_token_type flag);
+t_token	*skip_quoted_str(t_token *to_skip, t_token_type flag);
 
 #endif

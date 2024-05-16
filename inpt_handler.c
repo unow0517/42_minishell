@@ -2,6 +2,7 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   inpt_handler.c                                     :+:      :+:    :+:   */
+/*   inpt_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,14 +17,16 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 {
 	int			status;
 
+	status = 0;
 	shell_info->user_input = NULL;
 	while (1)
 	{
 		signal(SIGINT, sighandler);
 		shell_info->user_input = readline(shell_info->prompt);
     	shell_info->user_input = dollar_expand(shell_info);
-		parse_input(shell_info);
-		// execution_cases(shell_info, &status);		
+		parse_input(shell_info, &status);
+printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
+		execution_cases(shell_info, &status);		
     if (!shell_info->user_input)
 		{
 			// free(shell_info);
@@ -64,15 +67,15 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 			run_unset(shell_info);
 		else if (inputstartswith(shell_info->user_input, "history"))
 			print_history(shell_info->user_input);
-    	else if (!inputis(shell_info->user_input, ""))
-			ft_printf("minishell: %s: command not found\n", shell_info->user_input); //No command not found error if this line doesnt exist!
+    	// else if (!inputis(shell_info->user_input, ""))
+		// 	ft_printf("minishell: %s: command not found\n", shell_info->user_input); //No command not found error if this line doesnt exist!
 
 
     //OLDPWD implement
 		(void)argv;
 	free_tokens(&shell_info->tokens);
 	free_cmd_list(&shell_info->first_command);
-  (void)status; // YUN : TO AVOID ERR IN LINUX
-  // ft_printf("STATUS, inpt_handler %d\n", status); // YUN : TO AVOID ERR IN LINUX
-  }
+	printf("shell_info->syntax_error = %i\n", shell_info->syntax_error);
+	shell_info->syntax_error = false;
+	}
 }
