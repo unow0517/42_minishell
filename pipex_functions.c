@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:36:23 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/17 12:07:09 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/17 12:35:08 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ char	*get_first_word(char *argv)
 	int		i;
 	char	*small_cmd;
 
-//skip whitespace
 	i = 0;
 	while (argv[i] != '\0' && argv[i] != ' ' && argv[i] != '>' && argv[i] != '<' && argv[i] != '|' && argv[i] != '"' && argv[i] != '\'')
 		i++;

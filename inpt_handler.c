@@ -2,6 +2,7 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   inpt_handler.c                                     :+:      :+:    :+:   */
+/*   inpt_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,6 +17,7 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 {
 	int			status;
 
+	status = 0;
 	shell_info->user_input = NULL;
 	while (1)
 	{
@@ -65,8 +67,8 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 			run_unset(shell_info);
 		else if (inputstartswith(shell_info->user_input, "history"))
 			print_history(shell_info->user_input);
-    	else if (!inputis(shell_info->user_input, ""))
-			ft_printf("minishell: %s: command not found\n", shell_info->user_input); //No command not found error if this line doesnt exist!
+    	// else if (!inputis(shell_info->user_input, ""))
+		// 	ft_printf("minishell: %s: command not found\n", shell_info->user_input); //No command not found error if this line doesnt exist!
 
 
     //OLDPWD implement

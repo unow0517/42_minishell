@@ -24,3 +24,46 @@ debug with terminal
 	ps aux | grep minishell
 	lsof -p (PID)       check for fd's, hanging processes etc.
 
+quote handling
+	test1="ls -l"
+	$test1 "$test1"
+	ls
+	-l
+	"$test1"
+	<<
+	$test
+	if (str[i] == '"' || str[i] == '\'')
+		i = iter(str + i, str[i]);
+	int iter(char *str, char c)
+	{
+	}
+
+
+
+SEGFAULT
+	< hey cat > out
+	ls | | ls
+	| | ls
+	| ls
+	|
+	<
+	
+
+bash-3.2$ <
+bash: syntax error near unexpected token `newline'
+bash-3.2$ |
+bash: syntax error near unexpected token `|'
+bash-3.2$ <<
+bash: syntax error near unexpected token `newline'
+bash-3.2$ >>
+bash: syntax error near unexpected token `newline'
+bash-3.2$ >
+bash: syntax error near unexpected token `newline'
+bash-3.2$ echo $?
+258
+
+TO HANDLE
+	<<a<<s<<d (no command)
+	check again redir errors for file and multiple redirs (in > >) (<><><><><>)
+	add builtin flag
+	pass buitin char *

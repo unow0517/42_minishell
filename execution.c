@@ -6,21 +6,16 @@ void	execution_cases(t_shell *shell_info, int *status)
 	pid_t	pid;
 
 	//builtins
-	if (num_of_total_cmds(shell_info->first_command) == 1)
-		// pid = exec_single_cmd(shell_info, shell_info->first_command);
-    //YUN: execution.c:6:25: error: variable ‘pid’ set but not used [-Werror=unused-but-set-variable]
-		pid = exec_single_cmd(shell_info, shell_info->first_command);
-	else
-		pid = exec_pipeline(shell_info);
-	//YUN: -1 : WAITING FOR ANY CHILD PROC. IF CHILD PROCESS IS SUCCESSFULLY MADE THEN ?
-	//YUN: WNOHANG return immediately if no child has exited.
-	//YUN: ; = DOING NOTHING?
-  //YUN: some builtin fns do not need child process.
-	while (waitpid(-1, NULL, WNOHANG) != -1) //WUNTRACED 
-		;
-  // ft_printf("pid execution.c %d", pid); // YUN : TO AVOID ERR IN LINUX
-  (void)pid;
-  *status = handle_exit(*status);
+	if (shell_info->syntax_error == false)
+	{
+		if (num_of_total_cmds(shell_info->first_command) == 1)
+			pid = exec_single_cmd(shell_info, shell_info->first_command);
+		else
+			pid = exec_pipeline(shell_info);
+		while (waitpid(-1, status, WNOHANG) != -1) //WUNTRACED
+			;
+		*status = handle_exit(*status);
+	}
 }
 
 //YUN: ITERATE TO RUN COMMANDS, shell_info->first_command IS LINKED LIST OF CMD STRUCTS
@@ -43,7 +38,7 @@ pid_t	exec_pipeline(t_shell *shell_info)
 pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 {
 	pid_t		pid;
-	char		*full_path;  // ADD TO STRUCT!
+	char		*full_path;
 
 	pid = fork();
 	if (pid == -1)
@@ -55,16 +50,14 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 	{
 		pipe_handling(shell_info, cmd_to_exec);
 		handle_redir(shell_info, cmd_to_exec);
-		full_path = find_cmd_in_env(cmd_to_exec->cmd, shell_info->env);
-		if (!full_path)
+		if (cmd_to_exec->file_not_found == 0)
 		{
-			ft_printf("minishell: %s: command not found\n", shell_info->user_input);
-			exit (127);
+			full_path = find_cmd_in_env(cmd_to_exec->cmd, shell_info->env);
+			if (!full_path)
+				cmd_error(cmd_to_exec); // exit (127);
+			execve(full_path, cmd_to_exec->full_cmd, shell_info->env);
+			perror("execve");
 		}
-		// sleep(999999999);
-		execve(full_path, cmd_to_exec->full_cmd, shell_info->env);
-		// printf("passed execve\n");
-		perror("execve");
 		close_fds(shell_info, cmd_to_exec);
 		exit(EXIT_FAILURE);
 	}

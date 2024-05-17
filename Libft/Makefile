@@ -46,7 +46,6 @@ fclean: clean
 #rebuild, first it delete all obj files and library with [fclean] and build 
 re: fclean all
 
-
 #libft.a should be generated at the end 
 
 bonus: $(BOFILES)

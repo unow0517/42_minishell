@@ -30,7 +30,6 @@
 // 	return (quoted_str);
 // }
 
-//RETURN QUOTED STRING EITHER WITH S. QUOTE OR D. QUOTE  
 char *quote_handler(t_shell *shell_info, t_token *iterate, char *quoted_str, t_token_type flag)
 {
 	int		len;
