@@ -31,6 +31,7 @@ void	initialise_cmd_node(t_command *cmd_node)
 	pipe(cmd_node->fd);
 	cmd_node->file_not_found = 0;
 	cmd_node->filename = NULL;
+	cmd_node->is_builtin = false;
 	cmd_node->next = NULL;
 }
 
@@ -59,7 +60,18 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 		{
 printf("HEYYYYYYYYY\n");
 			iterate = set_redirections(cmd_node, iterate);
-			if (iterate && (iterate->token_type == WORD || iterate->token_type == D_QUOTE || iterate->token_type == S_QUOTE) && (cmd_node->cmd == NULL || cmd_node->cmd[0] == '\0') && iterate->token_type != PIPE)
+			if (iterate && iterate->token_type == WORD && ft_is_builtin(get_first_word(iterate->content)) == true)
+			{
+				cmd_node->builtin_type = get_first_word(iterate->content);
+				cmd_node->is_builtin = true;
+printf("IS BUILTIN!!!!!!\n");
+				iterate = iterate->next;
+				if (iterate)
+				{
+					cmd_node->builtin_arg = get_argument(iterate->content);
+				}
+			}
+			else if (iterate && (iterate->token_type == WORD || iterate->token_type == D_QUOTE || iterate->token_type == S_QUOTE) && (cmd_node->cmd == NULL || cmd_node->cmd[0] == '\0') && iterate->token_type != PIPE)
 			{
 				if (iterate->token_type == WORD)
 					cmd_node->cmd = get_first_word(iterate->content);

@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/16 17:41:09 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:26:09 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,4 +158,48 @@ int	token_count(t_shell *shell_info)
 		counter++;
 	}
 	return (counter);
+}
+
+bool	ft_is_builtin(char *str)
+{
+	if	(str)
+	{
+		if (ft_strncmp(str, "echo", 4) == 0)
+			return (true);
+		else if (ft_strncmp(str, "cd", 2) == 0)
+			return (true);
+		else if (ft_strncmp(str, "pwd", 4) == 0)
+			return (true);
+		else if (ft_strncmp(str, "export", 6) == 0)
+			return (true);
+		else if (ft_strncmp(str, "unset", 5) == 0)
+			return (true);
+		else if (ft_strncmp(str, "env", 4) == 0)
+			return (true);
+		else if (ft_strncmp(str, "exit", 4) == 0)
+			return (true);
+		else if (ft_strncmp(str, "pwd", 4) == 0)
+			return (true);
+	}
+	return (false);
+}
+
+char	*get_argument(char *argv)
+{
+	int		i;
+	char	*small_cmd;
+
+	i = 0;
+	while (argv[i] != '\0' && argv[i] != '>' && argv[i] != '<' && argv[i] != '|' && argv[i] != '"' && argv[i] != '\'')
+		i++;
+	small_cmd = ft_calloc(i + 1, sizeof(char));
+	if (!small_cmd)
+		return (NULL);
+	i = 0;
+	while (argv[i] != '\0' && argv[i] != '>' && argv[i] != '<' && argv[i] != '|' && argv[i] != '"' && argv[i] != '\'')
+	{
+		small_cmd[i] = argv[i];
+		i++;
+	}
+	return (small_cmd);
 }

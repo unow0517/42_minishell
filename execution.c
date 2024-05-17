@@ -6,7 +6,10 @@ void	execution_cases(t_shell *shell_info, int *status)
 	pid_t	pid;
 
 	//builtins
-	if (shell_info->syntax_error == false)
+	// if ()
+	if (num_of_total_cmds(shell_info->first_command) == 1 && shell_info->first_command->is_builtin == true)
+		execute_bultin(shell_info->first_command->builtin_type, shell_info->first_command->builtin_arg);
+	else if (shell_info->syntax_error == false)
 	{
 		if (num_of_total_cmds(shell_info->first_command) == 1)
 			pid = exec_single_cmd(shell_info, shell_info->first_command);
@@ -27,8 +30,13 @@ pid_t	exec_pipeline(t_shell *shell_info)
 	iterate_cmd = shell_info->first_command;
 	while (iterate_cmd)
 	{
-		pid = exec_single_cmd(shell_info, iterate_cmd);
-		iterate_cmd = iterate_cmd->next;
+		if (iterate_cmd->is_builtin == true)
+			execute_bultin(shell_info->first_command->builtin_type, shell_info->first_command->builtin_arg);
+		else
+		{
+			pid = exec_single_cmd(shell_info, iterate_cmd);
+			iterate_cmd = iterate_cmd->next;
+		}
 	}
 	//YUN: CLOSE FILE DESCRIPTOR[0], [1] OF LINKED LIST OF CMD STRUCTS
 	close_pipes(shell_info);

@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/16 18:26:23 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:27:01 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,9 @@ typedef struct s_command
 	int			fd[2];
 	int		file_not_found;
 	char	*filename;
-	// bool	is_builtin //==false when not builtin
+	bool	is_builtin; //==false when not builtin
+	char	*builtin_type;
+	char	*builtin_arg;
 	// int		standard_input;
 	// int		standard_output;
 	struct	s_command *next;
@@ -174,6 +176,8 @@ int		handle_exit(int status);
 bool	is_metacharacter_type(int i);
 int	token_count(t_shell *shell_info);
 bool	is_redir(int i);
+bool	ft_is_builtin(char *str);
+char	*get_argument(char *argv);
 
 
 //PARSING.C
