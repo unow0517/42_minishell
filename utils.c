@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/17 15:26:09 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/17 16:16:10 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,8 @@ bool	ft_is_builtin(char *str)
 		else if (ft_strncmp(str, "exit", 4) == 0)
 			return (true);
 		else if (ft_strncmp(str, "pwd", 4) == 0)
+			return (true);
+		else if (ft_strncmp(str, "history", 7) == 0)
 			return (true);
 	}
 	return (false);

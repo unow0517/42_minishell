@@ -58,20 +58,18 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 		cmd_node->cmd = ft_calloc(1, sizeof(char));
 		while (iterate != NULL && iterate->token_type != PIPE)
 		{
-printf("HEYYYYYYYYY\n");
 			iterate = set_redirections(cmd_node, iterate);
-			if (iterate && iterate->token_type == WORD && ft_is_builtin(get_first_word(iterate->content)) == true)
+			if (builtin_case(iterate) == true)
 			{
 				cmd_node->builtin_type = get_first_word(iterate->content);
 				cmd_node->is_builtin = true;
-printf("IS BUILTIN!!!!!!\n");
 				iterate = iterate->next;
 				if (iterate)
 				{
 					cmd_node->builtin_arg = get_argument(iterate->content);
 				}
 			}
-			else if (iterate && (iterate->token_type == WORD || iterate->token_type == D_QUOTE || iterate->token_type == S_QUOTE) && (cmd_node->cmd == NULL || cmd_node->cmd[0] == '\0') && iterate->token_type != PIPE)
+			else if (empty_cmd_case(iterate, cmd_node) == true)
 			{
 				if (iterate->token_type == WORD)
 					cmd_node->cmd = get_first_word(iterate->content);
@@ -89,7 +87,7 @@ printf("IS BUILTIN!!!!!!\n");
 				}
 printf("cmd_node->cmd = %s\n", cmd_node->cmd);
 			}
-			else if (iterate && (iterate->token_type == WORD || iterate->token_type == D_QUOTE || iterate->token_type == S_QUOTE) && cmd_node->cmd != NULL && cmd_node->cmd[0] != '\0' && iterate->token_type != PIPE)
+			else if (full_cmd_case(iterate, cmd_node) == true)
 			{
 				if (iterate->token_type == D_QUOTE) //make sure they are duplicates
 				{

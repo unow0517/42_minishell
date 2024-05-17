@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/17 15:27:01 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/17 16:05:39 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,12 @@ void	initialise_cmd_node(t_command *cmd_node);
 void	init_cmds_in_struct(t_command *cmd_node, char *to_split);
 void	handle_heredoc(t_command *cmd_node, char *delimiter);
 
+//PARSING_CASES.C
+bool	builtin_case(t_token *iterate);
+bool	empty_cmd_case(t_token *iterate, t_command *cmd_node);
+bool	full_cmd_case(t_token *iterate, t_command *cmd_node);
+
+
 //EXECUTION.C
 void	executor(t_shell *shell_info, int *status, t_command *cur);
 void	init_pipe(t_shell *shell_info, t_command *cur);
@@ -200,6 +206,7 @@ pid_t	exec_pipeline(t_shell *shell_info);
 pid_t	exec_single_cmd(t_shell *shell_info, t_command	*cmd_to_exec);
 void	pipe_handling(t_shell *shell_info, t_command *cur);
 void close_pipes(t_shell *shell_info);
+void execute_builtin(t_shell *shell_info, char *builtin, char *arg);
 
 //ERRORS
 void	file_error(t_command *cmd_node);
