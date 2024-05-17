@@ -22,7 +22,8 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 		signal(SIGINT, sighandler);
 		shell_info->user_input = readline(shell_info->prompt);
     	shell_info->user_input = dollar_expand(shell_info);
-		parse_input(shell_info);
+		parse_input(shell_info, &status);
+// printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
 		// execution_cases(shell_info, &status);		
     if (!shell_info->user_input)
 		{
@@ -72,7 +73,7 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 		(void)argv;
 	free_tokens(&shell_info->tokens);
 	free_cmd_list(&shell_info->first_command);
-  (void)status; // YUN : TO AVOID ERR IN LINUX
-  // ft_printf("STATUS, inpt_handler %d\n", status); // YUN : TO AVOID ERR IN LINUX
-  }
+	printf("shell_info->syntax_error = %i\n", shell_info->syntax_error);
+	shell_info->syntax_error = false;
+	}
 }

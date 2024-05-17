@@ -49,7 +49,7 @@ t_env_mini	*env_to_envmini(char	**env, t_env_mini *env_mini)
 		env_mini->name = name;
 		env_mini->value = value;
 		env++;
-		if (env && *env)
+		if (env && *env && !inputis(name,"OLDPWD"))
 		{
 			env_mini->next = malloc(sizeof(t_env_mini));
 			env_mini = env_mini->next;

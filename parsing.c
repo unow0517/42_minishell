@@ -29,6 +29,7 @@ void	initialise_cmd_node(t_command *cmd_node)
 	cmd_node->next = NULL;
 }
 
+//PROCESS THE CMD ACCORDING TO TOKENS
 void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 {
 	t_command	*cmd_node;
@@ -49,19 +50,63 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 		cmd_node->cmd = ft_calloc(1, sizeof(char));
 		while (iterate != NULL && iterate->token_type != PIPE)
 		{
+// printf("HEYYYYYYYYY\n");
 			iterate = set_redirections(cmd_node, iterate);
-			if (iterate && iterate->token_type == WORD && (cmd_node->cmd == NULL || cmd_node->cmd[0] == '\0') && iterate->token_type != PIPE)
-				cmd_node->cmd = get_first_word(iterate->content);
-			else if (iterate && iterate->token_type == WORD && cmd_node->cmd != NULL && cmd_node->cmd[0] != '\0' && iterate->token_type != PIPE)
+			if (iterate && (iterate->token_type == WORD || iterate->token_type == D_QUOTE || iterate->token_type == S_QUOTE) && (cmd_node->cmd == NULL || cmd_node->cmd[0] == '\0') && iterate->token_type != PIPE)
 			{
-				temp = ft_strjoin(to_split, " ");
-				temp1 = get_first_word(iterate->content); //-l
-				to_split = ft_strjoin(temp, get_first_word(iterate->content));
-				to_split = ft_strjoin(temp, temp1);
-				free(temp);
-				free(temp1);
+				if (iterate->token_type == WORD)
+					cmd_node->cmd = get_first_word(iterate->content);
+				else if (iterate->token_type == D_QUOTE)
+				{
+					iterate = iterate->next;
+					cmd_node->cmd = quote_handler(shell_info, iterate, quoted_str, D_QUOTE);
+					iterate = skip_quoted_str(iterate, D_QUOTE);
+				}
+				else if (iterate->token_type == S_QUOTE)
+				{
+					iterate = iterate->next;
+					cmd_node->cmd = quote_handler(shell_info, iterate, quoted_str, S_QUOTE);
+					iterate = skip_quoted_str(iterate, S_QUOTE);
+				}
+// printf("cmd_node->cmd = %s\n", cmd_node->cmd);
 			}
-			if (iterate)
+			else if (iterate && (iterate->token_type == WORD || iterate->token_type == D_QUOTE || iterate->token_type == S_QUOTE) && cmd_node->cmd != NULL && cmd_node->cmd[0] != '\0' && iterate->token_type != PIPE)
+			{
+				if (iterate->token_type == D_QUOTE) //make sure they are duplicates
+				{
+					iterate = iterate->next;
+					quoted_str = quote_handler(shell_info, iterate, quoted_str, D_QUOTE);
+					temp = ft_strjoin(to_split, " ");
+					temp1 = quoted_str; //-l
+					to_split = ft_strjoin(temp, quoted_str);
+					to_split = ft_strjoin(temp, temp1);
+					free(temp);
+					// free(temp1);
+					iterate = skip_quoted_str(iterate, D_QUOTE);
+				}
+				else if (iterate->token_type == S_QUOTE) //make sure they are duplicates
+				{
+					iterate = iterate->next;
+					quoted_str = quote_handler(shell_info, iterate, quoted_str, S_QUOTE);
+					temp = ft_strjoin(to_split, " ");
+					temp1 = quoted_str; //-l
+					to_split = ft_strjoin(temp, quoted_str);
+					to_split = ft_strjoin(temp, temp1);
+					free(temp);
+					// free(temp1);
+					iterate = skip_quoted_str(iterate, S_QUOTE);
+				}
+				else
+				{
+					temp = ft_strjoin(to_split, " ");
+					temp1 = get_first_word(iterate->content); //-l
+					to_split = ft_strjoin(temp, get_first_word(iterate->content));
+					to_split = ft_strjoin(temp, temp1);
+					free(temp);
+					free(temp1);
+				}
+			}
+			if (iterate && is_metacharacter_type(iterate->token_type) == false)
 				iterate = iterate->next;
 		}
 		init_cmds_in_struct(cmd_node, to_split);
@@ -100,12 +145,13 @@ void	init_cmds_in_struct(t_command *cmd_node, char *to_split)
 	}
 }
 
+//>, <
 t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 {
 	t_token	*init_tok;
 
 	init_tok = iterate;
-	if (iterate->token_type == S_LESS)
+	if (iterate->token_type == S_LESS) //<
 	{
 		iterate = iterate->next;
 		if (open_file(cmd_node, iterate, S_LESS) == -1)
@@ -142,13 +188,19 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 	return (iterate);
 }
 
+//OPEN FILE TAKING TOKEN STRUCT
 int	open_file(t_command *cmd_node, t_token *iterate, int flag)
 {
 	char	*file;
 
 	file = get_first_word(iterate->content);
-	if (flag == S_LESS)
-		cmd_node->input_fd = open(file, O_RDONLY);
+	if (flag == S_LESS) //<
+	{
+		// IF NODE INPUT FD HAS ANOTHER FD, CLOSE
+		if (cmd_node->input_fd != -1)
+			close(cmd_node->input_fd);
+		cmd_node->input_fd = open(file, O_RDONLY); //
+	}
 	else if (flag == S_MORE)
 		cmd_node->output_fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (flag == D_MORE)

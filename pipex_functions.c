@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_functions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:36:23 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/06 19:21:54 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/17 12:07:09 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//1ST WORD OF STRING, WHICH IS NOT METACHAR.
 char	*get_first_word(char *argv)
 {
 	int		i;

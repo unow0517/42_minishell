@@ -80,6 +80,7 @@ t_token	*create_single_token(t_shell *shell_info, int i)
 	return (cur);
 }
 
+//CREATE TOKEN FOR <<, >>
 t_token	*create_double_token(t_shell *shell_info, int i)
 {
 	t_token *cur;

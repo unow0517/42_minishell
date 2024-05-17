@@ -14,5 +14,10 @@
 
 void	run_echo(char *inpt)
 {
-	ft_printf("%s\n", inpt + 5);
+	if (inputstartswith(inpt, "echo -n "))
+		ft_printf("%s", inpt + 5);
+	else
+		ft_printf("%s\n", inpt + 5);
 }
+
+//ECHO WITH OPTION N!

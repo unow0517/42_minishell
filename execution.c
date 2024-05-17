@@ -75,6 +75,7 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 	}
 }
 
+//CONNECT STDIN TO CURRENT CMD, STDOUT TO NEXT CMD, HANDLING FILE DESCRIPTOR
 void	pipe_handling(t_shell *shell_info, t_command *cur)
 {
 	t_command	*last_cmd;
@@ -104,6 +105,7 @@ void	close_pipes(t_shell *shell_info)
 
 void	handle_redir(t_shell *shell_info, t_command *cur) ///////close pipe in each case
 {
+	//OPENED FD
 	if (cur->input_fd != -1)
 	{
 		if (shell_info->fd[0] != -1)
@@ -127,3 +129,5 @@ void	handle_redir(t_shell *shell_info, t_command *cur) ///////close pipe in each
 		close(cur->output_fd);
 	}
 }
+
+//DIFFERENCE BETWEEN CMD FD[2] AND SHELL FD[2]?
