@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/17 13:48:16 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/18 11:49:47 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ void	run_env(t_shell *shell_info);
 //WHITE_SPACE.C
 char	*rm_starting_ws(char *string);
 char	*multiple_ws_to_single(char	*str);
+char	*ptr_ws(char *inpt);
 
 //CHECKS.C
 void	print_token(t_token *token);
@@ -219,7 +220,9 @@ void	free_tokens(t_token **shell_info);
 void	free_cmd_list(t_command **cmds);
 
 //QUOTES
-char *quote_handler(t_shell *shell_info, t_token *iterate, char *quoted_str, t_token_type flag);
+char	*quote_handler(t_shell *shell_info, t_token *iterate, char *quoted_str, t_token_type flag);
 t_token	*skip_quoted_str(t_token *to_skip, t_token_type flag);
 
+//BACKSLASH.C
+char	*backslash_piece(char	*str);
 #endif

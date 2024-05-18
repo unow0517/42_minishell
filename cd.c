@@ -31,19 +31,6 @@ t_env_mini *env_search_name(char *name, t_env_mini *env_mini)
   return (0);
 }
 
-// char	*ptr_ws(char *inpt);
-// {
-// 	char	*ptr;
-
-// 	ptr = inpt;
-// 	while (*ptr_ws)
-// 	{
-// 		if (is_ws(*ptr_ws))
-// 			return (ptr_ws);
-// 		ptr_ws++;
-// 	}
-// }
-
 //ABS PATH
 void	run_cd(char *inpt, t_shell *shell_info)
 {
