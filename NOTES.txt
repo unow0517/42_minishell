@@ -62,8 +62,25 @@ bash: syntax error near unexpected token `newline'
 bash-3.2$ echo $?
 258
 
+"ls" "-l" "-a" | grep u | wc | cat > out > out1 >> out2
+
 TO HANDLE
 	<<a<<s<<d (no command)
 	check again redir errors for file and multiple redirs (in > >) (<><><><><>)
 	add builtin flag
 	pass buitin char *
+	segfault with ls "-l" | "cat" > out
+	segfault with ls "-l" | cat > out
+	ok with ls -l | cat > out
+	"ls" -l | cat > out has minishell: ls": command not found
+
+	ls -l | awk '{print $3}' //does awk
+	ls -l | awk "{print $3}" //does only ls
+
+PROBLEEEEEM
+	ls "-lala""lal"
+	ls "-""l""a"
+	ls "-la" | cat "-e"
+	ls "-la" | grep "ha"
+	ls "-la" | grep ha > "file2"
+	"""$USER"""

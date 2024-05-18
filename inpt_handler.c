@@ -24,8 +24,9 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 		signal(SIGINT, sighandler);
 		shell_info->user_input = readline(shell_info->prompt);
     	shell_info->user_input = dollar_expand(shell_info);
+// printf("________________________DEBUG_________________________\n");
 		parse_input(shell_info, &status);
-// printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
+printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
 		execution_cases(shell_info, &status);		
     if (!shell_info->user_input)
 		{

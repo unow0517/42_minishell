@@ -38,3 +38,11 @@ void	unexpected_token(t_shell *shell_info, char *flag, int *status)
 	shell_info->syntax_error = true;
 	*status = 258;
 }
+
+void	quote_error(int *status)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd("syntax error: ", 2);
+	ft_putstr_fd("can't handle unclosed quotes\n", 2);
+	*status = 258;
+}

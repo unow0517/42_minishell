@@ -5,8 +5,6 @@ void	execution_cases(t_shell *shell_info, int *status)
 {
 	pid_t	pid;
 
-	//builtins
-	// if ()
 	if (num_of_total_cmds(shell_info->first_command) == 1 && shell_info->first_command->is_builtin == true)
 		execute_builtin(shell_info, shell_info->first_command->builtin_type, shell_info->first_command->builtin_arg);
 	else if (shell_info->syntax_error == false)
@@ -86,7 +84,7 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 			if (!full_path)
 				cmd_error(cmd_to_exec); // exit (127);
 			execve(full_path, cmd_to_exec->full_cmd, shell_info->env);
-			perror("execve");
+			cmd_error(cmd_to_exec);
 		}
 		close_fds(shell_info, cmd_to_exec);
 		exit(EXIT_FAILURE);

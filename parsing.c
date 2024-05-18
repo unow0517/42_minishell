@@ -2,12 +2,18 @@
 
 void	parse_input(t_shell *shell_info, int *status)
 {
-	create_tokens(shell_info);
-	syntax_error_check(shell_info, status);
-	if (shell_info->syntax_error == false)
-		parse_tokens(shell_info);
-	// print_token_types(shell_info);
-	// print_cmd_list(shell_info->first_command);
+
+	if (quotes_even(shell_info->user_input) == true)
+	{
+		create_tokens(shell_info);
+		syntax_error_check(shell_info, status);
+		if (shell_info->syntax_error == false)
+			parse_tokens(shell_info);
+		// print_token_types(shell_info);
+		print_cmd_list(shell_info->first_command);
+	}
+	else
+		quote_error(status);
 }
 
 void	parse_tokens(t_shell *shell_info)
@@ -32,24 +38,18 @@ void	initialise_cmd_node(t_command *cmd_node)
 	cmd_node->file_not_found = 0;
 	cmd_node->filename = NULL;
 	cmd_node->is_builtin = false;
+	cmd_node->to_split = "";
 	cmd_node->next = NULL;
 }
 
 void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 {
 	t_command	*cmd_node;
-	char		*to_split;
-	char		*temp;
-	char		*temp1;
-	// char		*temp2;
-	char		*quoted_str;
 
 	while (iterate != NULL)
 	{
-		quoted_str = NULL;
 		if (iterate->token_type == PIPE)
 			iterate = iterate->next;
-		to_split = "";
 		cmd_node = NULL;
 		if (!shell_info->first_command)
 			shell_info->first_command = cmd_node;
@@ -58,76 +58,24 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 		cmd_node->cmd = ft_calloc(1, sizeof(char));
 		while (iterate != NULL && iterate->token_type != PIPE)
 		{
-			iterate = set_redirections(cmd_node, iterate);
-			if (builtin_case(iterate) == true)
+			if (is_redir(iterate->token_type) == true)
+				iterate = set_redirections(cmd_node, iterate);
+			else if (iterate && builtin_case(iterate) == true)
 			{
 				cmd_node->builtin_type = get_first_word(iterate->content);
 				cmd_node->is_builtin = true;
 				iterate = iterate->next;
 				if (iterate)
-				{
 					cmd_node->builtin_arg = get_argument(iterate->content);
-				}
 			}
-			else if (empty_cmd_case(iterate, cmd_node) == true)
-			{
-				if (iterate->token_type == WORD)
-					cmd_node->cmd = get_first_word(iterate->content);
-				else if (iterate->token_type == D_QUOTE)
-				{
-					iterate = iterate->next;
-					cmd_node->cmd = quote_handler(shell_info, iterate, quoted_str, D_QUOTE);
-					iterate = skip_quoted_str(iterate, D_QUOTE);
-				}
-				else if (iterate->token_type == S_QUOTE)
-				{
-					iterate = iterate->next;
-					cmd_node->cmd = quote_handler(shell_info, iterate, quoted_str, S_QUOTE);
-					iterate = skip_quoted_str(iterate, S_QUOTE);
-				}
-printf("cmd_node->cmd = %s\n", cmd_node->cmd);
-			}
-			else if (full_cmd_case(iterate, cmd_node) == true)
-			{
-				if (iterate->token_type == D_QUOTE) //make sure they are duplicates
-				{
-					iterate = iterate->next;
-					quoted_str = quote_handler(shell_info, iterate, quoted_str, D_QUOTE);
-					temp = ft_strjoin(to_split, " ");
-					temp1 = quoted_str; //-l
-					to_split = ft_strjoin(temp, quoted_str);
-					to_split = ft_strjoin(temp, temp1);
-					free(temp);
-					// free(temp1);
-					iterate = skip_quoted_str(iterate, D_QUOTE);
-				}
-				else if (iterate->token_type == S_QUOTE) //make sure they are duplicates
-				{
-					iterate = iterate->next;
-					quoted_str = quote_handler(shell_info, iterate, quoted_str, S_QUOTE);
-					temp = ft_strjoin(to_split, " ");
-					temp1 = quoted_str; //-l
-					to_split = ft_strjoin(temp, quoted_str);
-					to_split = ft_strjoin(temp, temp1);
-					free(temp);
-					// free(temp1);
-					iterate = skip_quoted_str(iterate, S_QUOTE);
-				}
-				else
-				{
-					temp = ft_strjoin(to_split, " ");
-					temp1 = get_first_word(iterate->content); //-l
-					to_split = ft_strjoin(temp, get_first_word(iterate->content));
-					to_split = ft_strjoin(temp, temp1);
-					free(temp);
-					free(temp1);
-				}
-			}
-			if (iterate && is_metacharacter_type(iterate->token_type) == false)
-				iterate = iterate->next;
+			else if (iterate && empty_cmd_case(iterate, cmd_node) == true)
+				iterate = initialize_cmd(shell_info, iterate, cmd_node);
+			else if (iterate && full_cmd_case(iterate, cmd_node) == true)
+				iterate = initialize_cmd_options(shell_info, iterate, cmd_node);
 		}
-		init_cmds_in_struct(cmd_node, to_split);
+		init_cmds_in_struct(cmd_node, cmd_node->to_split);
 		cmd_add_back(&shell_info->first_command, cmd_node);
+		quote_removal_in_exec_arg(cmd_node);
 	}
 }
 
@@ -148,13 +96,13 @@ void	init_cmds_in_struct(t_command *cmd_node, char *to_split)
 		perror("ft_strjoin(cmd_node->cmd, " ") FAILED");
 		exit (-1);
 	}
-	cmd_node->full_cmd = ft_split(to_full_cmd, ' ');
+	cmd_node->full_cmd = split_ms(to_full_cmd, ' ');
 	if (!temp_cmd)
 	{
 		perror("ft_strjoin(cmd_node->cmd, " ") FAILED");
 		exit (-1);
 	}
-	cmd_node->options = ft_split(to_split, ' ');
+	cmd_node->options = split_ms(to_split, ' ');
 	if (!temp_cmd)
 	{
 		perror("ft_strjoin(cmd_node->cmd, " ") FAILED");
@@ -165,8 +113,15 @@ void	init_cmds_in_struct(t_command *cmd_node, char *to_split)
 t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 {
 	t_token	*init_tok;
+	t_token_type hold_type;
 
+	hold_type = iterate->token_type;
 	init_tok = iterate;
+	if (hold_type == D_QUOTE || hold_type == S_QUOTE)
+	{
+		while (iterate && iterate->token_type == hold_type)
+			iterate = iterate->next;
+	}
 	if (iterate->token_type == S_LESS)
 	{
 		iterate = iterate->next;
@@ -220,6 +175,11 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 				file_error(cmd_node);
 		}
 		iterate = iterate->next;
+	}
+	if (iterate && iterate->token_type == hold_type)
+	{
+		while (iterate && iterate->token_type == hold_type)
+			iterate = iterate->next;
 	}
 	return (iterate);
 }

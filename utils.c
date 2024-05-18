@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/17 16:16:10 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/18 17:37:06 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,13 @@ bool	is_metacharacter_type(int i)
 bool	is_redir(int i)
 {
 	if (i == S_LESS || i == S_MORE || i == D_LESS || i == D_MORE)
+		return (true);
+	return (false);
+}
+
+bool	is_redir_pipe(int i)
+{
+	if (i == S_LESS || i == S_MORE || i == D_LESS || i == D_MORE || i == PIPE)
 		return (true);
 	return (false);
 }
@@ -204,4 +211,28 @@ char	*get_argument(char *argv)
 		i++;
 	}
 	return (small_cmd);
+}
+
+bool	quotes_even(char *input)
+{
+	int	i;
+	int	q_counter;
+	// int	dq_counter;
+	// int	sq_counter;
+
+	// dq_counter = 0;
+	// sq_counter = 0;
+	i = 0;
+	q_counter = 0;
+	if (!input)
+		return (true);
+	while (input[i] != '\0')
+	{
+		if (input[i] == '"' || input[i] == '\'')
+			q_counter++;
+		i++;
+	}
+	if (q_counter % 2 == 0)
+		return (true);
+	return (false);
 }

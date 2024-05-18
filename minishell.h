@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/17 16:05:39 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/18 19:41:48 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@
 //added by thalia
 typedef enum e_token_type
 {
-	NO_TOKEN,
-	WORD,
-	PIPE,
-	S_QUOTE,
-	D_QUOTE,
+	NO_TOKEN,	//0
+	WORD,		//1
+	PIPE,		//2
+	S_QUOTE,	//3
+	D_QUOTE,	//4
 	S_LESS, // < input redirection
 	S_MORE, // > output redirection
 	D_LESS, // <<
@@ -72,6 +72,7 @@ typedef struct s_command
 	bool	is_builtin; //==false when not builtin
 	char	*builtin_type;
 	char	*builtin_arg;
+	char	*to_split;
 	// int		standard_input;
 	// int		standard_output;
 	struct	s_command *next;
@@ -176,8 +177,10 @@ int		handle_exit(int status);
 bool	is_metacharacter_type(int i);
 int	token_count(t_shell *shell_info);
 bool	is_redir(int i);
+bool	is_redir_pipe(int i);
 bool	ft_is_builtin(char *str);
 char	*get_argument(char *argv);
+bool	quotes_even(char *input);
 
 
 //PARSING.C
@@ -196,6 +199,12 @@ bool	builtin_case(t_token *iterate);
 bool	empty_cmd_case(t_token *iterate, t_command *cmd_node);
 bool	full_cmd_case(t_token *iterate, t_command *cmd_node);
 
+//PARSING_HELPER.C
+t_token	*initialize_cmd(t_shell *shell_info, t_token *iterate, t_command *cmd_node);
+t_token	*initialize_cmd_options(t_shell *shell_info, t_token *iterate, t_command *cmd_node);
+void	quote_removal_in_exec_arg(t_command *cur_cmd);
+char	*rm_quotes(char *to_fix, char c);
+char	first_quote(char *str);
 
 //EXECUTION.C
 void	executor(t_shell *shell_info, int *status, t_command *cur);
@@ -213,6 +222,7 @@ void	file_error(t_command *cmd_node);
 void	heredoc_error(t_command *cmd_node);
 void	cmd_error(t_command *cmd_node);
 void	unexpected_token(t_shell *shell_info, char *flag, int *status);
+void	quote_error(int *status);
 
 //EXPORT.C
 t_env_mini *ft_lstnew_envmini(char *name, char *value);
@@ -232,5 +242,8 @@ void	free_cmd_list(t_command **cmds);
 //QUOTES
 char *quote_handler(t_shell *shell_info, t_token *iterate, char *quoted_str, t_token_type flag);
 t_token	*skip_quoted_str(t_token *to_skip, t_token_type flag);
+
+//SPLIT_MS.C
+char	**split_ms(char const *s, char c);
 
 #endif
