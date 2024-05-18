@@ -23,10 +23,12 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 	{
 		signal(SIGINT, sighandler);
 		shell_info->user_input = readline(shell_info->prompt);
+    	if (!inputis(shell_info->user_input, ""))
+			add_history(shell_info->user_input);
     	shell_info->user_input = dollar_expand(shell_info);
 		parse_input(shell_info, &status);
 // printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
-		// execution_cases(shell_info, &status);		
+		execution_cases(shell_info, &status);		
     if (!shell_info->user_input)
 		{
 			// free(shell_info);
@@ -39,8 +41,6 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 		}
     // if (ft_strlen(dollar_expand(shell_info)) != 0)
     //   shell_info->user_input = dollar_expand(shell_info);
-    if (!inputis(shell_info->user_input, ""))
-			add_history(shell_info->user_input);
 		if (*shell_info->user_input == ' ')
 			shell_info->user_input = rm_starting_ws(shell_info->user_input);
 		multiple_ws_to_single(shell_info->user_input);
@@ -52,21 +52,21 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 			rl_redisplay();
 		}
     
-    	// shell_info->user_input = dollar_expand(shell_info);
-		if (inputstartswith(shell_info->user_input, "echo "))
-			run_echo(shell_info->user_input);
-		else if (inputstartswith(shell_info->user_input, "cd "))
-			run_cd(shell_info->user_input, shell_info);
-		else if (inputstartswith(shell_info->user_input, "pwd ") | inputis(shell_info->user_input, "pwd"))
-			run_pwd(shell_info);
-		else if (inputis(shell_info->user_input, "env ") | inputis(shell_info->user_input, "env"))
-			run_env(shell_info);
-		else if (inputstartswith(shell_info->user_input, "export ") | inputis(shell_info->user_input, "export"))
-			run_export(shell_info);
-    	else if (inputstartswith(shell_info->user_input, "unset ") | inputis(shell_info->user_input, "unset"))
-			run_unset(shell_info);
-		else if (inputstartswith(shell_info->user_input, "history"))
-			print_history(shell_info->user_input);
+    	shell_info->user_input = dollar_expand(shell_info);
+		// if (inputstartswith(shell_info->user_input, "echo "))
+		// 	run_echo(shell_info->user_input);
+		// else if (inputstartswith(shell_info->user_input, "cd "))
+		// 	run_cd(shell_info->user_input, shell_info);
+		// else if (inputstartswith(shell_info->user_input, "pwd ") | inputis(shell_info->user_input, "pwd"))
+		// 	run_pwd(shell_info);
+		// else if (inputis(shell_info->user_input, "env ") | inputis(shell_info->user_input, "env"))
+		// 	run_env(shell_info);
+		// else if (inputstartswith(shell_info->user_input, "export ") | inputis(shell_info->user_input, "export"))
+		// 	run_export(shell_info);
+    	// else if (inputstartswith(shell_info->user_input, "unset ") | inputis(shell_info->user_input, "unset"))
+		// 	run_unset(shell_info);
+		// else if (inputstartswith(shell_info->user_input, "history"))
+		// 	print_history(shell_info->user_input);
     	// else if (!inputis(shell_info->user_input, ""))
 		// 	ft_printf("minishell: %s: command not found\n", shell_info->user_input); //No command not found error if this line doesnt exist!
 
@@ -75,7 +75,7 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 		(void)argv;
 	free_tokens(&shell_info->tokens);
 	free_cmd_list(&shell_info->first_command);
-	printf("shell_info->syntax_error = %i\n", shell_info->syntax_error);
+	// printf("shell_info->syntax_error = %i\n", shell_info->syntax_error);
 	shell_info->syntax_error = false;
 	}
 }

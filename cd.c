@@ -31,6 +31,19 @@ t_env_mini *env_search_name(char *name, t_env_mini *env_mini)
   return (0);
 }
 
+// char	*ptr_ws(char *inpt);
+// {
+// 	char	*ptr;
+
+// 	ptr = inpt;
+// 	while (*ptr_ws)
+// 	{
+// 		if (is_ws(*ptr_ws))
+// 			return (ptr_ws);
+// 		ptr_ws++;
+// 	}
+// }
+
 //ABS PATH
 void	run_cd(char *inpt, t_shell *shell_info)
 {
@@ -42,16 +55,17 @@ void	run_cd(char *inpt, t_shell *shell_info)
 	t_env_mini	*env_mini_oldpwd;
 	// char	*slash_path;
 	// char	*path;
-  // char *cwdptr;
-  // cwdptr = ft_strdup(cwd);
-  getcwd(cwd, sizeof(cwd));
-  printf("cwd=%s\n", cwd);
-  env_mini_pwd = 0;
-  env_mini_oldpwd = 0;
-  env_mini_pwd = env_search_name("PWD", shell_info->env_mini);
-  env_mini_oldpwd = env_search_name("OLDPWD", shell_info->env_mini);
+  	// char *cwdptr;
+  	// cwdptr = ft_strdup(cwd);
+  	getcwd(cwd, sizeof(cwd));
+	//   printf("cwd=%s\n", cwd);
+  	env_mini_pwd = 0;
+  	env_mini_oldpwd = 0;
+  	env_mini_pwd = env_search_name("PWD", shell_info->env_mini);
+  	env_mini_oldpwd = env_search_name("OLDPWD", shell_info->env_mini);
 
-  path_input = inpt + 3;
+  	path_input = inpt + 3;
+
 	if (access(path_input, R_OK) != -1)
 	{
 
@@ -70,7 +84,7 @@ void	run_cd(char *inpt, t_shell *shell_info)
         env_mini_oldpwd->value = shell_info->oldpwd;
       else
       {
-        printf("%s %s\n", shell_info->cwd, shell_info->oldpwd);
+        // printf("%s %s\n", shell_info->cwd, shell_info->oldpwd);
         env_mini = ft_lstnew_envmini("OLDPWD", shell_info->oldpwd);
 	      ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
       }

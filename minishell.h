@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/17 12:36:40 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/17 13:48:16 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_token //token, not token
 	char			*input;
 	int				len;
 	int				idx;
-	char			*content;
+	char			*content; //get_first_word(toke->content) cat hi hel > out
 	t_token_type	token_type;
 	struct s_token	*next;
 	// char			*user_input_element;

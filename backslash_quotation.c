@@ -7,3 +7,10 @@
 //5. Escaping Quotes
 //6. Escaping Meta-characters in Regular Expressions
 //7. Special Sequence Escapes /b, /a
+
+
+//input == \ => next line
+
+//if '\ ' exist in user input WORD\ WORD => return "WORD WORD"
+
+//echo cd export unset

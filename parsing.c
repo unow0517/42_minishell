@@ -58,7 +58,7 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 		cmd_node->cmd = ft_calloc(1, sizeof(char));
 		while (iterate != NULL && iterate->token_type != PIPE)
 		{
-printf("HEYYYYYYYYY\n");
+// printf("HEYYYYYYYYY\n");
 			iterate = set_redirections(cmd_node, iterate);
 			if (iterate && (iterate->token_type == WORD || iterate->token_type == D_QUOTE || iterate->token_type == S_QUOTE) && (cmd_node->cmd == NULL || cmd_node->cmd[0] == '\0') && iterate->token_type != PIPE)
 			{
@@ -76,7 +76,7 @@ printf("HEYYYYYYYYY\n");
 					cmd_node->cmd = quote_handler(shell_info, iterate, quoted_str, S_QUOTE);
 					iterate = skip_quoted_str(iterate, S_QUOTE);
 				}
-printf("cmd_node->cmd = %s\n", cmd_node->cmd);
+// printf("cmd_node->cmd = %s\n", cmd_node->cmd);
 			}
 			else if (iterate && (iterate->token_type == WORD || iterate->token_type == D_QUOTE || iterate->token_type == S_QUOTE) && cmd_node->cmd != NULL && cmd_node->cmd[0] != '\0' && iterate->token_type != PIPE)
 			{

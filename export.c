@@ -56,9 +56,9 @@ t_env_mini	*ft_lstnew_envmini(char *name, char *value)
 
   first_node = (t_env_mini *)malloc(sizeof(t_env_mini));
 	first_node->name = name;
-  printf("value=%s\n", value);
+//   printf("value=%s\n", value);
   first_node->value = value;
-  printf("envminivalue=%s\n", first_node->value);
+//   printf("envminivalue=%s\n", first_node->value);
 
 	first_node->next = 0;
 	return (first_node);

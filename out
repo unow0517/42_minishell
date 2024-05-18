@@ -2,6 +2,7 @@ Libft
 Makefile
 NOTES.txt
 README.md
+backslash.c
 cd.c
 checks.c
 dollar_expand.c
@@ -19,17 +20,21 @@ minishell
 minishell.c
 minishell.dSYM
 minishell.h
+minishell_tester
 out
 out.txt
+out1
+out1.txt
+out2
 parsing.c
 pipe.c
 pipex_functions.c
 pwd.c
 quotes.c
 sig_functions.c
+space folder
 tokenizer.c
 tokens.c
 unset.c
 utils.c
 white_space.c
-aaaaa
