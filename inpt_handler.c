@@ -23,6 +23,8 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 	{
 		signal(SIGINT, sighandler);
 		shell_info->user_input = readline(shell_info->prompt);
+		// ft_printf("bs %s\n",backslash_piece(shell_info->user_input));
+    	
     	if (!shell_info->user_input)
 		{
 			// free(shell_info);
@@ -33,12 +35,11 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 			// free(shell_info);
 			exit(0) ;
 		}
-	// ft_printf("bs %s\n",backslash_piece(shell_info->user_input));
-    	
 		if (!inputis(shell_info->user_input, ""))
 			add_history(shell_info->user_input);
-    	shell_info->user_input = dollar_expand(shell_info);
-		// ft_printf("outputinhandler %s\n", shell_info->user_input);
+    	// shell_info->user_input = expand(shell_info);
+		expand(shell_info);
+		ft_printf("outputinhandler %s\n", shell_info->user_input);
 		parse_input(shell_info, &status);
 // printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
 		// execution_cases(shell_info, &status);		
@@ -55,7 +56,6 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 			rl_redisplay();
 		}
     
-    	shell_info->user_input = dollar_expand(shell_info);
 		if (inputstartswith(shell_info->user_input, "echo "))
 			run_echo(shell_info->user_input);
 		else if (inputstartswith(shell_info->user_input, "cd "))
