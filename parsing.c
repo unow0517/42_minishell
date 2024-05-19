@@ -156,9 +156,6 @@ void	init_cmds_in_struct(t_command *cmd_node, char *to_split)
 //>, <
 t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 {
-	t_token	*init_tok;
-
-	init_tok = iterate;
 	if (iterate->token_type == S_LESS) //<
 	{
 		iterate = iterate->next;

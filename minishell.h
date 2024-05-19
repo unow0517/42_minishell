@@ -212,7 +212,8 @@ void	run_export(t_shell *shell_info);
 //DOLLAR_EXPAND.C
 // char	*expand(t_shell *shell_info);
 void	expand(t_shell *shell_info);
-char	*replace_caret(char *inpt);
+void replace_caret(t_shell *shell_info);
+// char	*replace_caret(char *inpt);
 
 //UNSET.C
 void	run_unset(t_shell *shell_info);

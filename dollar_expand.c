@@ -86,8 +86,8 @@ void	replace_bs_dollar(t_shell *shell_info)
 	char	*inpt;
 
 	inpt = 0;
-    if (shell_info->user_input)
-        inpt = shell_info->user_input;
+  if (shell_info->user_input)
+    inpt = shell_info->user_input;
 	while (*inpt)
 	{
 		if (*inpt == '\\' && *(inpt + 1) == '$')
@@ -192,56 +192,103 @@ void	replace_expand1(t_shell *shell_info)
 	}
 }
 
-// char	*replace_caret(char *inpt)
 void	replace_caret(t_shell *shell_info)
 {
-	char	*ptr_inpt;
-	char	*output;
-    char    *str_till_dollar;
-	char    *ptr_backslash;
-	char	*inpt;
-
-	inpt = shell_info->user_input;
-	if (!inpt)
-		return (0);
-	ptr_inpt = inpt;
-	// ptr_backslash = 0;
-    ft_printf("ptr_inpt %s\n", ptr_inpt);
-	ptr_backslash = ft_strchr(inpt, '\\');
-    printf("pb %s\n", ptr_backslash);
-	str_till_dollar = ft_substr(inpt, 0, ptr_backslash - inpt);
-    printf("std %s\n", str_till_dollar);
-    ft_printf("stdlen %d\n", ft_strlen(ptr_inpt));
-
-	while (*inpt)
+	char  *inpt;
+  int   cnt;
+  char  *output;
+  int i;
+  int j;
+  
+  inpt = shell_info->user_input;
+  cnt = 0;
+  while (*inpt)
 	{
-		if (*inpt == '\\' &&  *(inpt + 1) == '^')
-		{
-		    ft_printf("hi");
-			output = malloc(ft_strlen(ptr_inpt));
-			ft_memset(output, 0, ft_strlen(ptr_inpt));
-			ft_strlcat(output, str_till_dollar, ft_strlen(ptr_inpt));
-			ft_strlcat(output, "$", ft_strlen(ptr_inpt));
-			ft_strlcat(output, inpt + 2, ft_strlen(ptr_inpt));
-			return (output);
-		}
-		if (inpt++)
-			inpt++;
-	}
-	shell_info->user_input = ptr_inpt;
-	// return (ptr_inpt);
+    if (*inpt == '\\' &&  *(inpt + 1) == '^')
+      cnt++;
+    inpt++;
+  }
+  inpt = shell_info->user_input;
+    ft_printf("stdlen %d\n", ft_strlen(inpt));
+  output = malloc(ft_strlen(inpt) - cnt + 1);
+  i = 0;
+  j = 0;
+  while (inpt[i])
+  {
+    if (inpt[i] == '\\' && inpt[i + 1] == '^')
+    {
+      output[j] = '$';
+      i++;
+    }
+    else
+      output[j] = inpt[i];
+    j++;
+    i++;
+  }
+  output[ft_strlen(inpt) - cnt] = '\0';
+  printf("outputlen %s\n", output);
+  printf("output %s\n", output);
+  shell_info->user_input = output;
+  // free(output);
 }
+
+
+// // char	*replace_caret(char *inpt)
+// void	replace_caret(t_shell *shell_info)
+// {
+// 	char  *ptr_inpt;
+// 	char  *output;
+//   char  *str_till_dollar;
+// 	char  *ptr_backslash;
+// 	char  *inpt;
+
+// 	inpt = shell_info->user_input;
+// 	if (!inpt)
+// 		return ;
+// 	ptr_inpt = inpt;
+// 	// ptr_backslash = 0;
+//     ft_printf("ptr_inpt %s\n", ptr_inpt);
+// 	// str_till_dollar = ft_substr(inpt, 0, ptr_backslash - inpt);
+//     // printf("std %s\n", str_till_dollar);
+//     ft_printf("stdlen %d\n", ft_strlen(ptr_inpt));
+
+// 	while (*inpt)
+// 	{
+// 		if (*inpt == '\\' &&  *(inpt + 1) == '^')
+// 		{
+// 	    str_till_dollar = ft_substr(ptr_inpt, 0, inpt - ptr_inpt);
+// 	    ptr_backslash = ft_strchr(inpt, '\\');
+//       printf("pb %s\n", ptr_backslash);
+//       printf("std %s\n", str_till_dollar);
+//       ft_printf("hi\n");
+// 			output = malloc(ft_strlen(ptr_inpt));
+// 			ft_memset(output, 0, ft_strlen(ptr_inpt));
+// 			ft_strlcat(output, str_till_dollar, ft_strlen(ptr_inpt));
+// 			ft_strlcat(output, "$", ft_strlen(ptr_inpt));
+// 			ft_strlcat(output, inpt + 2, ft_strlen(ptr_inpt));
+//       printf("output %s\n", shell_info->user_input);
+//       shell_info->user_input = output;
+
+//       // return (output);
+// 		}
+// 		if (inpt++)
+// 			inpt++;
+// 	}
+// 	// shell_info->user_input = ptr_inpt;
+// 	// return (ptr_inpt);
+// }
 
 //when user_input is 0
 // char    *expand(t_shell *shell_info)
 void	expand(t_shell *shell_info)
 {
-	replace_bs_dollar(shell_info);
+	  replace_bs_dollar(shell_info);
     ft_printf("rebsd %s\n", shell_info->user_input); //OK
     // replaced = replace_expand(inpt, var_value, len);
-	replace_expand1(shell_info);
+	  replace_expand1(shell_info);
     ft_printf("repex1 %s\n", shell_info->user_input); //OK
-
+    replace_caret(shell_info);
+    ft_printf("reca %s\n", shell_info->user_input); //OK
 
     // t_env_mini  *env_mini;
     // char        *inpt;
