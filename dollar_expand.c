@@ -53,7 +53,9 @@ char    *varvalue(int var_name_len, char *str, t_env_mini *env_mini)
     return (0);
 }
 
+
 //MALLOC!
+//IF /$ exist => replace it to /^,
 char    *replace_expand(char *inpt, char *var_value, int var_name_len)
 {
     // int      var_value_len;
@@ -68,24 +70,31 @@ char    *replace_expand(char *inpt, char *var_value, int var_name_len)
 	str_till_dollar = 0;
   	str_after_varname = 0;
 	ptr_dollar = ft_strchr(inpt, '$');
+	// printf("ptr$ %s\n", ptr_dollar );
+	// printf("ptr$-1 %c\n", *(ptr_dollar - 1));
+	// printf("ptr$-1 %d\n", *(ptr_dollar - 1) == '\\');
     
 	
-	// if (ptr_dollar && (*(ptr_dollar - 1) != '\\'))
-  	// {
-  	//   str_till_dollar = ft_substr(inpt, 0, ptr_dollar - inpt);
-  	//   str_after_varname = ptr_dollar + var_name_len + 1;
-  	// }
-  	// else
-  	// {
-  	//   str_till_dollar = 0;
-  	//   str_after_varname = 0;
-  	// }
+	if (ptr_dollar && (*(ptr_dollar - 1) == '\\'))
+		*ptr_dollar = '^';
+	else if (ptr_dollar && (*(ptr_dollar - 1) != '\\'))
+  	{
+  	  str_till_dollar = ft_substr(inpt, 0, ptr_dollar - inpt);
+  	  str_after_varname = ptr_dollar + var_name_len + 1;
+  	}
+  	else
+  	{
+  	  str_till_dollar = 0;
+  	  str_after_varname = 0;
+  	}
 
 
 	// if (ft_strchr(inpt, '$'))
   	// {
-	// 	printf("$ - 1 %s\n", ft_strchr(inpt, '$') - 1 );
-	// 	printf("$ - 1 %d\n", *(ft_strchr(inpt, '$') - 1) == '\\' );
+	// 	// printf("$ - 1 %s\n", ft_strchr(inpt, '$') - 1 );
+	// 	// printf("$ - 1=%c\n", *(ft_strchr(inpt, '$') - 1));
+	// 	// printf("isb=%d\n", is_backslash(ft_strchr(inpt, '$') - 1));
+	// 	// printf("$ - 1=%d\n", *(ft_strchr(inpt, '$') - 1) == '\\');
 	// 	if (*(ft_strchr(inpt, '$') - 1) != '\\')
 	// 	{
 	// 		printf("hi");
@@ -134,6 +143,36 @@ char    *replace_expand(char *inpt, char *var_value, int var_name_len)
     // return (free(join1), join2);
 }
 
+//caret == \^, Malloc
+char	*replace_caret(char *inpt)
+{
+	char	*ptr_inpt;
+	char	*output;
+    char    *str_till_dollar;
+	char    *ptr_backslash;
+
+	ptr_inpt = inpt;
+	ptr_backslash = ft_strchr(inpt, '\\');
+	str_till_dollar = ft_substr(inpt, 0, ptr_backslash - inpt);
+    // ft_printf("std %s\n", str_till_dollar);
+    ft_printf("stdlen %d\n", ft_strlen(ptr_inpt));
+
+	while (*inpt)
+	{
+		if (*inpt == '\\' &&  *(inpt + 1) == '^')
+		{
+		    ft_printf("hi");
+			output = malloc(ft_strlen(ptr_inpt));
+			ft_memset(output, 0, ft_strlen(ptr_inpt));
+			ft_strlcat(output, str_till_dollar, ft_strlen(ptr_inpt));
+			ft_strlcat(output, "$", ft_strlen(ptr_inpt));
+			ft_strlcat(output, inpt + 2, ft_strlen(ptr_inpt));
+			return (output);
+		}
+		inpt++;
+	}
+	return (ptr_inpt);
+}
 //when user_input is 0
 char    *dollar_expand(t_shell *shell_info)
 {
@@ -161,7 +200,9 @@ char    *dollar_expand(t_shell *shell_info)
     var_value = varvalue(len, inpt, env_mini);
     // ft_printf("vv %s\n", var_value);
     replaced = replace_expand(inpt, var_value, len);
-    ft_printf("rep %s\n", replaced);
+    // ft_printf("repex %s\n", replaced); // echo \$USER $USER => echo \^USER yowoo
+	replaced = replace_caret(replaced);
+    // ft_printf("repca %s\n", replaced);
     if (ft_strlen(replaced))
     	return (replaced);
   	else

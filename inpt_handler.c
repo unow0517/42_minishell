@@ -27,8 +27,8 @@ void	inpt_handler(char **argv, t_shell *shell_info)
     	
 		if (!inputis(shell_info->user_input, ""))
 			add_history(shell_info->user_input);
-    	shell_info->user_input = dollar_expand(shell_info);
-		// ft_printf("inpt %s\n", shell_info->user_input);
+    	// shell_info->user_input = dollar_expand(shell_info);
+		ft_printf("outputinhandler %s\n", shell_info->user_input);
 		parse_input(shell_info, &status);
 // printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
 		// execution_cases(shell_info, &status);		

@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/18 11:49:47 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/19 11:47:37 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,7 @@ void	run_export(t_shell *shell_info);
 
 //DOLLAR_EXPAND.C
 char	*dollar_expand(t_shell *shell_info);
+char	*replace_caret(char *inpt);
 
 //UNSET.C
 void	run_unset(t_shell *shell_info);
