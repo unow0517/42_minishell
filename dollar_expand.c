@@ -202,8 +202,8 @@ char    *dollar_expand(t_shell *shell_info)
     replaced = replace_expand(inpt, var_value, len);
     // ft_printf("repex %s\n", replaced); // echo \$USER $USER => echo \^USER yowoo
 	replaced = replace_caret(replaced);
-    // ft_printf("repca %s\n", replaced);
-    if (ft_strlen(replaced))
+    ft_printf("repca %s\n", replaced);
+    if (replaced && ft_strlen(replaced))
     	return (replaced);
   	else
     	return (inpt);
