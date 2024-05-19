@@ -1,7 +1,7 @@
 NAME = minishell
-CC = gcc
-SRC = errors.c quotes.c execution.c parsing.c inpt_handler.c freeing.c minishell.c inpt_functions.c history.c sig_functions.c pwd.c pipe.c echo.c cd.c env.c white_space.c tokenizer.c pipex_functions.c checks.c utils.c dollar_expand.c export.c unset.c
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+CC = cc #-fsanitize=address -g
+SRC = split_ms.c parsing_helper.c parsing_cases.c errors.c quotes.c execution.c parsing.c inpt_handler.c freeing.c minishell.c inpt_functions.c history.c sig_functions.c pwd.c pipe.c echo.c cd.c env.c white_space.c tokenizer.c pipex_functions.c checks.c utils.c dollar_expand.c export.c unset.c
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
 RM = rm -rf
 LIBFT_AR = Libft/libft.a
 PRINTF_AR = ft_printf/libftprintf.a

@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 13:39:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/16 17:32:12 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/18 17:12:13 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	print_token(t_token *token)
 	ft_printf("token->input = %s\n", token->input);
 	ft_printf("token->len = %i\n", token->len);
 	ft_printf("token->idx = %i\n", token->idx);
-	// ft_printf("token->user_input_element = %s\n", token->user_input_element);
 	ft_printf("token->content = %s\n", &token->input[token->idx]);
 	ft_printf("token->token_type = %i\n", token->token_type);
 	ft_printf("token->next = %p\n", token->next);
@@ -63,11 +62,14 @@ void	print_cmd_list(t_command *cmd_node)
 	{
 		printf("________________________________________________________\n");
 		printf("cmd_node\t\t%p\n", cmd_node);
-		printf("cmd_node->cmd\t\t%s\n", cmd_node->cmd);
+		if (cmd_node->cmd)
+			printf("cmd_node->cmd\t\t%s\n", cmd_node->cmd);
 		printf("cmd_node->options\n");
-		print_split_no_newline(cmd_node->options);
+		if (cmd_node->options)
+			print_split_no_newline(cmd_node->options);
 		printf("cmd_node->full_cmd\n");
-		print_split_no_newline(cmd_node->full_cmd);
+		if (cmd_node->full_cmd)
+			print_split_no_newline(cmd_node->full_cmd);
 		printf("cmd_node->input_fd\t%i\n", cmd_node->input_fd);
 		printf("cmd_node->output_fd\t%i\n", cmd_node->output_fd);
 		printf("cmd_node->output_path\t%s\n", cmd_node->output_path);
@@ -130,21 +132,26 @@ void	syntax_error_check(t_shell *shell_info, int *status)
 		{
 			if (is_redir(iter->token_type) && is_redir(iter->next->token_type))
 			{
-				if (iter->next->token_type == D_LESS || iter->next->token_type == S_LESS)
+				if ((iter->token_type == S_MORE && iter->next->token_type == S_LESS) || (iter->token_type == S_LESS && iter->next->token_type == S_MORE))
+					unexpected_token(shell_info, "<>", status);
+				else if (iter->next->token_type == D_LESS || iter->next->token_type == S_LESS)
 					unexpected_token(shell_info, "<", status);
 				else if (iter->next->token_type == D_MORE || iter->next->token_type == S_MORE)
 					unexpected_token(shell_info, ">", status);
-				iter = iter->next;
+				while (iter && is_redir(iter->token_type))
+					iter = iter->next;
 			}
-			if (iter->token_type == PIPE && iter->next && iter->next->token_type == PIPE)
+			else if (iter->token_type == PIPE && iter->next && iter->next->token_type == PIPE)
 			{
 				if (shell_info->tokens->token_type == WORD)
 					unexpected_token(shell_info, get_first_word(shell_info->tokens->content), status);
 				else
 					unexpected_token(shell_info, "|", status);
-				iter = iter->next;
+				while (iter && iter->token_type == PIPE)
+					iter = iter->next;
 			}
-			iter = iter->next;
+			if (iter)
+				iter = iter->next;
 		}
 	}
 }

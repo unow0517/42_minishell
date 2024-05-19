@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/16 17:41:09 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/18 17:37:06 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,13 @@ bool	is_redir(int i)
 	return (false);
 }
 
+bool	is_redir_pipe(int i)
+{
+	if (i == S_LESS || i == S_MORE || i == D_LESS || i == D_MORE || i == PIPE)
+		return (true);
+	return (false);
+}
+
 bool	is_ws(char c)
 {
 	if (c == ' ' || c == '\t')
@@ -158,4 +165,74 @@ int	token_count(t_shell *shell_info)
 		counter++;
 	}
 	return (counter);
+}
+
+bool	ft_is_builtin(char *str)
+{
+	if	(str)
+	{
+		if (ft_strncmp(str, "echo", 4) == 0)
+			return (true);
+		else if (ft_strncmp(str, "cd", 2) == 0)
+			return (true);
+		else if (ft_strncmp(str, "pwd", 4) == 0)
+			return (true);
+		else if (ft_strncmp(str, "export", 6) == 0)
+			return (true);
+		else if (ft_strncmp(str, "unset", 5) == 0)
+			return (true);
+		else if (ft_strncmp(str, "env", 4) == 0)
+			return (true);
+		else if (ft_strncmp(str, "exit", 4) == 0)
+			return (true);
+		else if (ft_strncmp(str, "pwd", 4) == 0)
+			return (true);
+		else if (ft_strncmp(str, "history", 7) == 0)
+			return (true);
+	}
+	return (false);
+}
+
+char	*get_argument(char *argv)
+{
+	int		i;
+	char	*small_cmd;
+
+	i = 0;
+	while (argv[i] != '\0' && argv[i] != '>' && argv[i] != '<' && argv[i] != '|' && argv[i] != '"' && argv[i] != '\'')
+		i++;
+	small_cmd = ft_calloc(i + 1, sizeof(char));
+	if (!small_cmd)
+		return (NULL);
+	i = 0;
+	while (argv[i] != '\0' && argv[i] != '>' && argv[i] != '<' && argv[i] != '|' && argv[i] != '"' && argv[i] != '\'')
+	{
+		small_cmd[i] = argv[i];
+		i++;
+	}
+	return (small_cmd);
+}
+
+bool	quotes_even(char *input)
+{
+	int	i;
+	int	q_counter;
+	// int	dq_counter;
+	// int	sq_counter;
+
+	// dq_counter = 0;
+	// sq_counter = 0;
+	i = 0;
+	q_counter = 0;
+	if (!input)
+		return (true);
+	while (input[i] != '\0')
+	{
+		if (input[i] == '"' || input[i] == '\'')
+			q_counter++;
+		i++;
+	}
+	if (q_counter % 2 == 0)
+		return (true);
+	return (false);
 }
