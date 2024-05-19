@@ -1,14 +1,6 @@
 cat | cat | cat | ls// checks for file descriptor leaks
-la -l > f1 << END | grep hi | cat > out
+ls -l > f1 << END | grep hi | cat > out
 la -l < f1 < f2 < f3 > f1 << END | grep hi | cat > out
-
-EXECUTE
-	if is_bultin
-		exec_builtin
-	else if number_of_cmds == 1
-		exec_simple_cmd
-	else
-		exec_pipeline
 
 while (cmd)
 	PIPE
@@ -80,7 +72,4 @@ TO HANDLE
 PROBLEEEEEM
 	ls "-lala""lal"
 	ls "-""l""a"
-	ls "-la" | cat "-e"
-	ls "-la" | grep "ha"
-	ls "-la" | grep ha > "file2"
 	"""$USER"""

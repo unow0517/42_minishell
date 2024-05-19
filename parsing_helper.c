@@ -12,8 +12,6 @@ t_token *initialize_cmd(t_shell *shell_info, t_token *iterate, t_command *cmd_no
 	}
 	else if (iterate->token_type == D_QUOTE)
 	{
-		// iterate = iterate->next;
-// print_token(iterate); 
 		temp_cmd = quote_handler(shell_info, iterate, quoted_str, D_QUOTE);
 		cmd_node->cmd = rm_quotes(temp_cmd, '"');
 		free(temp_cmd);
@@ -21,7 +19,6 @@ t_token *initialize_cmd(t_shell *shell_info, t_token *iterate, t_command *cmd_no
 	}
 	else if (iterate->token_type == S_QUOTE)
 	{
-		// iterate = iterate->next;
 		temp_cmd = quote_handler(shell_info, iterate, quoted_str, S_QUOTE);
 		cmd_node->cmd = rm_quotes(temp_cmd, '\'');
 		free(temp_cmd);
@@ -74,7 +71,6 @@ t_token	*initialize_cmd_options(t_shell *shell_info, t_token *iterate, t_command
 
 void	quote_removal_in_exec_arg(t_command *cur_cmd)
 {
-	// t_command	*cur_cmd;
 	int			i;
 	int			j;
 	char		**to_fix;
@@ -83,7 +79,6 @@ void	quote_removal_in_exec_arg(t_command *cur_cmd)
 
 	i = 0;
 	j = 0;
-	// cur_cmd = shell_info->first_command;
 	while (cur_cmd)
 	{
 		if (cur_cmd->full_cmd)
@@ -156,5 +151,19 @@ char	*rm_quotes(char *to_fix, char c)
 		i++;
 // free(to_fix);
 	}
+	if (new && new[0] == '\0')
+		return (NULL);
 	return (new);
+}
+
+t_token	*skip_q_tokens(t_token *iterate)
+{
+	t_token_type hold_type;
+
+	if (!iterate)
+		return (NULL);
+	hold_type = iterate->token_type;
+	while (iterate && iterate->token_type == hold_type)
+		iterate = iterate->next;
+	return (iterate);
 }

@@ -54,6 +54,7 @@ pid_t	exec_pipeline(t_shell *shell_info)
 			execute_builtin(shell_info, shell_info->first_command->builtin_type, shell_info->first_command->builtin_arg);
 		else
 		{
+
 			pid = exec_single_cmd(shell_info, iterate_cmd);
 			iterate_cmd = iterate_cmd->next;
 		}
@@ -80,6 +81,8 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 		handle_redir(shell_info, cmd_to_exec);
 		if (cmd_to_exec->file_not_found == 0)
 		{
+			if (cmd_to_exec->cmd == NULL || cmd_to_exec->cmd[0] == '\0')
+				exit(0);
 			full_path = find_cmd_in_env(cmd_to_exec->cmd, shell_info->env);
 			if (!full_path)
 				cmd_error(cmd_to_exec); // exit (127);

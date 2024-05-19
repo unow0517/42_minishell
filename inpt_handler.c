@@ -26,7 +26,7 @@ void	inpt_handler(char **argv, t_shell *shell_info)
     	shell_info->user_input = dollar_expand(shell_info);
 // printf("________________________DEBUG_________________________\n");
 		parse_input(shell_info, &status);
-printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
+// printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
 		execution_cases(shell_info, &status);		
     if (!shell_info->user_input)
 		{
@@ -38,14 +38,11 @@ printf("exit status = %i\n", status); //if echo $? set status to NULL at the end
 			// free(shell_info);
 			exit(0) ;
 		}
-    // if (ft_strlen(dollar_expand(shell_info)) != 0)
-    //   shell_info->user_input = dollar_expand(shell_info);
     if (!inputis(shell_info->user_input, ""))
 			add_history(shell_info->user_input);
 		if (*shell_info->user_input == ' ')
 			shell_info->user_input = rm_starting_ws(shell_info->user_input);
 		multiple_ws_to_single(shell_info->user_input);
-
 		//have to run this after split cmd by space.
 		if (inputis(shell_info->user_input, ""))
 		{
@@ -56,7 +53,6 @@ printf("exit status = %i\n", status); //if echo $? set status to NULL at the end
 		(void)argv;
 	free_tokens(&shell_info->tokens);
 	free_cmd_list(&shell_info->first_command);
-	// printf("shell_info->syntax_error = %i\n", shell_info->syntax_error);
 	shell_info->syntax_error = false;
 	}
 }

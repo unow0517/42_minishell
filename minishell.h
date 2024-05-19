@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/18 19:41:48 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/19 14:30:15 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,7 @@ t_token	*initialize_cmd_options(t_shell *shell_info, t_token *iterate, t_command
 void	quote_removal_in_exec_arg(t_command *cur_cmd);
 char	*rm_quotes(char *to_fix, char c);
 char	first_quote(char *str);
+t_token	*skip_q_tokens(t_token *iterate);
 
 //EXECUTION.C
 void	executor(t_shell *shell_info, int *status, t_command *cur);

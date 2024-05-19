@@ -10,7 +10,7 @@ void	parse_input(t_shell *shell_info, int *status)
 		if (shell_info->syntax_error == false)
 			parse_tokens(shell_info);
 		// print_token_types(shell_info);
-		print_cmd_list(shell_info->first_command);
+		// print_cmd_list(shell_info->first_command);
 	}
 	else
 		quote_error(status);
@@ -112,19 +112,19 @@ void	init_cmds_in_struct(t_command *cmd_node, char *to_split)
 
 t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 {
-	t_token	*init_tok;
-	t_token_type hold_type;
+// printf("ENTERED SET REDIRS\n");
+// printf("START iterate->content = %s\n", iterate->content);
 
-	hold_type = iterate->token_type;
-	init_tok = iterate;
-	if (hold_type == D_QUOTE || hold_type == S_QUOTE)
+	if (iterate && iterate->token_type == S_LESS)
 	{
-		while (iterate && iterate->token_type == hold_type)
-			iterate = iterate->next;
-	}
-	if (iterate->token_type == S_LESS)
-	{
+
 		iterate = iterate->next;
+		if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE))
+			iterate = skip_q_tokens(iterate);
+// printf("iterate->content = %s\n", iterate->content);
+// printf("________________________DEBUG_________________________\n");
+// printf("iterate->token_type = %u\n", iterate->token_type);
+// printf("iterate->content = %s\n", iterate->content);
 		if (cmd_node->file_not_found == 0)
 			cmd_node->filename = get_first_word(iterate->content);
 		if (cmd_node->file_not_found == 0)
@@ -135,11 +135,16 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 				file_error(cmd_node);
 			}
 		}
-		iterate = iterate->next;
+		if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE))
+			iterate = skip_q_tokens(iterate);
+		if (iterate)
+			iterate = iterate->next;
 	}
-	else if (iterate->token_type == D_LESS)
+	else if (iterate && iterate->token_type == D_LESS)
 	{
 		iterate = iterate->next;
+		if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE))
+			iterate = skip_q_tokens(iterate);
 		cmd_node->is_heredoc = 1;
 		// cmd_node->filename = get_first_word(iterate->content);
 		// if (cmd_node->file_not_found == 0)
@@ -149,12 +154,22 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 				cmd_node->file_not_found = 1;
 				heredoc_error(cmd_node);
 			}
-		// }
-		iterate = iterate->next;
+// printf("check ste redirs for here doc with quotes\n");
+// printf("MIDDLE OF HEREDOC before quote iterate->content = %s\n", iterate->content);
+		if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE))
+			iterate = skip_q_tokens(iterate);
+		// iterate = skip_q_tokens(iterate);
+// printf("MIDDLE OF HEREDOC after quote iterate->content = %s\n", iterate->content);
+		if (iterate)
+			iterate = iterate->next;
+// printf("END OF HEREDOC iterate->content = %s\n", iterate->content);
 	}
-	else if (iterate && iterate->token_type == S_MORE && iterate->next && iterate->next->token_type == WORD) //create open file function to pass enum
+	else if (iterate && iterate->token_type == S_MORE) //create open file function to pass enum// && iterate->next && iterate->next->token_type == WORD
 	{
+// printf("Output redir statement\n");
 		iterate = iterate->next;
+		if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE))
+			iterate = skip_q_tokens(iterate);
 		if (cmd_node->file_not_found == 0)
 			cmd_node->filename = get_first_word(iterate->content);
 		if (cmd_node->file_not_found == 0)
@@ -162,11 +177,16 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 			if (open_file(cmd_node, iterate, S_MORE) == -1 || access(get_first_word(iterate->content), F_OK) == -1)
 				file_error(cmd_node);
 		}
-		iterate = iterate->next;
+		if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE))
+			iterate = skip_q_tokens(iterate);
+		if (iterate)
+			iterate = iterate->next;
 	}
-	else if (iterate && iterate->token_type == D_MORE && iterate->next && iterate->next->token_type == WORD) //create open file function to pass enum
+	else if (iterate && iterate->token_type == D_MORE) //create open file function to pass enum // && iterate->next && iterate->next->token_type == WORD
 	{
 		iterate = iterate->next;
+		if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE))
+			iterate = skip_q_tokens(iterate);
 		if (cmd_node->file_not_found == 0)
 			cmd_node->filename = get_first_word(iterate->content);
 		if (cmd_node->file_not_found == 0)
@@ -174,13 +194,13 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 			if (open_file(cmd_node, iterate, D_MORE) == -1 || access(get_first_word(iterate->content), F_OK) == -1)
 				file_error(cmd_node);
 		}
-		iterate = iterate->next;
-	}
-	if (iterate && iterate->token_type == hold_type)
-	{
-		while (iterate && iterate->token_type == hold_type)
+		if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE))
+			iterate = skip_q_tokens(iterate);
+		if (iterate)
 			iterate = iterate->next;
 	}
+// printf("END iterate->content = %s\n", iterate->content);
+// printf("EXITED SET REDIRS\n");
 	return (iterate);
 }
 
