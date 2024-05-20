@@ -94,6 +94,10 @@ void	replace_bs_dollar(t_shell *shell_info)
 		{
 			*(inpt + 1) = '^';
 		}
+		else if (*inpt == '$' && *(inpt + 1) == '\\')
+		{
+			*inpt = '^';
+		}
 		if (inpt + 1)
 			inpt++;
 	}
@@ -206,10 +210,12 @@ void	replace_caret(t_shell *shell_info)
 	{
     if (*inpt == '\\' &&  *(inpt + 1) == '^')
       cnt++;
+    if (*inpt == '^' &&  *(inpt + 1) == '\\')
+      cnt++;	  
     inpt++;
   }
   inpt = shell_info->user_input;
-    ft_printf("stdlen %d\n", ft_strlen(inpt));
+    // ft_printf("stdlen %d\n", ft_strlen(inpt));
   output = malloc(ft_strlen(inpt) - cnt + 1);
   i = 0;
   j = 0;
@@ -220,14 +226,19 @@ void	replace_caret(t_shell *shell_info)
       output[j] = '$';
       i++;
     }
+	else if (inpt[i] == '^' && inpt[i + 1] == '\\')
+    {
+      output[j] = '$';
+      i++;
+    }
     else
       output[j] = inpt[i];
     j++;
     i++;
   }
   output[ft_strlen(inpt) - cnt] = '\0';
-  printf("outputlen %s\n", output);
-  printf("output %s\n", output);
+//   printf("outputlen %s\n", output);
+//   printf("output %s\n", output);
   shell_info->user_input = output;
   // free(output);
 }

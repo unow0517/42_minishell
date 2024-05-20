@@ -39,10 +39,10 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 			add_history(shell_info->user_input);
     	// shell_info->user_input = expand(shell_info);
 		expand(shell_info);
-		ft_printf("outputinhandler %s\n", shell_info->user_input);
+		// ft_printf("outputinhandler %s\n", shell_info->user_input);
 		parse_input(shell_info, &status);
 // printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
-		// execution_cases(shell_info, &status);		
+		execution_cases(shell_info, &status);		
     // if (ft_strlen(dollar_expand(shell_info)) != 0)
     //   shell_info->user_input = dollar_expand(shell_info);
 		if (*shell_info->user_input == ' ')
