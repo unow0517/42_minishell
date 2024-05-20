@@ -42,7 +42,7 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 		// ft_printf("outputinhandler %s\n", shell_info->user_input);
 		parse_input(shell_info, &status);
 // printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
-		execution_cases(shell_info, &status);		
+		// execution_cases(shell_info, &status);
     // if (ft_strlen(dollar_expand(shell_info)) != 0)
     //   shell_info->user_input = dollar_expand(shell_info);
 		if (*shell_info->user_input == ' ')
@@ -59,7 +59,10 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 		if (inputstartswith(shell_info->user_input, "echo "))
 			run_echo(shell_info->user_input);
 		else if (inputstartswith(shell_info->user_input, "cd "))
+    {
 			run_cd(shell_info->user_input, shell_info);
+      // ft_printf("chdir %d\n", chdir(shell_info->user_input + 3));
+    }
 		else if (inputstartswith(shell_info->user_input, "pwd ") | inputis(shell_info->user_input, "pwd"))
 			run_pwd(shell_info);
 		else if (inputis(shell_info->user_input, "env ") | inputis(shell_info->user_input, "env"))

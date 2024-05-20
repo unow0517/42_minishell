@@ -36,7 +36,7 @@ void	run_cd(char *inpt, t_shell *shell_info)
 {
 	char	*path_input;
 	char	cwd[1024];
-	char	*cwd_input;
+	// char	*cwd_input;
 	t_env_mini	*env_mini;
 	t_env_mini	*env_mini_pwd;
 	t_env_mini	*env_mini_oldpwd;
@@ -53,34 +53,61 @@ void	run_cd(char *inpt, t_shell *shell_info)
 
   	path_input = inpt + 3;
 
-	if (access(path_input, R_OK) != -1)
-	{
 
-		cwd_input = ft_substr(path_input, 0, ft_strlen(cwd));
-		if (ft_strncmp(cwd_input, cwd, ft_strlen(cwd_input)) == 0)
-		{
-			ft_memset(shell_info->oldpwd, 0, 1024);
-			ft_strlcat(shell_info->oldpwd, shell_info->cwd, 1024);
-			ft_memset(shell_info->cwd, 0, 1024);
-			ft_strlcat(shell_info->cwd, path_input, 1024);
-			// shell_info->cwd = ft_strdup(path_input);
-      // env_mini = ft_lstnew_envmini("OLDPWD", shell_info->cwd);
-	    // ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
-      env_mini_pwd->value = shell_info->cwd;
-      if (env_mini_oldpwd)
-        env_mini_oldpwd->value = shell_info->oldpwd;
-      else
-      {
-        // printf("%s %s\n", shell_info->cwd, shell_info->oldpwd);
-        env_mini = ft_lstnew_envmini("OLDPWD", shell_info->oldpwd);
-	      ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
-      }
+
+  if (chdir(path_input) == -1)
+    ft_printf("minishell: cd : %s: No such file or directory\n", path_input);	
+  else
+  {
+  	getcwd(cwd, sizeof(cwd));
+		ft_memset(shell_info->oldpwd, 0, 1024);
+		ft_strlcat(shell_info->oldpwd, shell_info->cwd, 1024);
+		ft_memset(shell_info->cwd, 0, 1024);
+		ft_strlcat(shell_info->cwd, cwd, 1024);
+    env_mini_pwd->value = shell_info->cwd;
+    if (env_mini_oldpwd)
+      env_mini_oldpwd->value = shell_info->oldpwd;
+    else
+    {
+      // printf("%s %s\n", shell_info->cwd, shell_info->oldpwd);
+      env_mini = ft_lstnew_envmini("OLDPWD", shell_info->oldpwd);
+      ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
     }
-		else
-			ft_printf("minishell: cd : %s: Folder exist but absolute path is required\n", path_input);	
-	}
-	else
-		ft_printf("minishell: cd : %s: Only absolute path is available\n", path_input);
+  }
+
+
+
+	// if (access(path_input, R_OK) != -1)
+	// {
+
+	// 	cwd_input = ft_substr(path_input, 0, ft_strlen(cwd));
+	// 	if (ft_strncmp(cwd_input, cwd, ft_strlen(cwd_input)) == 0)
+	// 	{
+	// 		ft_memset(shell_info->oldpwd, 0, 1024);
+	// 		ft_strlcat(shell_info->oldpwd, shell_info->cwd, 1024);
+	// 		ft_memset(shell_info->cwd, 0, 1024);
+	// 		ft_strlcat(shell_info->cwd, path_input, 1024);
+	// 		// shell_info->cwd = ft_strdup(path_input);
+  //     // env_mini = ft_lstnew_envmini("OLDPWD", shell_info->cwd);
+	//     // ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
+  //     env_mini_pwd->value = shell_info->cwd;
+  //     if (env_mini_oldpwd)
+  //       env_mini_oldpwd->value = shell_info->oldpwd;
+  //     else
+  //     {
+  //       // printf("%s %s\n", shell_info->cwd, shell_info->oldpwd);
+  //       env_mini = ft_lstnew_envmini("OLDPWD", shell_info->oldpwd);
+	//       ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
+  //     }
+  //   }
+	// 	else
+	// 		ft_printf("minishell: cd : %s: Folder exist but absolute path is required\n", path_input);	
+	// }
+	// else
+	// 	ft_printf("minishell: cd : %s: Only absolute path is available\n", path_input);
+
+
+
 	// if (cwd)
 	// 	free(cwd);
 }
