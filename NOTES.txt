@@ -14,7 +14,7 @@ while (cmd)
 
 debug with terminal
 	ps aux | grep minishell
-	lsof -p (PID)       check for fd's, hanging processes etc.
+	lsof -p (PID)	   check for fd's, hanging processes etc.
 
 quote handling
 	test1="ls -l"
@@ -73,3 +73,31 @@ PROBLEEEEEM
 	ls "-lala""lal"
 	ls "-""l""a"
 	"""$USER"""
+
+>>> should be ok within quotes...
+
+awk
+	awk '{print $1, $2}' data.txt
+	awk '{sum += $1} END {print sum}' numbers.txt
+	awk -F',' '{print $2, $3}' data.csv
+	awk '$2 > 80 {print $1}' grades.txt
+	awk 'NR>1 {print $1, "is", $2, "years old"}' data.txt
+
+awk '/main/ { print }' minishell.c
+char *args[] =			//(execve(awk_path, args, envp))
+{
+	"awk",				// argv[0] (name of the program)
+	"/main/ { print }",	// argv[1] (awk script)
+	"minishell.c",		// argv[2] (file to process)
+	NULL				// Terminate the argument list with NULL
+};
+
+awk '{sum += $1} END {print sum}' numbers.txt
+char *args[] =
+
+{
+	"awk",							// argv[0] (name of the program)
+	"{sum += $1} END {print sum}",	// argv[1] (awk script)
+	"numbers.txt",					// argv[2] (file to process)
+	NULL							// Terminate the argument list with NULL
+};

@@ -16,3 +16,14 @@ void	run_echo(char *inpt)
 {
 	ft_printf("%s\n", inpt + 5);
 }
+
+// void	run_echo(t_command *cmd, char *inpt)
+// {
+// 	char *str;
+
+// 	str = inpt;
+// 	if (cmd->output_fd != -1)
+// 		write(cmd->output_fd, "%s\n", ft_strlen(inpt));
+// 	else
+// 		write(cmd->output_fd, "%s\n", ft_strlen(inpt));
+// }
