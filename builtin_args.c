@@ -57,7 +57,6 @@ t_token	*skip_tokens_of_builtin_arg(t_token *iterate)
 {
 	int		inside_sq;
 	int		inside_dq;
-
 	inside_dq = 0;
 	inside_sq = 0;
 	while (iterate)
