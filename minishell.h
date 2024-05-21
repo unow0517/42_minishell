@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/20 19:48:36 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:40:38 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_token //token, not token
 	char			*input;
 	int				len;
 	int				idx;
-	char			*content;
+	char			*content; //get_first_word(toke->content) cat hi hel > out
 	t_token_type	token_type;
 	struct s_token	*next;
 	// char			*user_input_element;
@@ -137,6 +137,7 @@ void	run_env(t_shell *shell_info);
 //WHITE_SPACE.C
 char	*rm_starting_ws(char *string);
 char	*multiple_ws_to_single(char	*str);
+char	*ptr_ws(char *inpt);
 
 //CHECKS.C
 void	print_token(t_token *token);
@@ -230,10 +231,13 @@ void	quote_error(int *status);
 //EXPORT.C
 t_env_mini *ft_lstnew_envmini(char *name, char *value);
 t_env_mini *ft_lstlast_envmini(t_env_mini *lst);
-void	run_export(t_shell *shell_info);
+void	run_export(char *str, t_shell *shell_info);
 
 //DOLLAR_EXPAND.C
-char	*dollar_expand(t_shell *shell_info);
+// char	*expand(t_shell *shell_info);
+void	expand(t_shell *shell_info);
+void replace_caret(t_shell *shell_info);
+// char	*replace_caret(char *inpt);
 
 //UNSET.C
 void	run_unset(t_shell *shell_info);
@@ -243,7 +247,7 @@ void	free_tokens(t_token **shell_info);
 void	free_cmd_list(t_command **cmds);
 
 //QUOTES
-char *quote_handler(t_shell *shell_info, t_token *iterate, char *quoted_str, t_token_type flag);
+char	*quote_handler(t_shell *shell_info, t_token *iterate, char *quoted_str, t_token_type flag);
 t_token	*skip_quoted_str(t_token *to_skip, t_token_type flag);
 
 //SPLIT_MS.C
@@ -255,5 +259,6 @@ void	update_quote_state(t_token *cur, int *inside_sq, int *inside_dq, int i);
 void	update_quote_state_token(t_token *cur, int *inside_sq, int *inside_dq);
 t_token	*skip_tokens_of_builtin_arg(t_token *iterate);
 
-
+//BACKSLASH.C
+char	*backslash_piece(char	*str);
 #endif

@@ -22,13 +22,11 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 	while (1)
 	{
 		signal(SIGINT, sighandler);
+		// shell_info->user_input = readline(join2);
 		shell_info->user_input = readline(shell_info->prompt);
-		shell_info->user_input = dollar_expand(shell_info);
-// printf("________________________DEBUG_________________________\n");
-		parse_input(shell_info, &status);
-// printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
-		execution_cases(shell_info, &status);
-	if (!shell_info->user_input)
+		// ft_printf("bs %s\n",backslash_piece(shell_info->user_input));
+    	
+    	if (!shell_info->user_input)
 		{
 			// free(shell_info);
 			exit(0) ;
@@ -38,8 +36,16 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 			// free(shell_info);
 			exit(0) ;
 		}
-    if (!inputis(shell_info->user_input, ""))
+		if (!inputis(shell_info->user_input, ""))
 			add_history(shell_info->user_input);
+    	// shell_info->user_input = expand(shell_info);
+		expand(shell_info);
+		// ft_printf("outputinhandler %s\n", shell_info->user_input);
+		parse_input(shell_info, &status);
+// printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
+		execution_cases(shell_info, &status);
+    // if (ft_strlen(dollar_expand(shell_info)) != 0)
+    //   shell_info->user_input = dollar_expand(shell_info);
 		if (*shell_info->user_input == ' ')
 			shell_info->user_input = rm_starting_ws(shell_info->user_input);
 		multiple_ws_to_single(shell_info->user_input);
@@ -53,6 +59,7 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 		(void)argv;
 	free_tokens(&shell_info->tokens);
 	free_cmd_list(&shell_info->first_command);
+	// printf("shell_info->syntax_error = %i\n", shell_info->syntax_error);
 	shell_info->syntax_error = false;
 	}
 }

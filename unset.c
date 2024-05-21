@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 17:51:49 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/16 17:15:44 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:12:25 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,20 @@ void	run_unset(t_shell *shell_info)
 
 	inpt = shell_info->user_input;
 	i = 1;
-	if (inputis(inpt, "unset"))
+	// //OPTION 1. WHEN THE WHOLE INPUT IS PASSED.
+	// if (inputis(inpt, "unset"))
+	// 	rl_on_new_line();
+	// else if (inputstartswith(inpt, "unset "))
+	// {
+	// OPTION 1 END
+	
+	//OPTION 2. WHEN THE WHOLE INPUT IS PASSED.
+	if (inputis(inpt, ""))
 		rl_on_new_line();
-	else if (inputstartswith(inpt, "unset "))
+	else
 	{
+	//OPTION 2 END
+
 		var_names = ft_split(inpt, ' ');
 		while (var_names[i])
 		{

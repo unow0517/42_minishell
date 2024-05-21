@@ -3,16 +3,14 @@
 //YUN: RUN CMD OR PIPE DEPENDING ON THE # OF CMDS
 void	execution_cases(t_shell *shell_info, int *status)
 {
-	pid_t	pid;
-
 	if (shell_info->syntax_error == false)
 	{
 	if (num_of_total_cmds(shell_info->first_command) == 1 && shell_info->first_command->is_builtin == true)
 		execute_builtin(shell_info, shell_info->first_command);
 		else if (num_of_total_cmds(shell_info->first_command) == 1)
-			pid = exec_single_cmd(shell_info, shell_info->first_command);
+			exec_single_cmd(shell_info, shell_info->first_command);
 		else
-			pid = exec_pipeline(shell_info);
+			exec_pipeline(shell_info);
 		while (waitpid(-1, status, WNOHANG) != -1) //WUNTRACED
 			;
 		*status = handle_exit(*status);
@@ -34,7 +32,7 @@ void execute_builtin(t_shell *shell_info, t_command *cmd)
 	else if (inputis(shell_info->user_input, "env ") | inputis(shell_info->user_input, "env"))
 		run_env(shell_info);
 	else if (inputstartswith(shell_info->user_input, "export ") | inputis(shell_info->user_input, "export"))
-		run_export(shell_info);
+		run_export(shell_info->user_input, shell_info);
 	else if (inputstartswith(shell_info->user_input, "unset ") | inputis(shell_info->user_input, "unset"))
 		run_unset(shell_info);
 	else if (inputstartswith(shell_info->user_input, "history"))
@@ -104,6 +102,7 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 	}
 }
 
+//CONNECT STDIN TO CURRENT CMD, STDOUT TO NEXT CMD, HANDLING FILE DESCRIPTOR
 void	pipe_handling(t_shell *shell_info, t_command *cur)
 {
 	t_command	*last_cmd;
@@ -133,6 +132,7 @@ void	close_pipes(t_shell *shell_info)
 
 void	handle_redir(t_shell *shell_info, t_command *cur) ///////close pipe in each case
 {
+	//OPENED FD
 	if (cur->input_fd != -1)
 	{
 		if (shell_info->fd[0] != -1)
@@ -156,3 +156,5 @@ void	handle_redir(t_shell *shell_info, t_command *cur) ///////close pipe in each
 		close(cur->output_fd);
 	}
 }
+
+//DIFFERENCE BETWEEN CMD FD[2] AND SHELL FD[2]?

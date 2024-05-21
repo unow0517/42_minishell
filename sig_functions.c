@@ -22,7 +22,10 @@ void	sighandler(int sig)
 		rl_redisplay();
 	}
 	if (sig == SIGQUIT)
+	{
+		rl_on_new_line();
 		rl_redisplay();
+	}
 }
 
 void	sigchecker(int sigint, int sigquit)

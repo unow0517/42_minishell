@@ -42,6 +42,7 @@ void	initialise_cmd_node(t_command *cmd_node)
 	cmd_node->next = NULL;
 }
 
+//PROCESS THE CMD ACCORDING TO TOKENS
 void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 {
 	t_command	*cmd_node;
@@ -68,7 +69,7 @@ int j = builtin_case(iterate);
 printf("builtin_case = %i\n", j);
 				iterate = iterate->next;
 				if (iterate)
-					cmd_node->builtin_arg = get_argument(iterate->content);
+					cmd_node->builtin_arg = arg_for_export(iterate);
 				iterate = skip_tokens_of_builtin_arg(iterate);
 			}
 			else if (iterate && empty_cmd_case(iterate, cmd_node) == true)
@@ -113,6 +114,7 @@ void	init_cmds_in_struct(t_command *cmd_node, char *to_split)
 	}
 }
 
+//>, <
 t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 {
 // printf("ENTERED SET REDIRS\n");
@@ -194,16 +196,18 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 	return (iterate);
 }
 
+//OPEN FILE TAKING TOKEN STRUCT
 int	open_file(t_command *cmd_node, t_token *iterate, int flag)
 {
 	char	*file;
 
 	file = get_first_word(iterate->content);
-	if (flag == S_LESS)
+	if (flag == S_LESS) //<
 	{
+		// IF NODE INPUT FD HAS ANOTHER FD, CLOSE
 		if (cmd_node->input_fd != -1)
 			close(cmd_node->input_fd);
-		cmd_node->input_fd = open(file, O_RDONLY);
+		cmd_node->input_fd = open(file, O_RDONLY); //
 	}
 	else if (flag == S_MORE)
 	{

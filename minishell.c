@@ -49,7 +49,7 @@ t_env_mini	*env_to_envmini(char	**env, t_env_mini *env_mini)
 		env_mini->name = name;
 		env_mini->value = value;
 		env++;
-		if (env && *env)
+		if (env && *env && !inputis(name,"OLDPWD"))
 		{
 			env_mini->next = malloc(sizeof(t_env_mini));
 			env_mini = env_mini->next;
@@ -81,6 +81,7 @@ int	create_prompt(t_shell *shell_info)
 
 	prompt = NULL;
 	prompt = ft_strjoin("\033[0;35mminishell\033[0m ", getenv("USER"));
+	// prompt = ft_strjoin("minishell__", getenv("USER"));
 	if (!prompt)
 		return (1);
 	prompt_with_dollar = ft_strjoin(prompt, "$ ");

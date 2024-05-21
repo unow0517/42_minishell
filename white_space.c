@@ -62,3 +62,17 @@ char	*multiple_ws_to_single(char	*str)
 	str[j] = '\0';
 	return (str);
 }
+
+char	*ptr_ws(char *inpt)
+{
+	char	*ptr;
+
+	ptr = inpt;
+	while (*ptr)
+	{
+		if (is_ws(*ptr))
+			return (ptr);
+		ptr++;
+	}
+	return (0);
+}

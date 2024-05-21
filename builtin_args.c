@@ -25,8 +25,11 @@ char *arg_for_export(t_token *cur)
 		if (is_redir_pipe(cur->content[i]) == true && inside_sq == 0 && inside_dq == 0)
 			break;
 		counter++;
+		i++;
 	}
-	nullify_ints(&inside_sq, &inside_dq, &i, &counter);
+	inside_sq = 0;
+	inside_dq = 0;
+	i = 0;
 	arg = ft_calloc(counter + 1, sizeof(char));
 	if (!arg)
 		return (NULL);
@@ -38,6 +41,7 @@ char *arg_for_export(t_token *cur)
 		arg[i] = cur->content[i];
 		i++;
 	}
+printf("arg = %s\n", arg);
 	return (arg);
 }
 
