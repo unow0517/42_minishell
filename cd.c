@@ -51,7 +51,14 @@ void	run_cd(char *inpt, t_shell *shell_info)
   	env_mini_pwd = env_search_name("PWD", shell_info->env_mini);
   	env_mini_oldpwd = env_search_name("OLDPWD", shell_info->env_mini);
 
+	//OPTION 1. WHEN THE WHOLE INPUT IS PASSED
   	path_input = inpt + 3;
+	//OPTION 1. END
+
+	// //OPTION 2. WHEN THE STRING AFTER 'cd ' IS PASSED
+  	// path_input = inpt + 3;
+	// //OPTION 2. END
+
 
 
 
