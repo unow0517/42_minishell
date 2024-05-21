@@ -208,6 +208,7 @@ void	run_export(char *str, t_shell *shell_info)
 //var name = >onlyUNDERSCORE, ALPHANUMERIC!
 //EXPORT =>  makes the specified variable available to child processes of the current shell. 
 //DECLARE => 
+//export 'hey=pi' all="mor>>|ning"
 
 //	if (inputis(inpt, "export") || inputis(inpt, "export "))
 //		run_declare_env(shell_info);

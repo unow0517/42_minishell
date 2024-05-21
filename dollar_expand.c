@@ -294,12 +294,12 @@ void	replace_caret(t_shell *shell_info)
 void	expand(t_shell *shell_info)
 {
 	  replace_bs_dollar(shell_info);
-    ft_printf("rebsd %s\n", shell_info->user_input); //OK
+    // ft_printf("rebsd %s\n", shell_info->user_input); //OK
     // replaced = replace_expand(inpt, var_value, len);
 	  replace_expand1(shell_info);
-    ft_printf("repex1 %s\n", shell_info->user_input); //OK
+    // ft_printf("repex1 %s\n", shell_info->user_input); //OK
     replace_caret(shell_info);
-    ft_printf("reca %s\n", shell_info->user_input); //OK
+    // ft_printf("reca %s\n", shell_info->user_input); //OK
 
     // t_env_mini  *env_mini;
     // char        *inpt;
