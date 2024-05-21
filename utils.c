@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/18 17:37:06 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/20 20:02:20 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,13 @@ bool	is_redir_pipe(int i)
 	return (false);
 }
 
+bool	is_redir_pipe_char(char i)
+{
+	if (i == '<' || i == '>' || i == '|')
+		return (true);
+	return (false);
+}
+
 bool	is_ws(char c)
 {
 	if (c == ' ' || c == '\t')
@@ -169,27 +176,29 @@ int	token_count(t_shell *shell_info)
 
 bool	ft_is_builtin(char *str)
 {
+	// printf("str = %s\n", str);
 	if	(str)
 	{
-		if (ft_strncmp(str, "echo", 4) == 0)
+		if (ft_strncmp(str, "echo ", 5) == 0 || ft_strncmp(str, "echo", 4) == 0)
 			return (true);
-		else if (ft_strncmp(str, "cd", 2) == 0)
+		else if (ft_strncmp(str, "cd ", 3) == 0 | ft_strncmp(str, "cd", 2) == 0)
 			return (true);
-		else if (ft_strncmp(str, "pwd", 4) == 0)
+		else if (ft_strncmp(str, "pwd ", 4) == 0 || ft_strncmp(str, "pwd", 3) == 0)
 			return (true);
-		else if (ft_strncmp(str, "export", 6) == 0)
+		else if (ft_strncmp(str, "export ", 7) == 0 || ft_strncmp(str, "export", 6) == 0)
 			return (true);
-		else if (ft_strncmp(str, "unset", 5) == 0)
+		else if (ft_strncmp(str, "unset ", 6) == 0 || ft_strncmp(str, "unset", 5) == 0)
 			return (true);
-		else if (ft_strncmp(str, "env", 4) == 0)
+		else if (ft_strncmp(str, "env ", 4) == 0 || ft_strncmp(str, "env", 3) == 0)
 			return (true);
-		else if (ft_strncmp(str, "exit", 4) == 0)
+		else if (ft_strncmp(str, "exit ", 5) == 0 || ft_strncmp(str, "exit", 4) == 0)
 			return (true);
-		else if (ft_strncmp(str, "pwd", 4) == 0)
+		else if (ft_strncmp(str, "pwd ", 4) == 0 || ft_strncmp(str, "pwd", 3) == 0)
 			return (true);
-		else if (ft_strncmp(str, "history", 7) == 0)
+		else if (ft_strncmp(str, "history ", 8) == 0 || ft_strncmp(str, "history", 7) == 0)
 			return (true);
 	}
+	// printf("ft_is_builtin = FALSE\n");
 	return (false);
 }
 

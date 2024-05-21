@@ -1,14 +1,6 @@
 cat | cat | cat | ls// checks for file descriptor leaks
-la -l > f1 << END | grep hi | cat > out
+ls -l > f1 << END | grep hi | cat > out
 la -l < f1 < f2 < f3 > f1 << END | grep hi | cat > out
-
-EXECUTE
-	if is_bultin
-		exec_builtin
-	else if number_of_cmds == 1
-		exec_simple_cmd
-	else
-		exec_pipeline
 
 while (cmd)
 	PIPE
@@ -22,7 +14,7 @@ while (cmd)
 
 debug with terminal
 	ps aux | grep minishell
-	lsof -p (PID)       check for fd's, hanging processes etc.
+	lsof -p (PID)	   check for fd's, hanging processes etc.
 
 quote handling
 	test1="ls -l"
@@ -80,7 +72,32 @@ TO HANDLE
 PROBLEEEEEM
 	ls "-lala""lal"
 	ls "-""l""a"
-	ls "-la" | cat "-e"
-	ls "-la" | grep "ha"
-	ls "-la" | grep ha > "file2"
 	"""$USER"""
+
+>>> should be ok within quotes...
+
+awk
+	awk '{print $1, $2}' data.txt
+	awk '{sum += $1} END {print sum}' numbers.txt
+	awk -F',' '{print $2, $3}' data.csv
+	awk '$2 > 80 {print $1}' grades.txt
+	awk 'NR>1 {print $1, "is", $2, "years old"}' data.txt
+
+awk '/main/ { print }' minishell.c
+char *args[] =			//(execve(awk_path, args, envp))
+{
+	"awk",				// argv[0] (name of the program)
+	"/main/ { print }",	// argv[1] (awk script)
+	"minishell.c",		// argv[2] (file to process)
+	NULL				// Terminate the argument list with NULL
+};
+
+awk '{sum += $1} END {print sum}' numbers.txt
+char *args[] =
+
+{
+	"awk",							// argv[0] (name of the program)
+	"{sum += $1} END {print sum}",	// argv[1] (awk script)
+	"numbers.txt",					// argv[2] (file to process)
+	NULL							// Terminate the argument list with NULL
+};

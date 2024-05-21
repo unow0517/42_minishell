@@ -5,6 +5,8 @@ t_token *initialize_cmd(t_shell *shell_info, t_token *iterate, t_command *cmd_no
 	char	*quoted_str;
 	char *temp_cmd;
 	quoted_str = NULL;
+	// if (ft_strncmp("awk", get_first_word(iterate->content), 3) == 0)
+	// 	iterate = handle_awk(shell_info, iterate, cmd_node);
 	if (iterate->token_type == WORD)
 	{
 		cmd_node->cmd = get_first_word(iterate->content);
@@ -12,8 +14,6 @@ t_token *initialize_cmd(t_shell *shell_info, t_token *iterate, t_command *cmd_no
 	}
 	else if (iterate->token_type == D_QUOTE)
 	{
-		// iterate = iterate->next;
-// print_token(iterate); 
 		temp_cmd = quote_handler(shell_info, iterate, quoted_str, D_QUOTE);
 		cmd_node->cmd = rm_quotes(temp_cmd, '"');
 		free(temp_cmd);
@@ -21,7 +21,6 @@ t_token *initialize_cmd(t_shell *shell_info, t_token *iterate, t_command *cmd_no
 	}
 	else if (iterate->token_type == S_QUOTE)
 	{
-		// iterate = iterate->next;
 		temp_cmd = quote_handler(shell_info, iterate, quoted_str, S_QUOTE);
 		cmd_node->cmd = rm_quotes(temp_cmd, '\'');
 		free(temp_cmd);
@@ -29,6 +28,68 @@ t_token *initialize_cmd(t_shell *shell_info, t_token *iterate, t_command *cmd_no
 	}
 	return (iterate);
 }
+
+// static void	nullify_ints(int *inside_sq, int *inside_dq, int *i)
+// {
+// 	*i = 0;
+// 	*inside_dq = 0;
+// 	*inside_sq = 0;
+// }
+
+// t_token	*handle_awk(t_shell *shell_info, t_token *iterate, t_command *cmd_node)
+// {
+// 	int		i;
+// 	// int		counter;
+// 	// int		inside_sq;
+// 	// int		inside_dq;
+// 	char	*quoted_arg;
+// 	char	*to_split_options;
+// 	char	*to_split_options_rest;
+// 	char	*to_split_options_total;
+
+// 	i = 0;
+// 	// nullify_ints(&inside_sq, &inside_dq, i);
+// 	cmd_node->cmd = get_first_word(iterate->content);
+// 	iterate = iterate->next;
+// 	// if (iterate->token_type == S_QUOTE)
+// 	// 	iterate = iterate->next;
+// 	while (iterate->content[i] != '\0' && (iterate->content[i] != '\'' || i == 0))
+// 	{
+	
+// 		// update_quote_state(iterate, &inside_sq, &inside_dq, &i);
+// 		i++;
+// 	}
+// 	to_split_options = ft_calloc(i + 1, sizeof(char));
+// 	i = 0;
+// 	while (iterate->content[i] != '\0' && (iterate->content[i] != '\'' || i == 0))
+// 	{
+// 		to_split_options[i] = iterate->content[i];
+// 		// update_quote_state(iterate, &inside_sq, &inside_dq, &i);
+// 		i++;
+// 	}
+// 	int j = 0;
+// 	int h = i;
+// 	while (iterate->content[i] != '\0' && is_redir_pipe(iterate->content[i]) == false)
+// 	{
+// 		// to_split_options[i] = iterate->content[i];
+// 		// update_quote_state(iterate, &inside_sq, &inside_dq, &i);
+// 		i++;
+// 		j++;
+// 	}
+// 	to_split_options_rest = ft_calloc(j + 1, sizeof(char));
+// 	i = 0;
+// 	while (iterate->content[h] != '\0' && is_redir_pipe(iterate->content[h]) == false)
+// 	{
+// 		to_split_options_rest[i] = iterate->content[h];
+// 		// update_quote_state(iterate, &inside_sq, &inside_dq, &i);
+// 		i++;
+// 		h++;
+// 	}
+// 	to_split_options_total = ft_strjoin(to_split_options, to_split_options_rest);
+// 	// if (!cmd->options)
+// 	// 	return (NULL);
+
+// }
 
 t_token	*initialize_cmd_options(t_shell *shell_info, t_token *iterate, t_command *cmd_node)
 {
@@ -74,7 +135,6 @@ t_token	*initialize_cmd_options(t_shell *shell_info, t_token *iterate, t_command
 
 void	quote_removal_in_exec_arg(t_command *cur_cmd)
 {
-	// t_command	*cur_cmd;
 	int			i;
 	int			j;
 	char		**to_fix;
@@ -83,7 +143,6 @@ void	quote_removal_in_exec_arg(t_command *cur_cmd)
 
 	i = 0;
 	j = 0;
-	// cur_cmd = shell_info->first_command;
 	while (cur_cmd)
 	{
 		if (cur_cmd->full_cmd)
@@ -156,5 +215,19 @@ char	*rm_quotes(char *to_fix, char c)
 		i++;
 // free(to_fix);
 	}
+	if (new && new[0] == '\0')
+		return (NULL);
 	return (new);
+}
+
+t_token	*skip_q_tokens(t_token *iterate)
+{
+	t_token_type hold_type;
+
+	if (!iterate)
+		return (NULL);
+	hold_type = iterate->token_type;
+	while (iterate && iterate->token_type == hold_type)
+		iterate = iterate->next;
+	return (iterate);
 }

@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 13:39:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/18 17:12:13 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/21 11:53:27 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,10 @@ void	print_cmd_list(t_command *cmd_node)
 		printf("cmd_node->is_heredoc\t%i\n", cmd_node->is_heredoc);
 		printf("cmd_node->file_not_found\t%i\n", cmd_node->file_not_found);
 		printf("cmd_node->filename\t%s\n", cmd_node->filename);
+		printf("cmd_node->is_builtin\t%i\n", cmd_node->is_builtin);
+		printf("cmd_node->builtin_type\t%s\n", cmd_node->builtin_type);
+		printf("cmd_node->builtin_arg\t%s\n", cmd_node->builtin_arg);
+		printf("cmd_node->to_split\t%s\n", cmd_node->to_split);
 		printf("cmd_node->next\t%p\n", cmd_node->next);
 		cmd_node = cmd_node->next;
 	}

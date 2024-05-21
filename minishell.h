@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/18 19:41:48 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/20 19:48:36 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ bool	is_metacharacter_type(int i);
 int	token_count(t_shell *shell_info);
 bool	is_redir(int i);
 bool	is_redir_pipe(int i);
+bool	is_redir_pipe_char(char i);
 bool	ft_is_builtin(char *str);
 char	*get_argument(char *argv);
 bool	quotes_even(char *input);
@@ -205,6 +206,7 @@ t_token	*initialize_cmd_options(t_shell *shell_info, t_token *iterate, t_command
 void	quote_removal_in_exec_arg(t_command *cur_cmd);
 char	*rm_quotes(char *to_fix, char c);
 char	first_quote(char *str);
+t_token	*skip_q_tokens(t_token *iterate);
 
 //EXECUTION.C
 void	executor(t_shell *shell_info, int *status, t_command *cur);
@@ -214,8 +216,9 @@ void	execution_cases(t_shell *shell_info, int *status);
 pid_t	exec_pipeline(t_shell *shell_info);
 pid_t	exec_single_cmd(t_shell *shell_info, t_command	*cmd_to_exec);
 void	pipe_handling(t_shell *shell_info, t_command *cur);
-void close_pipes(t_shell *shell_info);
-void execute_builtin(t_shell *shell_info, char *builtin, char *arg);
+void	close_pipes(t_shell *shell_info);
+void	execute_builtin(t_shell *shell_info, t_command *cur);
+// void execute_builtin_no_fork(t_shell *shell_info, char *builtin, char *arg);
 
 //ERRORS
 void	file_error(t_command *cmd_node);
@@ -245,5 +248,12 @@ t_token	*skip_quoted_str(t_token *to_skip, t_token_type flag);
 
 //SPLIT_MS.C
 char	**split_ms(char const *s, char c);
+
+//BUILTIN_ARGS
+char	*arg_for_export(t_token *cur);
+void	update_quote_state(t_token *cur, int *inside_sq, int *inside_dq, int i);
+void	update_quote_state_token(t_token *cur, int *inside_sq, int *inside_dq);
+t_token	*skip_tokens_of_builtin_arg(t_token *iterate);
+
 
 #endif

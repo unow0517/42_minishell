@@ -5,11 +5,11 @@ void	execution_cases(t_shell *shell_info, int *status)
 {
 	pid_t	pid;
 
-	if (num_of_total_cmds(shell_info->first_command) == 1 && shell_info->first_command->is_builtin == true)
-		execute_builtin(shell_info, shell_info->first_command->builtin_type, shell_info->first_command->builtin_arg);
-	else if (shell_info->syntax_error == false)
+	if (shell_info->syntax_error == false)
 	{
-		if (num_of_total_cmds(shell_info->first_command) == 1)
+	if (num_of_total_cmds(shell_info->first_command) == 1 && shell_info->first_command->is_builtin == true)
+		execute_builtin(shell_info, shell_info->first_command);
+		else if (num_of_total_cmds(shell_info->first_command) == 1)
 			pid = exec_single_cmd(shell_info, shell_info->first_command);
 		else
 			pid = exec_pipeline(shell_info);
@@ -19,13 +19,14 @@ void	execution_cases(t_shell *shell_info, int *status)
 	}
 }
 
-void execute_builtin(t_shell *shell_info, char *builtin, char *arg)
+void execute_builtin(t_shell *shell_info, t_command *cmd)
 {
-	(void)builtin;
-	(void)arg;
+	(void)cmd; //"hi"
+	// cmd->builtin_type; //this is the builtin in name (unset, export etc.)
+	// cmd->builtin_arg; //this is the rest of the input the builtin has to handle
 
 	if (inputstartswith(shell_info->user_input, "echo "))
-		run_echo(shell_info->user_input);
+		run_echo(cmd->builtin_arg);
 	else if (inputstartswith(shell_info->user_input, "cd "))
 		run_cd(shell_info->user_input, shell_info);
 	else if (inputstartswith(shell_info->user_input, "pwd ") | inputis(shell_info->user_input, "pwd"))
@@ -34,7 +35,7 @@ void execute_builtin(t_shell *shell_info, char *builtin, char *arg)
 		run_env(shell_info);
 	else if (inputstartswith(shell_info->user_input, "export ") | inputis(shell_info->user_input, "export"))
 		run_export(shell_info);
-    else if (inputstartswith(shell_info->user_input, "unset ") | inputis(shell_info->user_input, "unset"))
+	else if (inputstartswith(shell_info->user_input, "unset ") | inputis(shell_info->user_input, "unset"))
 		run_unset(shell_info);
 	else if (inputstartswith(shell_info->user_input, "history"))
 		print_history(shell_info->user_input);
@@ -50,13 +51,8 @@ pid_t	exec_pipeline(t_shell *shell_info)
 	iterate_cmd = shell_info->first_command;
 	while (iterate_cmd)
 	{
-		if (iterate_cmd->is_builtin == true)
-			execute_builtin(shell_info, shell_info->first_command->builtin_type, shell_info->first_command->builtin_arg);
-		else
-		{
-			pid = exec_single_cmd(shell_info, iterate_cmd);
-			iterate_cmd = iterate_cmd->next;
-		}
+		pid = exec_single_cmd(shell_info, iterate_cmd);
+		iterate_cmd = iterate_cmd->next;
 	}
 	//YUN: CLOSE FILE DESCRIPTOR[0], [1] OF LINKED LIST OF CMD STRUCTS
 	close_pipes(shell_info);
@@ -80,11 +76,23 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 		handle_redir(shell_info, cmd_to_exec);
 		if (cmd_to_exec->file_not_found == 0)
 		{
-			full_path = find_cmd_in_env(cmd_to_exec->cmd, shell_info->env);
-			if (!full_path)
-				cmd_error(cmd_to_exec); // exit (127);
-			execve(full_path, cmd_to_exec->full_cmd, shell_info->env);
-			cmd_error(cmd_to_exec);
+// printf("cmd_to_exec->is_builtin = %i\n", cmd_to_exec->is_builtin);
+			if (cmd_to_exec->is_builtin == true)
+			{
+// printf("EXECUTING BUILTIN\n");
+				execute_builtin(shell_info, cmd_to_exec); //update exit status and exit
+			}
+			else
+			{
+// printf("EXECUTING EXECVE\n");
+				if (cmd_to_exec->cmd == NULL || cmd_to_exec->cmd[0] == '\0')
+					exit(0);
+				full_path = find_cmd_in_env(cmd_to_exec->cmd, shell_info->env);
+				if (!full_path)
+					cmd_error(cmd_to_exec); // exit (127);
+				execve(full_path, cmd_to_exec->full_cmd, shell_info->env);
+				cmd_error(cmd_to_exec);
+			}
 		}
 		close_fds(shell_info, cmd_to_exec);
 		exit(EXIT_FAILURE);

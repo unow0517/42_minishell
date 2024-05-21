@@ -62,11 +62,14 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 				iterate = set_redirections(cmd_node, iterate);
 			else if (iterate && builtin_case(iterate) == true)
 			{
+int j = builtin_case(iterate);
 				cmd_node->builtin_type = get_first_word(iterate->content);
 				cmd_node->is_builtin = true;
+printf("builtin_case = %i\n", j);
 				iterate = iterate->next;
 				if (iterate)
 					cmd_node->builtin_arg = get_argument(iterate->content);
+				iterate = skip_tokens_of_builtin_arg(iterate);
 			}
 			else if (iterate && empty_cmd_case(iterate, cmd_node) == true)
 				iterate = initialize_cmd(shell_info, iterate, cmd_node);
@@ -112,19 +115,13 @@ void	init_cmds_in_struct(t_command *cmd_node, char *to_split)
 
 t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 {
-	t_token	*init_tok;
-	t_token_type hold_type;
+// printf("ENTERED SET REDIRS\n");
+	if (iterate && iterate->token_type == S_LESS)
+	{
 
-	hold_type = iterate->token_type;
-	init_tok = iterate;
-	if (hold_type == D_QUOTE || hold_type == S_QUOTE)
-	{
-		while (iterate && iterate->token_type == hold_type)
-			iterate = iterate->next;
-	}
-	if (iterate->token_type == S_LESS)
-	{
 		iterate = iterate->next;
+		if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE))
+			iterate = skip_q_tokens(iterate);
 		if (cmd_node->file_not_found == 0)
 			cmd_node->filename = get_first_word(iterate->content);
 		if (cmd_node->file_not_found == 0)
@@ -135,11 +132,16 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 				file_error(cmd_node);
 			}
 		}
-		iterate = iterate->next;
+		if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE))
+			iterate = skip_q_tokens(iterate);
+		if (iterate)
+			iterate = iterate->next;
 	}
-	else if (iterate->token_type == D_LESS)
+	else if (iterate && iterate->token_type == D_LESS)
 	{
 		iterate = iterate->next;
+		if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE))
+			iterate = skip_q_tokens(iterate);
 		cmd_node->is_heredoc = 1;
 		// cmd_node->filename = get_first_word(iterate->content);
 		// if (cmd_node->file_not_found == 0)
@@ -149,12 +151,16 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 				cmd_node->file_not_found = 1;
 				heredoc_error(cmd_node);
 			}
-		// }
-		iterate = iterate->next;
+		if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE))
+			iterate = skip_q_tokens(iterate);
+		if (iterate)
+			iterate = iterate->next;
 	}
-	else if (iterate && iterate->token_type == S_MORE && iterate->next && iterate->next->token_type == WORD) //create open file function to pass enum
+	else if (iterate && iterate->token_type == S_MORE) //create open file function to pass enum// && iterate->next && iterate->next->token_type == WORD
 	{
 		iterate = iterate->next;
+		if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE))
+			iterate = skip_q_tokens(iterate);
 		if (cmd_node->file_not_found == 0)
 			cmd_node->filename = get_first_word(iterate->content);
 		if (cmd_node->file_not_found == 0)
@@ -162,11 +168,16 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 			if (open_file(cmd_node, iterate, S_MORE) == -1 || access(get_first_word(iterate->content), F_OK) == -1)
 				file_error(cmd_node);
 		}
-		iterate = iterate->next;
+		if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE))
+			iterate = skip_q_tokens(iterate);
+		if (iterate)
+			iterate = iterate->next;
 	}
-	else if (iterate && iterate->token_type == D_MORE && iterate->next && iterate->next->token_type == WORD) //create open file function to pass enum
+	else if (iterate && iterate->token_type == D_MORE) // && iterate->next && iterate->next->token_type == WORD
 	{
 		iterate = iterate->next;
+		if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE))
+			iterate = skip_q_tokens(iterate);
 		if (cmd_node->file_not_found == 0)
 			cmd_node->filename = get_first_word(iterate->content);
 		if (cmd_node->file_not_found == 0)
@@ -174,13 +185,12 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 			if (open_file(cmd_node, iterate, D_MORE) == -1 || access(get_first_word(iterate->content), F_OK) == -1)
 				file_error(cmd_node);
 		}
-		iterate = iterate->next;
-	}
-	if (iterate && iterate->token_type == hold_type)
-	{
-		while (iterate && iterate->token_type == hold_type)
+		if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE))
+			iterate = skip_q_tokens(iterate);
+		if (iterate)
 			iterate = iterate->next;
 	}
+// printf("EXITED SET REDIRS\n");
 	return (iterate);
 }
 

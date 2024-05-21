@@ -4,7 +4,12 @@ bool	builtin_case(t_token *iterate)
 {
 	if (iterate && iterate->token_type == WORD && \
 	ft_is_builtin(get_first_word(iterate->content)) == true)
+	{
+		// printf("TRUE\n");
 		return (true);
+	}
+// printf("iterate->content = %s\n", iterate->content);
+	// printf("FALSE\n");
 	return (false);
 }
 
