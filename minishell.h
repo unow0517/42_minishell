@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/19 16:06:26 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/21 12:24:29 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ typedef struct s_command
 	int			fd[2];
 	int		file_not_found;
 	char	*filename;
+
 	// bool	is_builtin //==false when not builtin
 	// int		standard_input;
 	// int		standard_output;
@@ -207,7 +208,7 @@ void	unexpected_token(t_shell *shell_info, char *flag, int *status);
 //EXPORT.C
 t_env_mini *ft_lstnew_envmini(char *name, char *value);
 t_env_mini *ft_lstlast_envmini(t_env_mini *lst);
-void	run_export(t_shell *shell_info);
+void	run_export(char *str, t_shell *shell_info);
 
 //DOLLAR_EXPAND.C
 // char	*expand(t_shell *shell_info);

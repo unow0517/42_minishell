@@ -55,26 +55,25 @@ void	run_cd(char *inpt, t_shell *shell_info)
 
 
 
-  if (chdir(path_input) == -1)
-    ft_printf("minishell: cd : %s: No such file or directory\n", path_input);	
-  else
-  {
-  	getcwd(cwd, sizeof(cwd));
+	if (chdir(path_input) == -1)
+	  ft_printf("minishell: cd : %s: No such file or directory\n", path_input);	
+	else
+	{
+		getcwd(cwd, sizeof(cwd));
 		ft_memset(shell_info->oldpwd, 0, 1024);
 		ft_strlcat(shell_info->oldpwd, shell_info->cwd, 1024);
 		ft_memset(shell_info->cwd, 0, 1024);
 		ft_strlcat(shell_info->cwd, cwd, 1024);
-    env_mini_pwd->value = shell_info->cwd;
-    if (env_mini_oldpwd)
-      env_mini_oldpwd->value = shell_info->oldpwd;
-    else
-    {
-      // printf("%s %s\n", shell_info->cwd, shell_info->oldpwd);
-      env_mini = ft_lstnew_envmini("OLDPWD", shell_info->oldpwd);
-      ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
-    }
-  }
-
+	  	env_mini_pwd->value = shell_info->cwd;
+	  	if (env_mini_oldpwd)
+	    	env_mini_oldpwd->value = shell_info->oldpwd;
+	  	else
+	  	{
+	    // printf("%s %s\n", shell_info->cwd, shell_info->oldpwd);
+	    env_mini = ft_lstnew_envmini("OLDPWD", shell_info->oldpwd);
+	    ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
+	  	}
+	}
 
 
 	// if (access(path_input, R_OK) != -1)

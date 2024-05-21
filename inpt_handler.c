@@ -68,7 +68,7 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 		else if (inputis(shell_info->user_input, "env ") | inputis(shell_info->user_input, "env"))
 			run_env(shell_info);
 		else if (inputstartswith(shell_info->user_input, "export ") | inputis(shell_info->user_input, "export"))
-			run_export(shell_info);
+			run_export(shell_info->user_input, shell_info);
     	else if (inputstartswith(shell_info->user_input, "unset ") | inputis(shell_info->user_input, "unset"))
 			run_unset(shell_info);
 		else if (inputstartswith(shell_info->user_input, "history"))
