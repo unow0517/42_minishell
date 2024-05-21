@@ -72,6 +72,7 @@ void	initialise_basics(int argc, char **argv, char **env, t_shell *shell_info)
 	shell_info->fd[0] = -1;
 	shell_info->fd[1] = -1;
 	shell_info->syntax_error = false;
+	*(shell_info->status) = 0;
 }
 
 int	create_prompt(t_shell *shell_info)

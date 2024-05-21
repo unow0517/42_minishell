@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/21 14:40:38 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/21 16:06:47 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_shell
 	bool		syntax_error;
 				//Its in linux/limits.h.
 				// #define PATH_MAX        4096 
+	int			*status;
 }	t_shell;
 
 //inpt_functions.C
