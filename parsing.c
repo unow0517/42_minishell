@@ -65,10 +65,14 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 				iterate = set_redirections(cmd_node, iterate);
 			else if (iterate && builtin_case(iterate) == true)
 			{
-				cmd_node->builtin_type = get_first_word(iterate->content);
+				if (iterate->token_type == WORD)
+					cmd_node->builtin_type = get_first_word(iterate->content);
+				else if (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE)
+					cmd_node->builtin_type = get_first_word(iterate->next->content);
 				cmd_node->is_builtin = true;
-				iterate = iterate->next;
-				if (iterate)
+				if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE) && iterate->next->next->next)
+					cmd_node->builtin_arg = arg_for_export(iterate->next->next->next);
+				else if (iterate)
 					cmd_node->builtin_arg = arg_for_export(iterate);
 				iterate = skip_tokens_of_builtin_arg(iterate);
 			}
@@ -79,7 +83,6 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 		}
 		init_cmds_in_struct(cmd_node, cmd_node->to_split);
 		cmd_add_back(&shell_info->first_command, cmd_node);
-		// if (cmd_node->cmd && ft_strncmp(cmd_node->cmd, "awk", 3) != 0)
 		quote_removal_in_exec_arg(cmd_node);
 	}
 }

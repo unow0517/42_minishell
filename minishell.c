@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-// git push origin thalia_branch 
 
 // void	leaks(void)
 // {
