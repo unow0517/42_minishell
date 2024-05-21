@@ -5,9 +5,9 @@ t_token *initialize_cmd(t_shell *shell_info, t_token *iterate, t_command *cmd_no
 	char	*quoted_str;
 	char *temp_cmd;
 	quoted_str = NULL;
-	// if (ft_strncmp("awk", get_first_word(iterate->content), 3) == 0)
-	// 	iterate = handle_awk(shell_info, iterate, cmd_node);
-	if (iterate->token_type == WORD)
+	if (ft_strncmp("awk", get_first_word(iterate->content), 3) == 0)
+		iterate = handle_awk(shell_info, iterate, cmd_node);
+	else if (iterate->token_type == WORD)
 	{
 		cmd_node->cmd = get_first_word(iterate->content);
 		iterate = iterate->next;
@@ -29,67 +29,71 @@ t_token *initialize_cmd(t_shell *shell_info, t_token *iterate, t_command *cmd_no
 	return (iterate);
 }
 
-// static void	nullify_ints(int *inside_sq, int *inside_dq, int *i)
-// {
-// 	*i = 0;
-// 	*inside_dq = 0;
-// 	*inside_sq = 0;
-// }
+static void	nullify_ints(int *inside_sq, int *inside_dq, int *i)
+{
+	*i = 0;
+	*inside_dq = 0;
+	*inside_sq = 0;
+}
 
-// t_token	*handle_awk(t_shell *shell_info, t_token *iterate, t_command *cmd_node)
-// {
-// 	int		i;
-// 	// int		counter;
-// 	// int		inside_sq;
-// 	// int		inside_dq;
-// 	char	*quoted_arg;
-// 	char	*to_split_options;
-// 	char	*to_split_options_rest;
-// 	char	*to_split_options_total;
+t_token	*handle_awk(t_shell *shell_info, t_token *iterate, t_command *cmd_node)
+{
+	int		i;
+	int		j;
+	int		inside_sq;
+	int		inside_dq;
+	char	*to_split_options;
+	char	*to_split_options_rest;
+	char	*to_split_options_total;
 
-// 	i = 0;
-// 	// nullify_ints(&inside_sq, &inside_dq, i);
-// 	cmd_node->cmd = get_first_word(iterate->content);
-// 	iterate = iterate->next;
-// 	// if (iterate->token_type == S_QUOTE)
-// 	// 	iterate = iterate->next;
-// 	while (iterate->content[i] != '\0' && (iterate->content[i] != '\'' || i == 0))
-// 	{
-	
-// 		// update_quote_state(iterate, &inside_sq, &inside_dq, &i);
-// 		i++;
-// 	}
-// 	to_split_options = ft_calloc(i + 1, sizeof(char));
-// 	i = 0;
-// 	while (iterate->content[i] != '\0' && (iterate->content[i] != '\'' || i == 0))
-// 	{
-// 		to_split_options[i] = iterate->content[i];
-// 		// update_quote_state(iterate, &inside_sq, &inside_dq, &i);
-// 		i++;
-// 	}
-// 	int j = 0;
-// 	int h = i;
-// 	while (iterate->content[i] != '\0' && is_redir_pipe(iterate->content[i]) == false)
-// 	{
-// 		// to_split_options[i] = iterate->content[i];
-// 		// update_quote_state(iterate, &inside_sq, &inside_dq, &i);
-// 		i++;
-// 		j++;
-// 	}
-// 	to_split_options_rest = ft_calloc(j + 1, sizeof(char));
-// 	i = 0;
-// 	while (iterate->content[h] != '\0' && is_redir_pipe(iterate->content[h]) == false)
-// 	{
-// 		to_split_options_rest[i] = iterate->content[h];
-// 		// update_quote_state(iterate, &inside_sq, &inside_dq, &i);
-// 		i++;
-// 		h++;
-// 	}
-// 	to_split_options_total = ft_strjoin(to_split_options, to_split_options_rest);
-// 	// if (!cmd->options)
-// 	// 	return (NULL);
-
-// }
+	(void)shell_info;
+	nullify_ints(&inside_sq, &inside_dq, &i);
+	cmd_node->cmd = get_first_word(iterate->content);
+	iterate = iterate->next;
+	while (iterate->content[i] != '\0' && (iterate->content[i] != '\'' || i == 0)) //LENGTH OF 'single_quoted_part' PART
+		i++;
+	to_split_options = ft_calloc(i + 1, sizeof(char));
+	i = 0;
+	while (iterate->content[i] != '\0' && (iterate->content[i] != '\'' || i == 0)) //CREATE 'single_quoted_part' STRING
+	{
+		to_split_options[i] = iterate->content[i];
+		i++;
+	}
+	nullify_ints(&inside_sq, &inside_dq, &j);
+	int h = i;
+	while (iterate->content[i] != '\0') //LENGTH OF FILES
+	{
+		update_quote_state(iterate, &inside_sq, &inside_dq, i);
+		if (is_redir_pipe(iterate->content[h]) == true && inside_sq == 0 && inside_dq == 0)
+			break;
+		i++;
+		j++;
+	}
+	to_split_options_rest = ft_calloc(j + 1, sizeof(char));
+	nullify_ints(&inside_sq, &inside_dq, &i);
+	while (iterate->content[h] != '\0') //CREATE FILE STRING // && is_redir_pipe(iterate->content[h]) == false
+	{
+		update_quote_state(iterate, &inside_sq, &inside_dq, i);
+		if (is_redir_pipe(iterate->content[h]) == true && inside_sq == 0 && inside_dq == 0)
+			break;
+		to_split_options_rest[i] = iterate->content[h];
+		i++;
+		h++;
+	}
+	char *temp;
+	temp = ft_strjoin(to_split_options, " ");
+	to_split_options_total = ft_strjoin(temp, to_split_options_rest); //JOIN STRINGS TO CREATE OPTIONS
+	cmd_node->to_split = to_split_options_total;
+	nullify_ints(&inside_sq, &inside_dq, &i);
+	while (iterate)
+	{
+		update_quote_state_token(iterate, &inside_sq, &inside_dq);
+		if(is_redir_pipe(iterate->token_type) == true && inside_dq == 0 && inside_sq == 0 && i != 0)
+			break;
+		iterate = iterate->next;
+	}
+	return (iterate);
+}
 
 t_token	*initialize_cmd_options(t_shell *shell_info, t_token *iterate, t_command *cmd_node)
 {
@@ -113,7 +117,7 @@ t_token	*initialize_cmd_options(t_shell *shell_info, t_token *iterate, t_command
 		// iterate = iterate->next;
 		quoted_str = quote_handler(shell_info, iterate, quoted_str, S_QUOTE);
 		temp = ft_strjoin(cmd_node->to_split, " ");
-		temp1 = quoted_str; //-l
+		temp1 = quoted_str; //-l							//remove
 		cmd_node->to_split = ft_strjoin(temp, quoted_str);
 		cmd_node->to_split = ft_strjoin(temp, temp1);
 		free(temp);

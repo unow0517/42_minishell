@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/20 20:02:20 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/21 18:28:48 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,11 +226,7 @@ bool	quotes_even(char *input)
 {
 	int	i;
 	int	q_counter;
-	// int	dq_counter;
-	// int	sq_counter;
 
-	// dq_counter = 0;
-	// sq_counter = 0;
 	i = 0;
 	q_counter = 0;
 	if (!input)
@@ -244,4 +240,41 @@ bool	quotes_even(char *input)
 	if (q_counter % 2 == 0)
 		return (true);
 	return (false);
+}
+
+char	*remove_unecessary_q(t_shell *shell_info)
+{
+	char	*temp;
+	char	*new;
+	int		counter;
+	int		i;
+	int		j;
+
+	j = 0;
+	i = 0;
+	counter = 0;
+	temp = shell_info->user_input;
+	while (temp && temp[i] != '\0')
+	{
+		if (temp[i + 1] && ((temp[i] == '"' && temp[i + 1] == '"') || (temp[i] == '\'' && temp[i + 1] == '\'')))
+			counter += 2;
+		i++;
+	}
+	new = ft_calloc(i - counter + 1, sizeof(char));
+	if (!new)
+		return (NULL);
+	i = 0;
+	while (temp && temp[i] != '\0')
+	{
+		if (temp[i + 1] && ((temp[i] == '"' && temp[i + 1] == '"') || (temp[i] == '\'' && temp[i + 1] == '\'')))
+			i += 2;
+		if (temp[i])
+		{
+			new[j] = temp[i];
+			i++;
+		}
+		j++;
+	}
+	free(temp);
+	return (new);
 }

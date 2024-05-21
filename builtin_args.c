@@ -21,17 +21,25 @@ char *arg_for_export(t_token *cur)
 		return (NULL);
 	while (cur->content[i] != '\0')
 	{
+// printf("arg_for_export loop 1\n");
+
 		update_quote_state(cur, &inside_sq, &inside_dq, i);
 		if (is_redir_pipe(cur->content[i]) == true && inside_sq == 0 && inside_dq == 0)
 			break;
 		counter++;
+		i++;
 	}
-	nullify_ints(&inside_sq, &inside_dq, &i, &counter);
+	// nullify_ints(&inside_sq, &inside_dq, &i, &counter);
+	inside_dq = 0;
+	inside_sq = 0;
+	i = 0;
 	arg = ft_calloc(counter + 1, sizeof(char));
 	if (!arg)
 		return (NULL);
 	while (cur->content[i] != '\0')
 	{
+// printf("arg_for_export loop 2\n");
+
 		update_quote_state(cur, &inside_sq, &inside_dq, i);
 		if (is_redir_pipe_char(cur->content[i]) == true && inside_sq == 0 && inside_dq == 0)
 			break;
