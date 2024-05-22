@@ -181,7 +181,7 @@ bool	ft_is_builtin(char *str)
 	{
 		if (ft_strncmp(str, "\"echo\"", 6) == 0 || ft_strncmp(str, "echo", 4) == 0)
 			return (true);
-		else if (ft_strncmp(str, "\"cd\"", 4) == 0 | ft_strncmp(str, "cd", 2) == 0)
+		else if (ft_strncmp(str, "\"cd\"", 4) == 0 || ft_strncmp(str, "cd", 2) == 0)
 			return (true);
 		else if (ft_strncmp(str, "\"pwd\"", 5) == 0 || ft_strncmp(str, "pwd", 3) == 0)
 			return (true);

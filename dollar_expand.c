@@ -112,17 +112,17 @@ char    *dollar_expand(t_shell *shell_info)
     env_mini = shell_info->env_mini;
     len = varname_len(inpt);
     // ft_printf("lens %d\n", len);
-  if (!len && ft_strchr(inpt, '$'))
-    return (inpt);
+    if (!len && ft_strchr(inpt, '$'))
+      return (inpt);
     // ft_printf("minishell: $: command not found\n");
     var_value = varvalue(len, inpt, env_mini);
     // ft_printf("vv %s\n", var_value);
     replaced = replace_expand(inpt, var_value, len);
     // ft_printf("rep %s\n", replaced);
     if (replaced)
-    return (replaced);
-  else
-    return (inpt);
+      return (replaced);
+    else
+      return (inpt);
     // return (replaced);
 }
 
