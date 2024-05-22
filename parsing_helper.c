@@ -200,6 +200,7 @@ char	*rm_quotes(char *to_fix, char c)
 		i++;
 	}
 	new = ft_calloc(i - q_counter + 1, sizeof(char));
+	// printf("rmq len %d\n", i - q_counter + 1);
 	if (!new)
 		return (NULL);
 	i = 0;

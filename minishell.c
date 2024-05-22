@@ -81,8 +81,8 @@ int	create_prompt(t_shell *shell_info)
 	char	*prompt_with_dollar;
 
 	prompt = NULL;
-	prompt = ft_strjoin("\033[0;35mminishell\033[0m ", getenv("USER"));
-	// prompt = ft_strjoin("minishell__", getenv("USER"));
+	// prompt = ft_strjoin("\033[0;35mminishell\033[0m ", getenv("USER"));
+	prompt = ft_strjoin("minishell__", getenv("USER"));
 	if (!prompt)
 		return (1);
 	prompt_with_dollar = ft_strjoin(prompt, "$ ");

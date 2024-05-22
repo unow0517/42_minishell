@@ -40,7 +40,7 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 		if (!inputis(shell_info->user_input, ""))
 			add_history(shell_info->user_input);
     	// shell_info->user_input = expand(shell_info);
-		expand(shell_info);
+		ft_expand(shell_info);
 		// ft_printf("outputinhandler %s\n", shell_info->user_input);
 		// parse_input(shell_info, &status);
 		parse_input(shell_info, (shell_info->status));
