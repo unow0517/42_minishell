@@ -25,10 +25,14 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 		signal(SIGINT, sighandler);
 		// shell_info->user_input = readline(join2);
 		shell_info->user_input = readline(shell_info->prompt);
-		// ft_printf("bs %s\n",backslash_piece(shell_info->user_input));
-    	
-    	if (!shell_info->user_input)
+		shell_info->user_input = dollar_expand(shell_info);
+		shell_info->user_input = remove_unecessary_q(shell_info); //FIXES EMPTY QUOTES BUT DESTROYS CTRL+D SIGNAL
+		parse_input(shell_info, &status);
+// printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
+		execution_cases(shell_info, &status);
+		if (!shell_info->user_input)
 		{
+			write(1, "\n", 1);
 			// free(shell_info);
 			exit(0) ;
 		}
@@ -58,7 +62,7 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 			rl_on_new_line();
 			rl_redisplay();
 		}
-    //OLDPWD implement
+	//OLDPWD implement
 		(void)argv;
 	free_tokens(&shell_info->tokens);
 	free_cmd_list(&shell_info->first_command);

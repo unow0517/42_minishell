@@ -53,7 +53,6 @@ void	run_echo(char *inpt)
 	else
 		ft_printf("%s\n", inpt);
 	//OPTION 2. END
-
 }
 
 

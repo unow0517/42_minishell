@@ -5,8 +5,8 @@ void	execution_cases(t_shell *shell_info, int *status)
 {
 	if (shell_info->syntax_error == false)
 	{
-	if (num_of_total_cmds(shell_info->first_command) == 1 && shell_info->first_command->is_builtin == true)
-		execute_builtin(shell_info, shell_info->first_command);
+		if (num_of_total_cmds(shell_info->first_command) == 1 && shell_info->first_command->is_builtin == true)
+			execute_builtin(shell_info, shell_info->first_command);
 		else if (num_of_total_cmds(shell_info->first_command) == 1)
 			exec_single_cmd(shell_info, shell_info->first_command);
 		else
@@ -19,11 +19,7 @@ void	execution_cases(t_shell *shell_info, int *status)
 
 void execute_builtin(t_shell *shell_info, t_command *cmd)
 {
-	(void)cmd; //"hi"
-	// cmd->builtin_type; //this is the builtin in name (unset, export etc.)
-	// cmd->builtin_arg; //this is the rest of the input the builtin has to handle
-
-	if (inputstartswith(shell_info->user_input, "echo "))
+	if (inputstartswith(cmd->builtin_type, "echo"))
 		run_echo(cmd->builtin_arg);
 	else if (inputstartswith(shell_info->user_input, "cd "))
 		run_cd(shell_info->user_input, shell_info);
@@ -74,15 +70,10 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 		handle_redir(shell_info, cmd_to_exec);
 		if (cmd_to_exec->file_not_found == 0)
 		{
-// printf("cmd_to_exec->is_builtin = %i\n", cmd_to_exec->is_builtin);
 			if (cmd_to_exec->is_builtin == true)
-			{
-// printf("EXECUTING BUILTIN\n");
 				execute_builtin(shell_info, cmd_to_exec); //update exit status and exit
-			}
 			else
 			{
-// printf("EXECUTING EXECVE\n");
 				if (cmd_to_exec->cmd == NULL || cmd_to_exec->cmd[0] == '\0')
 					exit(0);
 				full_path = find_cmd_in_env(cmd_to_exec->cmd, shell_info->env);
@@ -137,7 +128,7 @@ void	handle_redir(t_shell *shell_info, t_command *cur) ///////close pipe in each
 	{
 		if (shell_info->fd[0] != -1)
 			close(shell_info->fd[0]); //do it even if file fails ot not?
-		if (dup2(cur->input_fd, STDIN_FILENO) == -1) //cur->standard_input from initialise_cmd_node
+		if (dup2(cur->input_fd, STDIN_FILENO) == -1)
 		{
 			perror("dup2 for input_fd failed");
 			exit(EXIT_FAILURE);
@@ -148,7 +139,7 @@ void	handle_redir(t_shell *shell_info, t_command *cur) ///////close pipe in each
 	{
 		if (shell_info->fd[1] != -1)
 			close(shell_info->fd[1]);
-		if (dup2(cur->output_fd, STDOUT_FILENO) == -1) //cur->standard_output from initialise_cmd_node
+		if (dup2(cur->output_fd, STDOUT_FILENO) == -1)
 		{
 			perror("dup2 for output_fd failed");
 			exit(EXIT_FAILURE);

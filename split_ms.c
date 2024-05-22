@@ -4,21 +4,33 @@ static char	*substrings(char const *s, char c, char **array);
 
 static char	**freeing(char **array, int i);
 
+static void	update_quote_state_str(const char *str, int *inside_sq, int *inside_dq, int i);
+
 static int	ft_count(char const *s, char c)
 {
 	int		i;
 	int		count;
+	int		inside_sq;
+	int		inside_dq;
 
+	inside_dq = 0;
+	inside_sq = 0;
 	i = 0;
 	count = 0;
 	while (s && s[i] != '\0')
 	{
 		while (s[i] != '\0' && s[i] == c)
+		{
+			update_quote_state_str(s, &inside_sq, &inside_dq, i);
 			i++;
-		if ((s[i] != '\0' && s[i] != c))
+		}
+		if ((s[i] != '\0' && s[i] != c) && inside_dq == 0 && inside_sq == 0)
 			count++;
 		while (s[i] != '\0' && s[i] != c)
+		{
+			update_quote_state_str(s, &inside_sq, &inside_dq, i);
 			i++;
+		}
 	}
 	return (count);
 }
@@ -29,7 +41,7 @@ static int	ft_count(char const *s, char c)
 char	**split_ms(char const *s, char c)
 {
 	char	**array;
-
+printf("\n\ns = %s, c = %c\n\n", s, c);
 	array = (char **)ft_calloc(ft_count(s, c) + 3, sizeof(char *));
 	if (!array)
 		return (NULL);
@@ -37,12 +49,28 @@ char	**split_ms(char const *s, char c)
 	return (array);
 }
 
+static void	update_quote_state_str(const char *str, int *inside_sq, int *inside_dq, int i)
+{
+	if (str[i] == '\'' && *inside_sq == 0)
+		*inside_sq = 1;
+	else if (str[i] == '\'' && *inside_sq == 1)
+		*inside_sq = 0;
+	if (str[i] == '"' && *inside_dq == 0)
+		*inside_dq = 1;
+	else if (str[i] == '"' && *inside_dq == 1)
+		*inside_dq = 0;
+}
+
 static char	*substrings(char const *s, char c, char **array)
 {
-	int	i;
-	int	start;
-	int	end;
+	int		i;
+	int		start;
+	int		end;
+	int		inside_sq;
+	int		inside_dq;
 
+	inside_dq = 0;
+	inside_sq = 0;
 	i = 0;
 	start = 0;
 	while (ft_count(s, c) > i)
@@ -50,15 +78,19 @@ static char	*substrings(char const *s, char c, char **array)
 		while (s[start] == c)
 			start++;
 		end = start;
-		while (s[end] != c && s[end] != '\0')
+		while (s[end] != '\0')
 		{
-			if (s[end] == '"')
+			if (s[end] == c && inside_sq == 0 && inside_dq == 0)
+				break;
+			if (s[end] == '"' || s[end] == '\'')
 			{
+				if (s[end] == '"' || s[end] == '\'')
+					update_quote_state_str(s, &inside_sq, &inside_dq, end);
 				end++;
-				while (s && s[end] != '"' && s[end] != '\0')
-					end++;
 			}
-			if (s && s[end])
+			if (inside_sq == 0 && inside_dq == 0 && s[end] == c)
+				break;
+			if (s[end] && s[end] != '"' && s[end] != '\'')
 				end++;
 		}
 		array[i] = ft_substr(s, start, (end - start));

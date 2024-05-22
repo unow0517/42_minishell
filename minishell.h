@@ -184,6 +184,7 @@ bool	is_redir_pipe_char(char i);
 bool	ft_is_builtin(char *str);
 char	*get_argument(char *argv);
 bool	quotes_even(char *input);
+char	*remove_unecessary_q(t_shell *shell_info);
 
 
 //PARSING.C
@@ -209,6 +210,7 @@ void	quote_removal_in_exec_arg(t_command *cur_cmd);
 char	*rm_quotes(char *to_fix, char c);
 char	first_quote(char *str);
 t_token	*skip_q_tokens(t_token *iterate);
+t_token	*handle_awk(t_shell *shell_info, t_token *iterate, t_command *cmd_node);
 
 //EXECUTION.C
 void	executor(t_shell *shell_info, int *status, t_command *cur);

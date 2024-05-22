@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/20 20:02:20 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:27:43 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,29 +176,29 @@ int	token_count(t_shell *shell_info)
 
 bool	ft_is_builtin(char *str)
 {
-	// printf("str = %s\n", str);
+	printf("str = %s\n", str);
 	if	(str)
 	{
-		if (ft_strncmp(str, "echo ", 5) == 0 || ft_strncmp(str, "echo", 4) == 0)
+		if (ft_strncmp(str, "\"echo\"", 6) == 0 || ft_strncmp(str, "echo", 4) == 0)
 			return (true);
-		else if (ft_strncmp(str, "cd ", 3) == 0 | ft_strncmp(str, "cd", 2) == 0)
+		else if (ft_strncmp(str, "\"cd\"", 4) == 0 || ft_strncmp(str, "cd", 2) == 0)
 			return (true);
-		else if (ft_strncmp(str, "pwd ", 4) == 0 || ft_strncmp(str, "pwd", 3) == 0)
+		else if (ft_strncmp(str, "\"pwd\"", 5) == 0 || ft_strncmp(str, "pwd", 3) == 0)
 			return (true);
-		else if (ft_strncmp(str, "export ", 7) == 0 || ft_strncmp(str, "export", 6) == 0)
+		else if (ft_strncmp(str, "\"export\"", 8) == 0 || ft_strncmp(str, "export", 6) == 0)
 			return (true);
-		else if (ft_strncmp(str, "unset ", 6) == 0 || ft_strncmp(str, "unset", 5) == 0)
+		else if (ft_strncmp(str, "\"unset\"", 7) == 0 || ft_strncmp(str, "unset", 5) == 0)
 			return (true);
-		else if (ft_strncmp(str, "env ", 4) == 0 || ft_strncmp(str, "env", 3) == 0)
+		else if (ft_strncmp(str, "\"env\"", 5) == 0 || ft_strncmp(str, "env", 3) == 0)
 			return (true);
-		else if (ft_strncmp(str, "exit ", 5) == 0 || ft_strncmp(str, "exit", 4) == 0)
+		else if (ft_strncmp(str, "\"exit\"", 6) == 0 || ft_strncmp(str, "exit", 4) == 0)
 			return (true);
-		else if (ft_strncmp(str, "pwd ", 4) == 0 || ft_strncmp(str, "pwd", 3) == 0)
+		else if (ft_strncmp(str, "\"pwd\"", 5) == 0 || ft_strncmp(str, "pwd", 3) == 0)
 			return (true);
-		else if (ft_strncmp(str, "history ", 8) == 0 || ft_strncmp(str, "history", 7) == 0)
+		else if (ft_strncmp(str, "\"history\"", 9) == 0 || ft_strncmp(str, "history", 7) == 0)
 			return (true);
 	}
-	// printf("ft_is_builtin = FALSE\n");
+	printf("ft_is_builtin = FALSE\n");
 	return (false);
 }
 
@@ -226,11 +226,7 @@ bool	quotes_even(char *input)
 {
 	int	i;
 	int	q_counter;
-	// int	dq_counter;
-	// int	sq_counter;
 
-	// dq_counter = 0;
-	// sq_counter = 0;
 	i = 0;
 	q_counter = 0;
 	if (!input)
@@ -244,4 +240,41 @@ bool	quotes_even(char *input)
 	if (q_counter % 2 == 0)
 		return (true);
 	return (false);
+}
+
+char	*remove_unecessary_q(t_shell *shell_info)
+{
+	char	*temp;
+	char	*new;
+	int		counter;
+	int		i;
+	int		j;
+
+	j = 0;
+	i = 0;
+	counter = 0;
+	temp = shell_info->user_input;
+	while (temp && temp[i] != '\0')
+	{
+		if (temp[i + 1] && ((temp[i] == '"' && temp[i + 1] == '"') || (temp[i] == '\'' && temp[i + 1] == '\'')))
+			counter += 2;
+		i++;
+	}
+	new = ft_calloc(i - counter + 1, sizeof(char));
+	if (!new)
+		return (NULL);
+	i = 0;
+	while (temp && temp[i] != '\0')
+	{
+		if (temp[i + 1] && ((temp[i] == '"' && temp[i + 1] == '"') || (temp[i] == '\'' && temp[i + 1] == '\'')))
+			i += 2;
+		if (temp[i])
+		{
+			new[j] = temp[i];
+			i++;
+		}
+		j++;
+	}
+	free(temp);
+	return (new);
 }

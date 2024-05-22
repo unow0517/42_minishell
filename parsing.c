@@ -39,6 +39,9 @@ void	initialise_cmd_node(t_command *cmd_node)
 	cmd_node->filename = NULL;
 	cmd_node->is_builtin = false;
 	cmd_node->to_split = "";
+	cmd_node->is_builtin = 0;
+	cmd_node->builtin_type = NULL;
+	cmd_node->builtin_arg = NULL;
 	cmd_node->next = NULL;
 }
 
@@ -63,12 +66,14 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 				iterate = set_redirections(cmd_node, iterate);
 			else if (iterate && builtin_case(iterate) == true)
 			{
-int j = builtin_case(iterate);
-				cmd_node->builtin_type = get_first_word(iterate->content);
+				if (iterate->token_type == WORD)
+					cmd_node->builtin_type = get_first_word(iterate->content);
+				else if (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE)
+					cmd_node->builtin_type = get_first_word(iterate->next->content);
 				cmd_node->is_builtin = true;
-printf("builtin_case = %i\n", j);
-				iterate = iterate->next;
-				if (iterate)
+				if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE) && iterate->next->next->next)
+					cmd_node->builtin_arg = arg_for_export(iterate->next->next->next);
+				else if (iterate)
 					cmd_node->builtin_arg = arg_for_export(iterate);
 				iterate = skip_tokens_of_builtin_arg(iterate);
 			}
@@ -117,10 +122,8 @@ void	init_cmds_in_struct(t_command *cmd_node, char *to_split)
 //>, <
 t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 {
-// printf("ENTERED SET REDIRS\n");
 	if (iterate && iterate->token_type == S_LESS)
 	{
-
 		iterate = iterate->next;
 		if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE))
 			iterate = skip_q_tokens(iterate);
@@ -145,14 +148,11 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 		if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE))
 			iterate = skip_q_tokens(iterate);
 		cmd_node->is_heredoc = 1;
-		// cmd_node->filename = get_first_word(iterate->content);
-		// if (cmd_node->file_not_found == 0)
-		// {
-			if (open_file(cmd_node, iterate, D_LESS) == -1 || access("/tmp/heredoc", F_OK) == -1)
-			{
-				cmd_node->file_not_found = 1;
-				heredoc_error(cmd_node);
-			}
+		if (open_file(cmd_node, iterate, D_LESS) == -1 || access("/tmp/heredoc", F_OK) == -1)
+		{
+			cmd_node->file_not_found = 1;
+			heredoc_error(cmd_node);
+		}
 		if (iterate && (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE))
 			iterate = skip_q_tokens(iterate);
 		if (iterate)
@@ -192,7 +192,6 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 		if (iterate)
 			iterate = iterate->next;
 	}
-// printf("EXITED SET REDIRS\n");
 	return (iterate);
 }
 
