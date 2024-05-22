@@ -45,6 +45,7 @@ void	initialise_cmd_node(t_command *cmd_node)
 	cmd_node->next = NULL;
 }
 
+//PROCESS THE CMD ACCORDING TO TOKENS
 void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 {
 	t_command	*cmd_node;
@@ -118,6 +119,7 @@ void	init_cmds_in_struct(t_command *cmd_node, char *to_split)
 	}
 }
 
+//>, <
 t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 {
 	if (iterate && iterate->token_type == S_LESS)
@@ -193,16 +195,18 @@ t_token	*set_redirections(t_command *cmd_node, t_token *iterate)
 	return (iterate);
 }
 
+//OPEN FILE TAKING TOKEN STRUCT
 int	open_file(t_command *cmd_node, t_token *iterate, int flag)
 {
 	char	*file;
 
 	file = get_first_word(iterate->content);
-	if (flag == S_LESS)
+	if (flag == S_LESS) //<
 	{
+		// IF NODE INPUT FD HAS ANOTHER FD, CLOSE
 		if (cmd_node->input_fd != -1)
 			close(cmd_node->input_fd);
-		cmd_node->input_fd = open(file, O_RDONLY);
+		cmd_node->input_fd = open(file, O_RDONLY); //
 	}
 	else if (flag == S_MORE)
 	{

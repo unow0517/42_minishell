@@ -79,7 +79,8 @@ char	**ft_split(char const *s, char c)
 	i = 0;
 	start = 0;
 	cnt = cntwords(s, c);
-	array = malloc((cntwords(s, c) + 1) * sizeof(char *));
+	// array = malloc((cntwords(s, c) + 1) * sizeof(char *));
+	array = calloc((cntwords(s, c) + 1), sizeof(char *));
 	if (!array)
 		return (0);
 	while (i < cnt)
