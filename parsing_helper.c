@@ -140,13 +140,11 @@ t_token	*initialize_cmd_options(t_shell *shell_info, t_token *iterate, t_command
 void	quote_removal_in_exec_arg(t_command *cur_cmd)
 {
 	int			i;
-	// int			j;
 	char		**to_fix;
 	char		*temp;
 	char		c;
 
 	i = 0;
-	// j = 0;
 	while (cur_cmd)
 	{
 		if (cur_cmd->full_cmd)

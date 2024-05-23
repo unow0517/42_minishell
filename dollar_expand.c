@@ -164,7 +164,7 @@ char    *replace_expand(char *inpt, char *var_value, int var_name_len)
 		return (join2);
   	}
   	else if (ptr_dollar && !var_value)
-  	  return (str_till_dollar);
+  	  return (str_till_dollar);  //PROBLEM
   	else
   	  return (inpt);						//remove/change one of 2 returns
   	// ft_printf("join2 %s\n", join2);
@@ -291,8 +291,10 @@ void	replace_caret(t_shell *shell_info)
 
 //when user_input is 0
 // char    *expand(t_shell *shell_info)
-void	expand(t_shell *shell_info)
+void	ft_expand(t_shell *shell_info)
 {
+  if (!shell_info->user_input)
+    return ;
 	  replace_bs_dollar(shell_info);
     // ft_printf("rebsd %s\n", shell_info->user_input); //OK
     // replaced = replace_expand(inpt, var_value, len);

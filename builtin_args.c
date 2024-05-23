@@ -84,3 +84,19 @@ void	update_quote_state_token(t_token *cur, int *inside_sq, int *inside_dq)
 	else if (cur->token_type == D_QUOTE && *inside_dq == 1)
 		*inside_dq = 0;
 }
+
+t_token	*initialise_builtin_type_arg(t_command *cmd_node, t_token *iterate)
+{
+	if (iterate->token_type == WORD)
+		cmd_node->builtin_type = get_first_word(iterate->content);
+	else if (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE)
+		cmd_node->builtin_type = get_first_word(iterate->next->content);
+	cmd_node->is_builtin = true;
+	if (iterate && (iterate->token_type == S_QUOTE || \
+	iterate->token_type == D_QUOTE) && iterate->next->next->next)
+		cmd_node->builtin_arg = arg_for_export(iterate->next->next->next);
+	else if (iterate)
+		cmd_node->builtin_arg = arg_for_export(iterate);
+	iterate = skip_tokens_of_builtin_arg(iterate);
+	return (iterate);
+}

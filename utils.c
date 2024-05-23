@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/21 19:27:43 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/23 18:08:41 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ int	token_count(t_shell *shell_info)
 
 bool	ft_is_builtin(char *str)
 {
-	printf("str = %s\n", str);
+	// printf("str = %s\n", str);
 	if	(str)
 	{
 		if (ft_strncmp(str, "\"echo\"", 6) == 0 || ft_strncmp(str, "echo", 4) == 0)
@@ -198,7 +198,7 @@ bool	ft_is_builtin(char *str)
 		else if (ft_strncmp(str, "\"history\"", 9) == 0 || ft_strncmp(str, "history", 7) == 0)
 			return (true);
 	}
-	printf("ft_is_builtin = FALSE\n");
+	// printf("ft_is_builtin = FALSE\n");
 	return (false);
 }
 
@@ -222,19 +222,49 @@ char	*get_argument(char *argv)
 	return (small_cmd);
 }
 
+// bool	quotes_even(char *input)
+// {
+// 	int	i;
+// 	int	q_counter;
+
+// 	i = 0;
+// 	q_counter = 0;
+// 	if (!input)
+// 		return (true);
+// 	while (input[i] != '\0')
+// 	{
+// 		if (input[i] == '"' || input[i] == '\'')
+// 			q_counter++;
+// 		i++;
+// 	}
+// 	if (q_counter % 2 == 0)
+// 		return (true);
+// 	return (false);
+// }
+
 bool	quotes_even(char *input)
 {
-	int	i;
-	int	q_counter;
+	int		i;
+	int		q_counter;
+	int		inside_sq; //if character is within quoted string set to 1
+	int		inside_dq;
 
 	i = 0;
+	inside_sq = 0;
+	inside_dq = 0;
 	q_counter = 0;
 	if (!input)
 		return (true);
 	while (input[i] != '\0')
 	{
 		if (input[i] == '"' || input[i] == '\'')
-			q_counter++;
+		{
+			if ((inside_dq + inside_sq) == 0 || (inside_sq == 1 && input[i] == '\'') || (inside_dq == 1 && input[i] == '"'))
+			{
+				update_quote_state_str(input, &inside_sq, &inside_dq, i);
+				q_counter++;
+			}
+		}
 		i++;
 	}
 	if (q_counter % 2 == 0)
@@ -277,4 +307,20 @@ char	*remove_unecessary_q(t_shell *shell_info)
 	}
 	free(temp);
 	return (new);
+}
+
+bool	is_double(t_shell *shell_info, int i)
+{
+	if ((shell_info->user_input[i] == '>' && \
+	shell_info->user_input[i + 1] == '>') || \
+	(shell_info->user_input[i] == '<' && shell_info->user_input[i + 1] == '<'))
+		return (true);
+	return (false);
+}
+
+void	finalise_node(t_shell *shell_info, t_command *cmd_node)
+{
+	init_cmds_in_struct(cmd_node, cmd_node->to_split);
+	cmd_add_back(&shell_info->first_command, cmd_node);
+	quote_removal_in_exec_arg(cmd_node);
 }

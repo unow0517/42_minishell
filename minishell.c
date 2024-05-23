@@ -12,16 +12,16 @@
 
 #include "minishell.h"
 
-// void	leaks(void)
-// {
-// 	system("leaks minishell");
-// }
+void	leaks(void)
+{
+	system("leaks minishell");
+}
 
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	shell_info;
 
-	// atexit(&leaks);
+	atexit(&leaks);
 	if (argc != 1)
 		ft_printf("Minishell executable does not use arguments\n");
 	initialise_basics(argc, argv, env, &shell_info);

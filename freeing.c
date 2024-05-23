@@ -39,14 +39,29 @@ void	free_cmd_list(t_command **cmds)
 		del = del->next;
 		if (temp->cmd)
 			free(temp->cmd);
-		if (temp->full_cmd)
-			free(temp->full_cmd);
 		if (temp->options)
-			free(temp->options);
+			free_split_thalia(temp->options);
+		if (temp->full_cmd)
+			free_split_thalia(temp->full_cmd);
 		if (temp->input_fd >= 0)
 			close(temp->input_fd);
 		if (temp->output_fd >= 0)
 			close(temp->output_fd);
+		// if (temp->is_heredoc == 1)
+		// 	close("/tmp/heredoc");
+		// if (temp->fd[0] != -1)
+		// 	close(temp->fd[0]);
+		// if (temp->fd[1] != -1)
+		// 	close(temp->fd[1]);
+
+		if (temp->filename)
+			free(temp->filename);
+		if (temp->builtin_type)
+			free(temp->builtin_type);
+		if (temp->builtin_arg)
+			free(temp->builtin_arg);
+		// if (temp->to_split)
+		// 	free(temp->to_split);
 		free(temp);
 	}
 	*cmds = NULL;
