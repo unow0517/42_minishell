@@ -25,11 +25,13 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 		signal(SIGINT, sighandler);
 		// shell_info->user_input = readline(join2);
 		shell_info->user_input = readline(shell_info->prompt);
-		shell_info->user_input = dollar_expand(shell_info);
-		shell_info->user_input = remove_unecessary_q(shell_info); //FIXES EMPTY QUOTES BUT DESTROYS CTRL+D SIGNAL
-		parse_input(shell_info, &status);
+		if (!inputis(shell_info->user_input, ""))
+			add_history(shell_info->user_input);
+		ft_expand(shell_info);
+		// shell_info->user_input = remove_unecessary_q(shell_info); //FIXES EMPTY QUOTES BUT DESTROYS CTRL+D SIGNAL
+		parse_input(shell_info, shell_info->status);
 // printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
-		execution_cases(shell_info, &status);
+		execution_cases(shell_info, shell_info->status);
 		if (!shell_info->user_input)
 		{
 			write(1, "\n", 1);
@@ -41,16 +43,11 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 			// free(shell_info);
 			exit(0) ;
 		}
-		if (!inputis(shell_info->user_input, ""))
-			add_history(shell_info->user_input);
     	// shell_info->user_input = expand(shell_info);
-		ft_expand(shell_info);
 		// ft_printf("outputinhandler %s\n", shell_info->user_input);
 		// parse_input(shell_info, &status);
-		parse_input(shell_info, (shell_info->status));
 // printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
 		// execution_cases(shell_info, &status);
-		execution_cases(shell_info, (shell_info->status));
     // if (ft_strlen(dollar_expand(shell_info)) != 0)
     //   shell_info->user_input = dollar_expand(shell_info);
 		if (*shell_info->user_input == ' ')
