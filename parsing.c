@@ -58,7 +58,7 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 			shell_info->first_command = cmd_node;
 		cmd_node = ft_calloc(1, sizeof(t_command));
 		initialise_cmd_node(cmd_node);
-		cmd_node->cmd = ft_calloc(1, sizeof(char));
+		// cmd_node->cmd = ft_calloc(1, sizeof(char));
 		while (iterate != NULL && iterate->token_type != PIPE)
 		{
 			if (is_redir(iterate->token_type) == true)

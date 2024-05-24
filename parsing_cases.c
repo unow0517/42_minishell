@@ -2,13 +2,17 @@
 
 bool	builtin_case(t_token *iterate)
 {
-	if (iterate && (ft_is_builtin(get_first_word(iterate->content)) == true \
+	char	*word;
+
+	word = get_first_word(iterate->content);
+	if (iterate && (ft_is_builtin(word) == true \
 	|| ft_is_builtin(iterate->content) == true))
 	{
-		// printf("TRUE\n");
+		free(word);
 		return (true);
 	}
-	// printf("FALSE\n");
+	if (word)
+		free(word);
 	return (false);
 }
 
