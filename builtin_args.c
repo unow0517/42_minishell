@@ -27,6 +27,7 @@ char *arg_for_export(t_token *cur)
 		counter++;
 		i++;
 	}
+
 	inside_sq = 0;
 	inside_dq = 0;
 	i = 0;
@@ -38,10 +39,10 @@ char *arg_for_export(t_token *cur)
 		update_quote_state(cur, &inside_sq, &inside_dq, i);
 		if (is_redir_pipe_char(cur->content[i]) == true && inside_sq == 0 && inside_dq == 0)
 			break;
-		arg[i] = cur->content[i];
+		if (cur->content[i])
+			arg[i] = cur->content[i];
 		i++;
 	}
-printf("arg = %s\n", arg);
 	return (arg);
 }
 
@@ -63,11 +64,12 @@ t_token	*skip_tokens_of_builtin_arg(t_token *iterate)
 	int		inside_dq;
 	inside_dq = 0;
 	inside_sq = 0;
-	while (iterate)
+	while (iterate != NULL)
 	{
-		update_quote_state_token(iterate, &inside_sq, &inside_dq);
+		if ((inside_sq == 1 && iterate->content[0] == '\'') || (inside_dq == 1 && iterate->content[0] == '"'))
+			update_quote_state_token(iterate, &inside_sq, &inside_dq);
 		if (is_redir_pipe(iterate->token_type) == true && inside_sq == 0 && inside_dq == 0)
-			return (iterate);
+			break;
 		iterate = iterate->next;
 	}
 	return (iterate);
@@ -83,4 +85,20 @@ void	update_quote_state_token(t_token *cur, int *inside_sq, int *inside_dq)
 		*inside_dq = 1;
 	else if (cur->token_type == D_QUOTE && *inside_dq == 1)
 		*inside_dq = 0;
+}
+
+t_token	*initialise_builtin_type_arg(t_command *cmd_node, t_token *iterate)
+{
+	if (iterate->token_type == WORD)
+		cmd_node->builtin_type = get_first_word(iterate->content);
+	else if (iterate->token_type == S_QUOTE || iterate->token_type == D_QUOTE)
+		cmd_node->builtin_type = get_first_word(iterate->next->content);
+	cmd_node->is_builtin = true;
+	if (iterate && (iterate->token_type == S_QUOTE || \
+	iterate->token_type == D_QUOTE) && iterate->next->next->next)
+		cmd_node->builtin_arg = arg_for_export(iterate->next->next->next);
+	else if (iterate)
+		cmd_node->builtin_arg = arg_for_export(iterate);
+	iterate = skip_tokens_of_builtin_arg(iterate);
+	return (iterate);
 }

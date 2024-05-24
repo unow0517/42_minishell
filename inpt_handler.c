@@ -29,41 +29,34 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 			add_history(shell_info->user_input);
 		ft_expand(shell_info);
 		// shell_info->user_input = remove_unecessary_q(shell_info); //FIXES EMPTY QUOTES BUT DESTROYS CTRL+D SIGNAL
-		parse_input(shell_info, shell_info->status);
+		parse_input(shell_info);
 // printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
-		execution_cases(shell_info, shell_info->status);
+		execution_cases(shell_info);
 		if (!shell_info->user_input)
 		{
 			write(1, "\n", 1);
-			// free(shell_info);
+			free_cmd_list(&shell_info->first_command);
+			free_tokens(&shell_info->tokens);
+			free_shell(shell_info);
 			exit(0) ;
 		}
 		if (inputis(shell_info->user_input, "exit")) //these both if statements in same, then seg fault for ctrl+d
 		{
+			free_cmd_list(&shell_info->first_command);
 			// free(shell_info);
 			exit(0) ;
 		}
-    	// shell_info->user_input = expand(shell_info);
-		// ft_printf("outputinhandler %s\n", shell_info->user_input);
-		// parse_input(shell_info, &status);
-// printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
-		// execution_cases(shell_info, &status);
-    // if (ft_strlen(dollar_expand(shell_info)) != 0)
-    //   shell_info->user_input = dollar_expand(shell_info);
 		if (*shell_info->user_input == ' ')
 			shell_info->user_input = rm_starting_ws(shell_info->user_input);
 		multiple_ws_to_single(shell_info->user_input);
-		//have to run this after split cmd by space.
 		if (inputis(shell_info->user_input, ""))
 		{
 			rl_on_new_line();
 			rl_redisplay();
 		}
-	//OLDPWD implement
 		(void)argv;
 	free_tokens(&shell_info->tokens);
 	free_cmd_list(&shell_info->first_command);
-	// printf("shell_info->syntax_error = %i\n", shell_info->syntax_error);
 	shell_info->syntax_error = false;
 	}
 }

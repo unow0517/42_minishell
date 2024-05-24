@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 //YUN: RUN CMD OR PIPE DEPENDING ON THE # OF CMDS
-void	execution_cases(t_shell *shell_info, int *status)
+void	execution_cases(t_shell *shell_info)
 {
 	if (shell_info->syntax_error == false)
 	{
@@ -11,9 +11,9 @@ void	execution_cases(t_shell *shell_info, int *status)
 			exec_single_cmd(shell_info, shell_info->first_command);
 		else
 			exec_pipeline(shell_info);
-		while (waitpid(-1, status, WNOHANG) != -1) //WUNTRACED
+		while (waitpid(-1, shell_info->status, WNOHANG) != -1) //WUNTRACED
 			;
-		*status = handle_exit(*status);
+		*shell_info->status = handle_exit(*shell_info->status);
 	}
 }
 
@@ -84,6 +84,7 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 				if (!full_path)
 					cmd_error(cmd_to_exec); // exit (127);
 				execve(full_path, cmd_to_exec->full_cmd, shell_info->env);
+				free(full_path);
 				cmd_error(cmd_to_exec);
 			}
 		}

@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **env)
 
 	// atexit(&leaks);
 	if (argc != 1)
-		ft_printf("Minishell executable does not use arguments\n");
+		ft_printf("Minishell executable does not use arguments\n");	
 	initialise_basics(argc, argv, env, &shell_info);
 	if (create_prompt(&shell_info) != 0)
 		return (EXIT_FAILURE);
@@ -71,6 +71,7 @@ void	initialise_basics(int argc, char **argv, char **env, t_shell *shell_info)
 	shell_info->fd[0] = -1;
 	shell_info->fd[1] = -1;
 	shell_info->syntax_error = false;
+	shell_info->status = ft_calloc(1, sizeof(int *));
 	*(shell_info->status) = 0;
 }
 

@@ -4,8 +4,6 @@ static char	*substrings(char const *s, char c, char **array);
 
 static char	**freeing(char **array, int i);
 
-static void	update_quote_state_str(const char *str, int *inside_sq, int *inside_dq, int i);
-
 static int	ft_count(char const *s, char c)
 {
 	int		i;
@@ -41,15 +39,15 @@ static int	ft_count(char const *s, char c)
 char	**split_ms(char const *s, char c)
 {
 	char	**array;
-printf("\n\ns = %s, c = %c\n\n", s, c);
-	array = (char **)ft_calloc(ft_count(s, c) + 3, sizeof(char *));
+
+	array = (char **)ft_calloc(ft_count(s, c) + 1, sizeof(char *));
 	if (!array)
 		return (NULL);
 	substrings(s, c, array);
 	return (array);
 }
 
-static void	update_quote_state_str(const char *str, int *inside_sq, int *inside_dq, int i)
+void	update_quote_state_str(const char *str, int *inside_sq, int *inside_dq, int i)
 {
 	if (str[i] == '\'' && *inside_sq == 0)
 		*inside_sq = 1;
