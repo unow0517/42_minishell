@@ -12,8 +12,24 @@
 
 #include "minishell.h"
 
-void	run_echo(char *inpt)
+void	run_echo(char *inpt, t_shell *shell_info)
 {
+	// //OPTION 1. WHEN THE WHOLE INPUT IS PASSED
+	// if (inputstartswith(inpt, "echo -n "))
+	// 	ft_printf("%s", inpt + 5);
+	// else
+	// 	ft_printf("%s\n", inpt + 5);
+	// //OPTION 1. END
+
+	//OPTION 2. WHEN THE STRING AFTER 'cd ' IS PASSED
+	if (inputstartswith(inpt, "echo -n "))
+		ft_printf("%s", inpt);
+	else
+		ft_printf("%s\n", inpt);
+	*(shell_info->status) = 0;
+	//OPTION 2. END
+
+
 	// char	**output;
 	// char	*str;
 
@@ -40,19 +56,6 @@ void	run_echo(char *inpt)
 	// ft_printf("bs %s\n",backslash(inpt));
 	// ft_printf('\\');
 	
-	// //OPTION 1. WHEN THE WHOLE INPUT IS PASSED
-	// if (inputstartswith(inpt, "echo -n "))
-	// 	ft_printf("%s", inpt + 5);
-	// else
-	// 	ft_printf("%s\n", inpt + 5);
-	// //OPTION 1. END
-
-	//OPTION 2. WHEN THE STRING AFTER 'cd ' IS PASSED
-	if (inputstartswith(inpt, "echo -n "))
-		ft_printf("%s", inpt);
-	else
-		ft_printf("%s\n", inpt);
-	//OPTION 2. END
 
 }
 

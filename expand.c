@@ -125,11 +125,48 @@ char    *replace_expand(char *inpt, char *var_value, int var_name_len)
 		return (join2);
   	}
   	else if (ptr_dollar && !var_value)
+	{
+  	  join1 = ft_strjoin(str_till_dollar, str_after_varname);
   	  return (str_till_dollar);
+	}
   	else
   	  return (inpt);						//remove/change one of 2 returns
   	// ft_printf("join2 %s\n", join2);
   	  // return (free(join1), join2);
+}
+
+void	replace_dollar_question(t_shell *shell_info)
+{
+	char	*str;
+	char	*inpt;
+	// char    *ptr_question;
+    char    *str_till_dollar;
+    char    *str_after_varname;
+    char    *join1;
+    char    *join2;
+
+	str = 0;
+	if (shell_info->user_input)
+		str = shell_info->user_input;
+	inpt = str;
+	str_till_dollar = 0;
+  	str_after_varname = 0;
+	while (*str)
+	{
+		if (*str == '$' && *(str + 1) == '?')
+		{
+			str_till_dollar = ft_substr(inpt, 0, str - inpt);
+    ft_printf("std %s\n", str_till_dollar);
+			str_after_varname = str + 2;
+    ft_printf("sav %s\n", str_after_varname);
+  	  		join1 = ft_strjoin(str_till_dollar, ft_itoa(*(shell_info->status)));
+  	  		join2 = ft_strjoin(join1, str_after_varname);
+			shell_info->user_input = join2;
+			free(join1);
+		}
+		if (str + 1)
+			str++;
+	}
 }
 
 // void	replace_expand1(char *inpt, t_env_mini *env_mini)
@@ -143,10 +180,17 @@ void	replace_expands_loop(t_shell *shell_info)
 	if (shell_info->user_input)
 		str = shell_info->user_input;
 	// str = inpt;
+	// replace_dollar_question(shell_info);
 	while (*str)
 	{
 		if (*str == '$')
 		{
+			// if (*(str + 1) == '?')
+			// {
+			// 	// ft_printf("%d\n",*(shell_info->status));
+			// 	varvalue = ft_itoa(*(shell_info->status));
+			// }
+			// else
 			varname_len = ft_varname_len(str);
 			varvalue = ft_varvalue(varname_len, str, shell_info->env_mini);
 			// ft_printf("vv %s\n", varvalue);
@@ -156,6 +200,7 @@ void	replace_expands_loop(t_shell *shell_info)
 			str++;
 	}
 }
+
 
 void	replace_caret(t_shell *shell_info)
 {
@@ -207,6 +252,7 @@ void	replace_caret(t_shell *shell_info)
 void	expand_except_literal(t_shell *shell_info)
 {
 	replace_bs_dollar(shell_info);
+	replace_dollar_question(shell_info);
 	replace_expands_loop(shell_info);
 	replace_caret(shell_info);
 }

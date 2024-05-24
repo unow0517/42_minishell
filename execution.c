@@ -24,7 +24,7 @@ void execute_builtin(t_shell *shell_info, t_command *cmd)
 	// cmd->builtin_arg; //this is the rest of the input the builtin has to handle
 
 	if (inputstartswith(shell_info->user_input, "echo "))
-		run_echo(cmd->builtin_arg);
+		run_echo(cmd->builtin_arg, shell_info);
 	else if (inputstartswith(shell_info->user_input, "cd "))
 		run_cd(shell_info->user_input, shell_info);
 	else if (inputstartswith(shell_info->user_input, "pwd ") | inputis(shell_info->user_input, "pwd"))
@@ -36,7 +36,7 @@ void execute_builtin(t_shell *shell_info, t_command *cmd)
 	else if (inputstartswith(shell_info->user_input, "unset ") | inputis(shell_info->user_input, "unset"))
 		run_unset(shell_info);
 	else if (inputstartswith(shell_info->user_input, "history"))
-		print_history(shell_info->user_input);
+		print_history(shell_info);
 	//update status in each builtin
 }
 

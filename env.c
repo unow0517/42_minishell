@@ -23,4 +23,5 @@ void	run_env(t_shell *shell_info)
 			ft_printf("%s=%s\n", env_mini->name, env_mini->value);
 		env_mini = env_mini->next;
 	}
+	*(shell_info->status) = 0;
 }

@@ -12,13 +12,15 @@
 
 #include "minishell.h"
 
-void	print_history(char *inpt)
+void	print_history(t_shell *shell_info)
 {
+	char			*inpt;
 	int				inpt_len;
 	int				i;
 	HISTORY_STATE	*my_hist;
 	HIST_ENTRY		**his_list;
 
+	inpt = shell_info->user_input;
 	using_history();
 	my_hist = history_get_history_state();
 	his_list = history_list();
@@ -33,4 +35,5 @@ void	print_history(char *inpt)
 		i++;
 	}
 	free(my_hist);
+	*(shell_info->status) = 0;
 }
