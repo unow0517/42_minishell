@@ -64,7 +64,11 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 			if (is_redir(iterate->token_type) == true)
 				iterate = set_redirections(cmd_node, iterate);
 			else if (iterate && builtin_case(iterate) == true)
+			{
+// printf("Before\n");
 				iterate = initialise_builtin_type_arg(cmd_node, iterate);
+// printf("After\n");
+			}
 			else if (iterate && empty_cmd_case(iterate, cmd_node) == true)
 				iterate = initialize_cmd(shell_info, iterate, cmd_node);
 			else if (iterate && full_cmd_case(iterate, cmd_node) == true)
@@ -81,10 +85,14 @@ void	init_cmds_in_struct(t_command *cmd_node, char *to_split)
 
 	to_full_cmd = NULL;
 	temp_cmd = NULL;
-	temp_cmd = ft_strjoin(cmd_node->cmd, " ");
-	to_full_cmd = ft_strjoin(temp_cmd, to_split);
-	cmd_node->full_cmd = split_ms(to_full_cmd, ' ');
-	cmd_node->options = split_ms(to_split, ' ');
+	if (cmd_node->cmd)
+		temp_cmd = ft_strjoin(cmd_node->cmd, " ");
+	if (to_split)
+		to_full_cmd = ft_strjoin(temp_cmd, to_split);
+	if (to_full_cmd)
+		cmd_node->full_cmd = split_ms(to_full_cmd, ' ');
+	if (to_split)
+		cmd_node->options = split_ms(to_split, ' ');
 	if (temp_cmd)
 		free(temp_cmd);
 	if (to_full_cmd)

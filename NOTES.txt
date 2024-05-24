@@ -116,5 +116,6 @@ weird history behaviour
 "" ls "" works but should produce:	bash: : command not found
 
 
-
+printf("________________________________DEBUG____________________________");
 check redirections opening empty file
+echo "ls" hello 'lakdghsf"aljghd'ahdgsf"k" > out

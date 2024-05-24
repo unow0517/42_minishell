@@ -63,13 +63,20 @@ t_token	*skip_tokens_of_builtin_arg(t_token *iterate)
 	int		inside_dq;
 	inside_dq = 0;
 	inside_sq = 0;
-	while (iterate)
+	while (iterate != NULL)
 	{
-		update_quote_state_token(iterate, &inside_sq, &inside_dq);
+		// printf("HEY\n");
+
+		// printf("iterate->content = %s\n", iterate->content);
+		if ((inside_sq == 1 && iterate->content[0] == '\'') || (inside_dq == 1 && iterate->content[0] == '"'))
+			update_quote_state_token(iterate, &inside_sq, &inside_dq);
 		if (is_redir_pipe(iterate->token_type) == true && inside_sq == 0 && inside_dq == 0)
-			return (iterate);
+			break;
 		iterate = iterate->next;
 	}
+		// printf("HOOO\n");
+		// printf("iterate->content = %s\n", iterate->content);
+
 	return (iterate);
 }
 
@@ -98,5 +105,7 @@ t_token	*initialise_builtin_type_arg(t_command *cmd_node, t_token *iterate)
 	else if (iterate)
 		cmd_node->builtin_arg = arg_for_export(iterate);
 	iterate = skip_tokens_of_builtin_arg(iterate);
+printf("________________________________DEBUG____________________________");
+		printf("iterate->content = %s\n", iterate->content);
 	return (iterate);
 }

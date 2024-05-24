@@ -69,10 +69,6 @@ void	free_cmd_list(t_command **cmds)
 void	free_shell(t_shell *shell_info)
 {
 	free(shell_info->env_mini);
-	// free(shell_info->cwd); NO
-	// free(shell_info->oldpwd); NO
 	free(shell_info->user_input);
-	// free(shell_info->prompt);
-	// free(shell_info);
 	free(shell_info->status);
 }
