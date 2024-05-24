@@ -12,14 +12,32 @@
 
 #include "minishell.h"
 
+// char	*rm_starting_ws(char *string)
+// {
+// 	char	*ptr;
+// 	char	*string_0;
+
+// 	string_0 = string;
+// 	string++;
+// 	while (*string != '\0')
+// 	{
+// 		if (*string == ' ')
+// 			string++;
+// 		else
+// 			break ;
+// 	}
+// 	ptr = ft_strdup(string);
+// 	return (ptr);
+// }
+
 char	*rm_starting_ws(char *string)
 {
 	char	*ptr;
-	char	*string_0;
+	// char	*string_0;
 
-	string_0 = string;
-	string++;
-	while (*string != '\0')
+	// string_0 = string;
+	// string++;
+	while (string && *string)
 	{
 		if (*string == ' ')
 			string++;
@@ -27,9 +45,9 @@ char	*rm_starting_ws(char *string)
 			break ;
 	}
 	ptr = ft_strdup(string);
-	free(string_0);
 	return (ptr);
 }
+
 
 char	*multiple_ws_to_single(char	*str)
 {

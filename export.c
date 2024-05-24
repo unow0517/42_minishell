@@ -26,6 +26,7 @@ void	run_declare_env(t_shell *shell_info)
 			ft_printf("declare -x %s\n", env_mini->name);
 		env_mini = env_mini->next;
 	}
+	*(shell_info->status) = 0;
 }
 
 // t_env_mini	*ft_lstnew_envmini(char *inpt)
@@ -159,13 +160,17 @@ void	run_export_keyword(char	*str, t_shell *shell_info)
 	}
 	// printf("inside ivn %s ivv %s\n", var_name, var_value);
 	if (!var_name || !is_al_num_underscore(var_name))
+	{
+		*(shell_info->status) = 1;
 		ft_printf("minishell: export: `%s' not a valid identifier\n", ptr);
+	}
 	else if (is_al_num_underscore(var_name))
 	{
 		// printf("inside ivn %s ivv %s\n", var_name, var_value);
 		// env_mini = ft_lstnew_envmini(inpt);
 		env_mini = ft_lstnew_envmini(var_name, var_value);
 		ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
+		*(shell_info->status) = 0;
 	}
 }
 
@@ -184,7 +189,7 @@ void	run_export(char *str, t_shell *shell_info)
 	// else
 	// {
 	// 	keywords = ft_split(inpt, ' ');
-	//OPTION1. END
+	// //OPTION1. END
 
 	//OPTION2. WHEN WHOLE STRING IS PASSED
 	if (inputis(inpt, "export") || inputis(inpt, "export "))
@@ -193,6 +198,7 @@ void	run_export(char *str, t_shell *shell_info)
 	{
 		keywords = ft_split(inpt + 7, ' ');
 	//OPTION2. END
+
 		printf("kw %s\n", *keywords);
 		if (keywords  && *keywords && ft_strlen(*keywords))
 			ft_printf("kwlen %d\n", ft_strlen(*keywords));

@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 17:51:49 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/21 14:12:25 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/24 16:15:43 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	run_unset(t_shell *shell_info)
 			i++;
 		}
 	}
+	*(shell_info->status) = 0;
 }
 
 //ft_split free required!

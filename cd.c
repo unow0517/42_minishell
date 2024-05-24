@@ -63,7 +63,10 @@ void	run_cd(char *inpt, t_shell *shell_info)
 
 
 	if (chdir(path_input) == -1)
-	  ft_printf("minishell: cd : %s: No such file or directory\n", path_input);	
+	{
+		*(shell_info->status) = 1;
+	  	ft_printf("minishell: cd : %s: No such file or directory\n", path_input);	
+	}
 	else
 	{
 		getcwd(cwd, sizeof(cwd));
@@ -80,6 +83,7 @@ void	run_cd(char *inpt, t_shell *shell_info)
 	    env_mini = ft_lstnew_envmini("OLDPWD", shell_info->oldpwd);
 	    ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
 	  	}
+		*(shell_info->status) = 0;
 	}
 
 

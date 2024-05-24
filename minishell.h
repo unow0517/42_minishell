@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/21 16:06:47 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/24 16:12:00 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int		inputstartswith(char *inpt, char *string);
 int		inputhas(char *input, char c);
 
 //HISTORY.C
-void	print_history(char *inpt);
+void	print_history(t_shell *shell_info);
 
 //SIG_FUNCTIONS.C
 void	sighandler(int sig);
@@ -127,7 +127,7 @@ void	run_pipe(char *inpt, char **argv, char **env);
 char	*find_cmd_in_env(char *cmd, char **env);
 
 //ECHO.C
-void	run_echo(char *inpt);
+void	run_echo(char *inpt, t_shell *shell_info);
 
 //CD.C
 void	run_cd(char *inpt, t_shell *shell_info);
@@ -238,7 +238,7 @@ void	run_export(char *str, t_shell *shell_info);
 
 //DOLLAR_EXPAND.C
 // char	*expand(t_shell *shell_info);
-void	expand(t_shell *shell_info);
+void	ft_expand(t_shell *shell_info);
 void replace_caret(t_shell *shell_info);
 // char	*replace_caret(char *inpt);
 

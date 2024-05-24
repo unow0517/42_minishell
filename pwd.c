@@ -16,4 +16,5 @@
 void	run_pwd(t_shell *shell_info)
 {
 	ft_printf("%s\n", shell_info->cwd);
+	*(shell_info->status) = 0;
 }
