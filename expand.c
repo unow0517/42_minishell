@@ -322,10 +322,10 @@ void rm_ws_following_d_less(t_shell *shell_info)
 // char    *expand(t_shell *shell_info)
 void	ft_expand(t_shell *shell_info)
 {
-	// if (!shell_info->user_input)
-   	//  return ;
-  	// if (ft_strchr(shell_info->user_input, '$') == 0)
-   	//  return ;
+	if (!shell_info->user_input)
+		return ;
+  	if (ft_strchr(shell_info->user_input, '$') == 0)
+		return ;
 
 
 	// replace_bs_dollar(shell_info);

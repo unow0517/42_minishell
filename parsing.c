@@ -30,8 +30,6 @@ void	initialise_cmd_node(t_command *cmd_node)
 	cmd_node->full_cmd = NULL;
 	cmd_node->input_fd = -1;
 	cmd_node->output_fd = -1;
-	// cmd_node->input_path = NULL;
-	// cmd_node->output_path = NULL;
 	cmd_node->is_heredoc = 0;
 	pipe(cmd_node->fd);
 	cmd_node->file_not_found = 0;
@@ -58,17 +56,12 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 			shell_info->first_command = cmd_node;
 		cmd_node = ft_calloc(1, sizeof(t_command));
 		initialise_cmd_node(cmd_node);
-		// cmd_node->cmd = ft_calloc(1, sizeof(char));
 		while (iterate != NULL && iterate->token_type != PIPE)
 		{
 			if (is_redir(iterate->token_type) == true)
 				iterate = set_redirections(cmd_node, iterate);
 			else if (iterate && builtin_case(iterate) == true)
-			{
-// printf("Before\n");
 				iterate = initialise_builtin_type_arg(cmd_node, iterate);
-// printf("After\n");
-			}
 			else if (iterate && empty_cmd_case(iterate, cmd_node) == true)
 				iterate = initialize_cmd(shell_info, iterate, cmd_node);
 			else if (iterate && full_cmd_case(iterate, cmd_node) == true)

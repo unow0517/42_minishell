@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/24 17:52:40 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/24 19:28:55 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,29 +43,24 @@ typedef enum e_token_type
 	D_MORE  // >>
 }	t_token_type;
 
-typedef struct s_token //token, not token
+typedef struct s_token
 {
 	char			*input;
 	int				len;
 	int				idx;
-	char			*content; //get_first_word(toke->content) cat hi hel > out
+	char			*content;
 	t_token_type	token_type;
 	struct s_token	*next;
-	// char			*user_input_element;
 } t_token;
 
 typedef struct s_command
 {
-	// ls -lah LibFt
 	char	*cmd;
-	// char	*cmd_path;
 	char	**options;
 	char	**full_cmd;
 	int		input_fd;
 	int		output_fd;
-	// char	*output_path; // path to output file
-	// char	*input_path; // path to input file
-	int		is_heredoc; // 0 if no << otherwise set to 1
+	int		is_heredoc;
 	int		fd[2];
 	int		file_not_found;
 	char	*filename;
@@ -185,6 +180,7 @@ bool		quotes_even(char *input);
 char		*remove_unecessary_q(t_shell *shell_info);
 bool		is_double(t_shell *shell_info, int i);
 void		finalise_node(t_shell *shell_info, t_command *cmd_node);
+void		nullify_ints_four(int *inside_sq, int *inside_dq, int *i, int *counter);
 
 //PARSING.C
 void	parse_input(t_shell *shell_info);
