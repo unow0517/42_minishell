@@ -295,6 +295,8 @@ void	ft_expand(t_shell *shell_info)
 {
   if (!shell_info->user_input)
     return ;
+  if (ft_strchr(shell_info->user_input, '$') == 0)
+    return ;
 	  replace_bs_dollar(shell_info);
     // ft_printf("rebsd %s\n", shell_info->user_input); //OK
     // replaced = replace_expand(inpt, var_value, len);

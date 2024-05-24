@@ -4,10 +4,13 @@ t_token *initialize_cmd(t_shell *shell_info, t_token *iterate, t_command *cmd_no
 {
 	char	*quoted_str;
 	char *temp_cmd;
+	char *first_word;
+
 	quoted_str = NULL;
-	if (ft_strncmp("awk", get_first_word(iterate->content), 3) == 0)
+	first_word = get_first_word(iterate->content);
+	if (first_word && ft_strncmp("awk", first_word, 3) == 0)
 		iterate = handle_awk(shell_info, iterate, cmd_node);
-	else if (iterate->token_type == WORD)
+	else if (first_word && iterate->token_type == WORD)
 	{
 		cmd_node->cmd = get_first_word(iterate->content);
 		iterate = iterate->next;
@@ -26,6 +29,8 @@ t_token *initialize_cmd(t_shell *shell_info, t_token *iterate, t_command *cmd_no
 		free(temp_cmd);
 		iterate = skip_quoted_str(iterate, S_QUOTE);
 	}
+	if (first_word)
+		free(first_word);
 	return (iterate);
 }
 

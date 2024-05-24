@@ -27,14 +27,15 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 		shell_info->user_input = readline(shell_info->prompt);
 		ft_expand(shell_info);
 		// shell_info->user_input = remove_unecessary_q(shell_info); //FIXES EMPTY QUOTES BUT DESTROYS CTRL+D SIGNAL
-		parse_input(shell_info, shell_info->status);
+		parse_input(shell_info);
 // printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
-		execution_cases(shell_info, shell_info->status);
+		execution_cases(shell_info);
 		if (!shell_info->user_input)
 		{
 			write(1, "\n", 1);
 			free_cmd_list(&shell_info->first_command);
-			// free(shell_info);
+			free_tokens(&shell_info->tokens);
+			free_shell(shell_info);
 			exit(0) ;
 		}
 		if (inputis(shell_info->user_input, "exit")) //these both if statements in same, then seg fault for ctrl+d

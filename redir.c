@@ -10,7 +10,7 @@ static t_token *simple_file_redir(t_command *cmd_node, t_token *iter, t_token_ty
 	if (cmd_node->file_not_found == 0)
 	{
 		if (open_file(cmd_node, iter, flag) == -1 || \
-		access(get_first_word(iter->content), F_OK) == -1)
+		access(cmd_node->filename, F_OK) == -1)
 		{
 			cmd_node->file_not_found = 1;
 			file_error(cmd_node);

@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/23 18:08:41 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/24 13:08:22 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,6 @@ int	token_count(t_shell *shell_info)
 
 bool	ft_is_builtin(char *str)
 {
-	// printf("str = %s\n", str);
 	if	(str)
 	{
 		if (ft_strncmp(str, "\"echo\"", 6) == 0 || ft_strncmp(str, "echo", 4) == 0)
@@ -198,48 +197,27 @@ bool	ft_is_builtin(char *str)
 		else if (ft_strncmp(str, "\"history\"", 9) == 0 || ft_strncmp(str, "history", 7) == 0)
 			return (true);
 	}
-	// printf("ft_is_builtin = FALSE\n");
 	return (false);
 }
 
-char	*get_argument(char *argv)
-{
-	int		i;
-	char	*small_cmd;
-
-	i = 0;
-	while (argv[i] != '\0' && argv[i] != '>' && argv[i] != '<' && argv[i] != '|' && argv[i] != '"' && argv[i] != '\'')
-		i++;
-	small_cmd = ft_calloc(i + 1, sizeof(char));
-	if (!small_cmd)
-		return (NULL);
-	i = 0;
-	while (argv[i] != '\0' && argv[i] != '>' && argv[i] != '<' && argv[i] != '|' && argv[i] != '"' && argv[i] != '\'')
-	{
-		small_cmd[i] = argv[i];
-		i++;
-	}
-	return (small_cmd);
-}
-
-// bool	quotes_even(char *input)
+// char	*get_argument(char *argv)
 // {
-// 	int	i;
-// 	int	q_counter;
+// 	int		i;
+// 	char	*small_cmd;
 
 // 	i = 0;
-// 	q_counter = 0;
-// 	if (!input)
-// 		return (true);
-// 	while (input[i] != '\0')
+// 	while (argv[i] != '\0' && argv[i] != '>' && argv[i] != '<' && argv[i] != '|' && argv[i] != '"' && argv[i] != '\'')
+// 		i++;
+// 	small_cmd = ft_calloc(i + 1, sizeof(char));
+// 	if (!small_cmd)
+// 		return (NULL);
+// 	i = 0;
+// 	while (argv[i] != '\0' && argv[i] != '>' && argv[i] != '<' && argv[i] != '|' && argv[i] != '"' && argv[i] != '\'')
 // 	{
-// 		if (input[i] == '"' || input[i] == '\'')
-// 			q_counter++;
+// 		small_cmd[i] = argv[i];
 // 		i++;
 // 	}
-// 	if (q_counter % 2 == 0)
-// 		return (true);
-// 	return (false);
+// 	return (small_cmd);
 // }
 
 bool	quotes_even(char *input)

@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 13:39:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/23 19:38:17 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/24 14:27:25 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	print_token_types(t_shell *shell_info)
 	printf("\n");
 }
 
-void	syntax_error_check(t_shell *shell_info, int *status)
+void	syntax_error_check(t_shell *shell_info)
 {
 	t_token	*iter;
 	int		inside_dq;
@@ -129,11 +129,11 @@ void	syntax_error_check(t_shell *shell_info, int *status)
 		return ;
 	iter = shell_info->tokens;
 	if ((iter->token_type == PIPE && !iter->next) || (iter->token_type == PIPE && iter->next->token_type != PIPE))
-		unexpected_token(shell_info, "|", status); // bash: syntax error near unexpected token `|';
+		unexpected_token(shell_info, "|"); // bash: syntax error near unexpected token `|';
 	else if (iter->token_type == PIPE && iter->next && iter->next->token_type == PIPE)
-		unexpected_token(shell_info, "||", status);
+		unexpected_token(shell_info, "||");
 	else if (is_redir(iter->token_type) == true && !iter->next)
-		unexpected_token(shell_info, "newline", status);
+		unexpected_token(shell_info, "newline");
 	else
 	{
 		while (iter && iter->next)
@@ -142,20 +142,20 @@ void	syntax_error_check(t_shell *shell_info, int *status)
 			if (is_redir(iter->token_type) && is_redir(iter->next->token_type) && inside_dq == 0 && inside_sq == 0)
 			{
 				if ((iter->token_type == S_MORE && iter->next->token_type == S_LESS) || (iter->token_type == S_LESS && iter->next->token_type == S_MORE))
-					unexpected_token(shell_info, "<>", status);
+					unexpected_token(shell_info, "<>");
 				else if (iter->next->token_type == D_LESS || iter->next->token_type == S_LESS)
-					unexpected_token(shell_info, "<", status);
+					unexpected_token(shell_info, "<");
 				else if (iter->next->token_type == D_MORE || iter->next->token_type == S_MORE)
-					unexpected_token(shell_info, ">", status);
+					unexpected_token(shell_info, ">");
 				while (iter && is_redir(iter->token_type))
 					iter = iter->next;
 			}
 			else if (iter->token_type == PIPE && iter->next && iter->next->token_type == PIPE && inside_dq == 0 && inside_sq == 0)
 			{
 				if (shell_info->tokens->token_type == WORD)
-					unexpected_token(shell_info, get_first_word(shell_info->tokens->content), status);
+					unexpected_token(shell_info, get_first_word(shell_info->tokens->content));
 				else
-					unexpected_token(shell_info, "|", status);
+					unexpected_token(shell_info, "|");
 				while (iter && iter->token_type == PIPE)
 					iter = iter->next;
 			}

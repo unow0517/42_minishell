@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/23 19:31:38 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/24 14:31:28 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 # include <signal.h>
 # include <termios.h>
 # include "Libft/libft.h"
@@ -24,6 +22,8 @@
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <stdbool.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 # define SHE 0
 # define DFL 1
@@ -145,7 +145,7 @@ void	print_split(char **str);
 void	print_cmd_list(t_command *cmd_node);
 void	print_split_no_newline(char **str);
 void	print_token_types(t_shell *shell_info);
-void	syntax_error_check(t_shell *shell_info, int *status);
+void	syntax_error_check(t_shell *shell_info);
 
 // //PIPEX_FUNCTIONS.C
 char	*get_first_word(char *argv);
@@ -187,7 +187,7 @@ bool		is_double(t_shell *shell_info, int i);
 void		finalise_node(t_shell *shell_info, t_command *cmd_node);
 
 //PARSING.C
-void	parse_input(t_shell *shell_info, int *status);
+void	parse_input(t_shell *shell_info);
 void	parse_tokens(t_shell *shell_info);
 int		number_of_tokens(t_shell *shell_info);
 void	set_executable_nodes(t_shell *shell_info, t_token *iterate);
@@ -210,10 +210,10 @@ t_token	*skip_q_tokens(t_token *iterate);
 t_token	*handle_awk(t_shell *shell_info, t_token *iterate, t_command *cmd_node);
 
 //EXECUTION.C
-void	executor(t_shell *shell_info, int *status, t_command *cur);
+void	executor(t_shell *shell_info, t_command *cur);
 void	init_pipe(t_shell *shell_info, t_command *cur);
 void	handle_redir(t_shell *shell_info, t_command *cur);
-void	execution_cases(t_shell *shell_info, int *status);
+void	execution_cases(t_shell *shell_info);
 pid_t	exec_pipeline(t_shell *shell_info);
 pid_t	exec_single_cmd(t_shell *shell_info, t_command	*cmd_to_exec);
 void	pipe_handling(t_shell *shell_info, t_command *cur);
@@ -225,8 +225,8 @@ void	execute_builtin(t_shell *shell_info, t_command *cur);
 void	file_error(t_command *cmd_node);
 void	heredoc_error(t_command *cmd_node);
 void	cmd_error(t_command *cmd_node);
-void	unexpected_token(t_shell *shell_info, char *flag, int *status);
-void	quote_error(int *status);
+void	unexpected_token(t_shell *shell_info, char *flag);
+void	quote_error(t_shell *shell_info);
 
 //EXPORT.C
 t_env_mini *ft_lstnew_envmini(char *name, char *value);
@@ -243,6 +243,7 @@ void	run_unset(t_shell *shell_info);
 //FREES
 void	free_tokens(t_token **shell_info);
 void	free_cmd_list(t_command **cmds);
+void	free_shell(t_shell *shell_info);
 
 //QUOTES
 char	*quote_handler(t_shell *shell_info, t_token *iterate, char *quoted_str, t_token_type flag);

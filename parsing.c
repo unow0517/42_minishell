@@ -1,18 +1,18 @@
 #include "minishell.h"
 
-void	parse_input(t_shell *shell_info, int *status)
+void	parse_input(t_shell *shell_info)
 {
 	if (quotes_even(shell_info->user_input) == true)
 	{
 		create_tokens(shell_info);
-		syntax_error_check(shell_info, status);
+		syntax_error_check(shell_info);
 		if (shell_info->syntax_error == false)
 			parse_tokens(shell_info);
 		// print_token_types(shell_info);
-		print_cmd_list(shell_info->first_command); //delete
+		// print_cmd_list(shell_info->first_command); //delete
 	}
 	else
-		quote_error(status);
+		quote_error(shell_info);
 }
 
 void	parse_tokens(t_shell *shell_info)

@@ -26,7 +26,7 @@ void	cmd_error(t_command *cmd_node)
 	exit(127);
 }
 
-void	unexpected_token(t_shell *shell_info, char *flag, int *status)
+void	unexpected_token(t_shell *shell_info, char *flag)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd("syntax error near unexpected token `", 2);
@@ -36,13 +36,13 @@ void	unexpected_token(t_shell *shell_info, char *flag, int *status)
 		ft_putstr_fd(flag, 2);
 	ft_putstr_fd("'\n", 2);
 	shell_info->syntax_error = true;
-	*status = 258;
+	*shell_info->status = 258;
 }
 
-void	quote_error(int *status)
+void	quote_error(t_shell *shell_info)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd("syntax error: ", 2);
 	ft_putstr_fd("can't handle unclosed quotes\n", 2);
-	*status = 258;
+	*shell_info->status = 258;
 }

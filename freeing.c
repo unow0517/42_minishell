@@ -53,7 +53,6 @@ void	free_cmd_list(t_command **cmds)
 		// 	close(temp->fd[0]);
 		// if (temp->fd[1] != -1)
 		// 	close(temp->fd[1]);
-
 		if (temp->filename)
 			free(temp->filename);
 		if (temp->builtin_type)
@@ -65,4 +64,15 @@ void	free_cmd_list(t_command **cmds)
 		free(temp);
 	}
 	*cmds = NULL;
+}
+
+void	free_shell(t_shell *shell_info)
+{
+	free(shell_info->env_mini);
+	// free(shell_info->cwd); NO
+	// free(shell_info->oldpwd); NO
+	free(shell_info->user_input);
+	// free(shell_info->prompt);
+	// free(shell_info);
+	free(shell_info->status);
 }
