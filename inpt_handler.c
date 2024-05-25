@@ -30,7 +30,7 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 		ft_expand(shell_info);
 		// shell_info->user_input = remove_unecessary_q(shell_info); //FIXES EMPTY QUOTES BUT DESTROYS CTRL+D SIGNAL
 		parse_input(shell_info);
-// printf("exit status = %i\n", status); //if echo $? set status to NULL at the end of the builtin
+// printf("exit status = %d\n", *(shell_info->status)); //if echo $? set status to NULL at the end of the builtin
 		execution_cases(shell_info);
 		if (!shell_info->user_input)
 		{

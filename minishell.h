@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/24 17:52:40 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/25 11:55:11 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ typedef struct s_shell
 				//Its in linux/limits.h.
 				// #define PATH_MAX        4096 
 	int			*status;
+	bool		isheredoc;
 }	t_shell;
 
 //inpt_functions.C

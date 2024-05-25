@@ -73,6 +73,7 @@ void	initialise_basics(int argc, char **argv, char **env, t_shell *shell_info)
 	shell_info->syntax_error = false;
 	shell_info->status = ft_calloc(1, sizeof(int *));
 	*(shell_info->status) = 0;
+	shell_info->isheredoc = 0;
 }
 
 int	create_prompt(t_shell *shell_info)
