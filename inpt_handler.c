@@ -15,10 +15,6 @@
 
 void	inpt_handler(char **argv, t_shell *shell_info)
 {
-	// int			*status;
-
-	// status = shell_info->status_global;
-	// status = 0;
 	shell_info->user_input = NULL;
 	while (1)
 	{
@@ -30,7 +26,6 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 		// shell_info->user_input = remove_unecessary_q(shell_info); //FIXES EMPTY QUOTES BUT DESTROYS CTRL+D SIGNAL
 		ft_expand(shell_info);
 		parse_input(shell_info);
-// printf("exit status = %d\n", *(shell_info->status)); //if echo $? set status to NULL at the end of the builtin
 		execution_cases(shell_info);
 		if (!shell_info->user_input)
 		{

@@ -145,7 +145,6 @@ void	run_export_keyword(char	*str, t_shell *shell_info)
 	t_env_mini	*env_mini;
 
 	ptr = str;
-	// printf("hi\n");
 	ptr_to_equal = ft_strchr(ptr, '=');
 	if (ptr_to_equal == 0)
 	{
@@ -202,7 +201,6 @@ void	run_export(char *str, t_shell *shell_info)
 		// printf("kw %s\n", *keywords);
 		if (keywords  && *keywords && ft_strlen(*keywords))
 			// ft_printf("kwlen %d\n", ft_strlen(*keywords));
-
 		while (keywords && *keywords)
 		{
 			run_export_keyword(*keywords, shell_info);

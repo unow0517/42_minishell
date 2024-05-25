@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/24 18:28:52 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/25 15:16:15 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,45 +199,31 @@ bool	ft_is_builtin(char *str)
 	}
 	return (false);
 }
-
-// char	*get_argument(char *argv)
-// {
-// 	int		i;
-// 	char	*small_cmd;
-
-// 	i = 0;
-// 	while (argv[i] != '\0' && argv[i] != '>' && argv[i] != '<' && argv[i] != '|' && argv[i] != '"' && argv[i] != '\'')
-// 		i++;
-// 	small_cmd = ft_calloc(i + 1, sizeof(char));
-// 	if (!small_cmd)
-// 		return (NULL);
-// 	i = 0;
-// 	while (argv[i] != '\0' && argv[i] != '>' && argv[i] != '<' && argv[i] != '|' && argv[i] != '"' && argv[i] != '\'')
-// 	{
-// 		small_cmd[i] = argv[i];
-// 		i++;
-// 	}
-// 	return (small_cmd);
-// }
+void	nullify_ints_four(int *inside_sq, int *inside_dq, int *i, int *counter)
+{
+	*i = 0;
+	*counter = 0;
+	*inside_dq = 0;
+	*inside_sq = 0;
+}
 
 bool	quotes_even(char *input)
 {
 	int		i;
 	int		q_counter;
-	int		inside_sq; //if character is within quoted string set to 1
+	int		inside_sq;
 	int		inside_dq;
 
-	i = 0;
-	inside_sq = 0;
-	inside_dq = 0;
-	q_counter = 0;
+	nullify_ints_four(&inside_sq, &inside_dq, &i, &q_counter);
 	if (!input)
 		return (true);
 	while (input[i] != '\0')
 	{
 		if (input[i] == '"' || input[i] == '\'')
 		{
-			if ((inside_dq + inside_sq) == 0 || (inside_sq == 1 && input[i] == '\'') || (inside_dq == 1 && input[i] == '"'))
+			if ((inside_dq + inside_sq) == 0 || \
+			(inside_sq == 1 && input[i] == '\'') || \
+			(inside_dq == 1 && input[i] == '"'))
 			{
 				update_quote_state_str(input, &inside_sq, &inside_dq, i);
 				q_counter++;

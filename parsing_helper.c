@@ -208,16 +208,12 @@ char	*rm_quotes(char *to_fix, char c)
 	}
 	printf("to_fix %s i %d, q_cnt: %d\n", to_fix, i, q_counter);
 	new = ft_calloc(i - q_counter + 1, sizeof(char));
-	// printf("rmq len %d\n", i - q_counter + 1);
 	if (!new)
 		return (NULL);
 	i = 0;
 	// while (to_fix[i])
 	while (to_fix && to_fix[i])
 	{
-	// printf("to_fix[%d] %c \n",i, to_fix[i]);
-		// if (to_fix[i] == c)
-		// 	i++;
 		if (to_fix[i] != '\0' && to_fix[i] != c)
 		{
 			new[j] = to_fix[i];

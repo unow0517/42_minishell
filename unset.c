@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 17:51:49 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/25 16:35:21 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/25 17:11:07 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,21 @@
 
 void	rm_in_lnli(char *str, t_env_mini *lnli)
 {
-  t_env_mini *prev;
+	t_env_mini *prev;
 
 	while (lnli)
 	{
-    if (inputis(lnli->name, str))
-	  {
-      prev->next = lnli->next;
-      free(lnli);
-      break;
-    }
-    prev = lnli;
-    if (lnli->next)
-      lnli=lnli->next;
+		if (inputis(lnli->name, str))
+		{
+			prev->next = lnli->next;
+			free(lnli);
+			break;
+		}
+		prev = lnli;
+		if (lnli->next)
+			lnli=lnli->next;
+		else
+			break ;
 	}
 }
 
@@ -38,7 +40,7 @@ void	run_unset(char *str, t_shell *shell_info)
 	int			i;
 
 	inpt = str;
-	i = 1;
+	i = 0;
 	// //OPTION 1. WHEN THE WHOLE INPUT IS PASSED.
 	// if (inputis(inpt, "unset"))
 	// 	rl_on_new_line();

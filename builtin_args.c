@@ -1,13 +1,5 @@
 #include "minishell.h"
 
-static void	nullify_ints(int *inside_sq, int *inside_dq, int *i, int *counter)
-{
-	*i = 0;
-	*counter = 0;
-	*inside_dq = 0;
-	*inside_sq = 0;
-}
-
 char *arg_for_export(t_token *cur)
 {
 	int		i;
@@ -16,7 +8,7 @@ char *arg_for_export(t_token *cur)
 	int		inside_sq; //if character is within quoted string set to 1
 	int		inside_dq; //if character is within quoted string set to 1
 
-	nullify_ints(&inside_sq, &inside_dq, &i, &counter);
+	nullify_ints_four(&inside_sq, &inside_dq, &i, &counter);
 	if (!cur)
 		return (NULL);
 	while (cur->content[i] != '\0')
@@ -27,7 +19,6 @@ char *arg_for_export(t_token *cur)
 		counter++;
 		i++;
 	}
-
 	inside_sq = 0;
 	inside_dq = 0;
 	i = 0;
@@ -97,7 +88,7 @@ t_token	*initialise_builtin_type_arg(t_command *cmd_node, t_token *iterate)
 	if (iterate && (iterate->token_type == S_QUOTE || \
 	iterate->token_type == D_QUOTE) && iterate->next->next->next)
 		cmd_node->builtin_arg = arg_for_export(iterate->next->next->next);
-	else if (iterate)
+	else if (iterate && iterate->next)
 		cmd_node->builtin_arg = arg_for_export(iterate->next);
 	iterate = skip_tokens_of_builtin_arg(iterate);
 	return (iterate);

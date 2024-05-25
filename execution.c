@@ -17,37 +17,10 @@ void	execution_cases(t_shell *shell_info)
 	}
 }
 
-// void execute_builtin(t_shell *shell_info, t_command *cmd)
-// {
-// 	(void)cmd; //"hi"
-// 	// cmd->builtin_type; //this is the builtin in name (unset, export etc.)
-// 	// cmd->builtin_arg; //this is the rest of the input the builtin has to handle
-
-// 	// if (inputstartswith(shell_info->user_input, "echo"))
-// 	if (inputis(cmd->builtin_type, "echo"))
-// 		run_echo(cmd->builtin_arg, shell_info);
-// 	else if (inputstartswith(shell_info->user_input, "cd "))
-// 		run_cd(shell_info->user_input, shell_info);
-// 	else if (inputstartswith(shell_info->user_input, "pwd ") | inputis(shell_info->user_input, "pwd"))
-// 		run_pwd(shell_info);
-// 	else if (inputis(shell_info->user_input, "env ") | inputis(shell_info->user_input, "env"))
-// 		run_env(shell_info);
-// 	else if (inputstartswith(shell_info->user_input, "export ") | inputis(shell_info->user_input, "export"))
-// 		run_export(cmd->builtin_arg, shell_info);
-// 	else if (inputstartswith(shell_info->user_input, "unset ") | inputis(shell_info->user_input, "unset"))
-// 		run_unset(shell_info);
-// 	else if (inputstartswith(shell_info->user_input, "history"))
-// 		print_history(shell_info);
-// 	//update status in each builtin
-// }
-
 void execute_builtin(t_shell *shell_info, t_command *cmd)
 {
-	// cmd; //"hi"
 	// cmd->builtin_type; //this is the builtin in name (unset, export etc.)
 	// cmd->builtin_arg; //this is the rest of the input the builtin has to handle
-
-	// if (inputstartswith(shell_info->user_input, "echo"))
 	if (inputis(cmd->builtin_type, "echo"))
 		run_echo(cmd->builtin_arg, shell_info);
 	else if (inputis(cmd->builtin_type, "cd"))
@@ -57,10 +30,7 @@ void execute_builtin(t_shell *shell_info, t_command *cmd)
 	else if (inputis(cmd->builtin_type, "env"))
 		run_env(shell_info);
 	else if (inputis(cmd->builtin_type, "export"))
-	{
-		// printf("nmnmn\n");
 		run_export(cmd->builtin_arg, shell_info);
-	}
 	else if (inputis(cmd->builtin_type, "unset"))
 		run_unset(cmd->builtin_arg, shell_info);
 	else if (inputis(cmd->builtin_type, "history"))
@@ -106,8 +76,10 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 				execute_builtin(shell_info, cmd_to_exec); //update exit status and exit
 			else
 			{
-				if (cmd_to_exec->cmd == NULL || cmd_to_exec->cmd[0] == '\0')
-					exit(0);
+				if (cmd_to_exec->cmd == NULL)
+					exit(0); ///check exit value
+				if (cmd_to_exec->cmd[0] == '\0')
+					exit(0); 
 				full_path = find_cmd_in_env(cmd_to_exec->cmd, shell_info->env);
 				if (!full_path)
 					cmd_error(cmd_to_exec); // exit (127);
