@@ -28,7 +28,7 @@ int	main(int argc, char **argv, char **env)
 	if (create_prompt(&shell_info) != 0)
 		return (EXIT_FAILURE);
 	catchsignal();
-	inpt_handler(argv, &shell_info);
+	inpt_handler(&shell_info);
 	return (0);
 }
 

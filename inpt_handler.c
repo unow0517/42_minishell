@@ -13,7 +13,7 @@
 
 #include "minishell.h"
 
-void	inpt_handler(char **argv, t_shell *shell_info)
+void	inpt_handler(t_shell *shell_info)
 {
 	shell_info->user_input = NULL;
 	while (1)
@@ -41,17 +41,14 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 			// free(shell_info);
 			exit(0) ;
 		}
-		if (*shell_info->user_input == ' ')
-			shell_info->user_input = rm_starting_ws(shell_info->user_input);
-		multiple_ws_to_single(shell_info->user_input);
+		// if (*shell_info->user_input == ' ')
+		// 	shell_info->user_input = rm_starting_ws(shell_info->user_input);
+		// multiple_ws_to_single(shell_info->user_input);
 		if (inputis(shell_info->user_input, ""))
 		{
 			rl_on_new_line();
 			rl_redisplay();
 		}
-		(void)argv;
-	free_tokens(&shell_info->tokens);
-	free_cmd_list(&shell_info->first_command);
-	shell_info->syntax_error = false;
+	reset(shell_info);
 	}
 }

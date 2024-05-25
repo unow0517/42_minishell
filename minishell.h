@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/25 17:24:15 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/25 18:20:07 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void	handle_error(char *str);
 void	free_split_thalia(char **str);
 
 //MINISHELL.C
-void	inpt_handler(char **argv, t_shell *shell_info);
+void	inpt_handler(t_shell *shell_info);
 void	initialise_basics(int argc, char **argv, char **env, t_shell *info);
 int		create_prompt(t_shell *shell_info);
 
@@ -182,6 +182,7 @@ char		*remove_unecessary_q(t_shell *shell_info);
 bool		is_double(t_shell *shell_info, int i);
 void		finalise_node(t_shell *shell_info, t_command *cmd_node);
 void		nullify_ints_four(int *inside_sq, int *inside_dq, int *i, int *counter);
+void		reset(t_shell *shell_info);
 
 //PARSING.C
 void	parse_input(t_shell *shell_info);

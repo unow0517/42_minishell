@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/25 15:16:15 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/25 18:21:09 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,4 +288,11 @@ void	finalise_node(t_shell *shell_info, t_command *cmd_node)
 		init_cmds_in_struct(cmd_node, cmd_node->to_split);
 	cmd_add_back(&shell_info->first_command, cmd_node);
 	quote_removal_in_exec_arg(cmd_node);
+}
+
+void	reset(t_shell *shell_info)
+{
+	free_tokens(&shell_info->tokens);
+	free_cmd_list(&shell_info->first_command);
+	shell_info->syntax_error = false;
 }

@@ -37,7 +37,7 @@ static t_token *heredoc_redir(t_command *cmd_node, t_token *iter)
 	}
 	if (iter && (iter->token_type == S_QUOTE || iter->token_type == D_QUOTE))
 		iter = skip_q_tokens(iter);
-	if (iter) //check if correct with any input
+	else if (iter)
 		iter = iter->next;
 	return (iter);
 }
@@ -74,21 +74,17 @@ void	handle_heredoc(t_command *cmd_node, char *delimiter)
 		free(here_line);
 		here_line = readline(">");
 	}
-	// printf("hl %s\n",here_line);
 	if (here_line)
 		free(here_line);
-	// printf("fd %d\n",fd);
 	close(fd);
-	// printf("if %d\n",cmd_node->input_fd);
 	cmd_node->input_fd = open("/tmp/heredoc", O_RDONLY);
-	// printf("if1 %d\n",cmd_node->input_fd);
 	if (cmd_node->input_fd == -1)
-		ft_printf("failed to open /tmp/heredoc\n"); //fix error or return value
+		ft_printf("failed to open /tmp/heredoc\n");
 }
 
 void	file_opener(t_command *cmd_node, int flag, char *file)
 {
-	if (flag == S_LESS) //<
+	if (flag == S_LESS)
 	{
 		if (cmd_node->input_fd != -1)
 			close(cmd_node->input_fd);
@@ -111,6 +107,5 @@ void	file_opener(t_command *cmd_node, int flag, char *file)
 		if (cmd_node->input_fd != -1)
 			close(cmd_node->input_fd);
 		handle_heredoc(cmd_node, file);
-		// printf("hl done");
 	}
 }
