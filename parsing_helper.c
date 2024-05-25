@@ -212,10 +212,10 @@ char	*rm_quotes(char *to_fix, char c)
 	if (!new)
 		return (NULL);
 	i = 0;
-	// while (to_fix && to_fix[i])
-	while (to_fix[i])
+	// while (to_fix[i])
+	while (to_fix && to_fix[i])
 	{
-	printf("to_fix[%d] %c \n",i, to_fix[i]);
+	// printf("to_fix[%d] %c \n",i, to_fix[i]);
 		// if (to_fix[i] == c)
 		// 	i++;
 		if (to_fix[i] != '\0' && to_fix[i] != c)

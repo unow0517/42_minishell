@@ -98,7 +98,7 @@ t_token	*initialise_builtin_type_arg(t_command *cmd_node, t_token *iterate)
 	iterate->token_type == D_QUOTE) && iterate->next->next->next)
 		cmd_node->builtin_arg = arg_for_export(iterate->next->next->next);
 	else if (iterate)
-		cmd_node->builtin_arg = arg_for_export(iterate);
+		cmd_node->builtin_arg = arg_for_export(iterate->next);
 	iterate = skip_tokens_of_builtin_arg(iterate);
 	return (iterate);
 }

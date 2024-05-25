@@ -14,20 +14,21 @@
 
 void	run_echo(char *inpt, t_shell *shell_info)
 {
+	// write(2, "HELLO\n", ft_strlen("HELLO\n"));
 	//OPTION 1. WHEN THE WHOLE INPUT IS PASSED
-	if (inputstartswith(inpt, "echo -n "))
-		ft_printf("%s", inpt + 5);
-	else
-		ft_printf("%s\n", inpt + 5);
-	*(shell_info->status) = 0;
+	// if (inputstartswith(inpt, "echo -n "))
+	// 	ft_printf("%s", inpt + 5);
+	// else
+	// 	ft_printf("%s\n", inpt + 5);
+	// *(shell_info->status) = 0;
 	//OPTION 1. END
 
 	// //OPTION 2. WHEN THE STRING AFTER 'cd ' IS PASSED
-	// if (inputstartswith(inpt, "echo -n "))
-	// 	ft_printf("%s", inpt);
-	// else
-	// 	ft_printf("%s\n", inpt);
-	// *(shell_info->status) = 0;
+	if (inputstartswith(inpt, "echo -n "))
+		ft_printf("%s", inpt);
+	else
+		ft_printf("%s\n", inpt);
+	*(shell_info->status) = 0;
 	// //OPTION 2. END
 
 

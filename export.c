@@ -145,7 +145,7 @@ void	run_export_keyword(char	*str, t_shell *shell_info)
 	t_env_mini	*env_mini;
 
 	ptr = str;
-	printf("hi\n");
+	// printf("hi\n");
 	ptr_to_equal = ft_strchr(ptr, '=');
 	if (ptr_to_equal == 0)
 	{
@@ -182,26 +182,26 @@ void	run_export(char *str, t_shell *shell_info)
 	char	**keywords;
 
 	inpt = str;
-	
-	// //OPTION1. WHEN ONLY KEYWORDS ARE PASSED
-	// if (!ft_strlen(inpt))
-	// 	run_declare_env(shell_info);
-	// else
-	// {
-	// 	keywords = ft_split(inpt, ' ');
-	// //OPTION1. END
-
-	//OPTION2. WHEN WHOLE STRING IS PASSED
-	if (inputis(inpt, "export") || inputis(inpt, "export "))
+	// printf("inpy%s\n", inpt);
+	//OPTION1. WHEN ONLY KEYWORDS ARE PASSED
+	if (!str || !ft_strlen(inpt))
 		run_declare_env(shell_info);
 	else
 	{
-		keywords = ft_split(inpt + 7, ' ');
-	//OPTION2. END
+		keywords = ft_split(inpt, ' ');
+	//OPTION1. END
 
-		printf("kw %s\n", *keywords);
+	// //OPTION2. WHEN WHOLE STRING IS PASSED
+	// if (inputis(inpt, "export") || inputis(inpt, "export "))
+	// 	run_declare_env(shell_info);
+	// else
+	// {
+	// 	keywords = ft_split(inpt + 7, ' ');
+	// //OPTION2. END
+
+		// printf("kw %s\n", *keywords);
 		if (keywords  && *keywords && ft_strlen(*keywords))
-			ft_printf("kwlen %d\n", ft_strlen(*keywords));
+			// ft_printf("kwlen %d\n", ft_strlen(*keywords));
 
 		while (keywords && *keywords)
 		{

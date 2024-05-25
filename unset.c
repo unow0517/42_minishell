@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 17:51:49 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/24 16:15:43 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/25 16:35:21 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ void	rm_in_lnli(char *str, t_env_mini *lnli)
 	}
 }
 
-void	run_unset(t_shell *shell_info)
+void	run_unset(char *str, t_shell *shell_info)
 {
 	char		*inpt;
 	// t_env_mini	*env_mini;
 	char		**var_names;
 	int			i;
 
-	inpt = shell_info->user_input;
+	inpt = str;
 	i = 1;
 	// //OPTION 1. WHEN THE WHOLE INPUT IS PASSED.
 	// if (inputis(inpt, "unset"))

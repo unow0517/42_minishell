@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/25 11:55:11 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/25 16:35:48 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ typedef struct s_command
 
 typedef struct s_env_mini
 {
-	char				*name;
-	char				*value;
+	char				*name; //PATH
+	char				*value; //path1:path2:path3...
 	struct s_env_mini	*next;
 }	t_env_mini;
 
@@ -239,7 +239,7 @@ void	ft_expand(t_shell *shell_info);
 void	replace_caret(t_shell *shell_info);
 
 //UNSET.C
-void	run_unset(t_shell *shell_info);
+void	run_unset(char *str, t_shell *shell_info);
 
 //FREES
 void	free_tokens(t_token **shell_info);

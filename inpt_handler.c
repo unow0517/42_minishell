@@ -25,10 +25,10 @@ void	inpt_handler(char **argv, t_shell *shell_info)
 		signal(SIGINT, sighandler);
 		// shell_info->user_input = readline(join2);
 		shell_info->user_input = readline(shell_info->prompt);
-		if (!inputis(shell_info->user_input, ""))
+		if (shell_info->user_input && !inputis(shell_info->user_input, ""))
 			add_history(shell_info->user_input);
-		ft_expand(shell_info);
 		// shell_info->user_input = remove_unecessary_q(shell_info); //FIXES EMPTY QUOTES BUT DESTROYS CTRL+D SIGNAL
+		ft_expand(shell_info);
 		parse_input(shell_info);
 // printf("exit status = %d\n", *(shell_info->status)); //if echo $? set status to NULL at the end of the builtin
 		execution_cases(shell_info);

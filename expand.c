@@ -281,8 +281,8 @@ void rm_outest_q_and_exp(t_shell *shell_info)
 	{
 		ft_printf("C %c\n", c);
 		ft_printf("Input %s\n", shell_info->user_input);
-		shell_info->user_input = rm_quotes(shell_info->user_input, c);
-		ft_printf("after_rm_quotes %s\n", rm_quotes(shell_info->user_input, c));
+		// shell_info->user_input = rm_quotes(shell_info->user_input, c);
+		// ft_printf("after_rm_quotes %s\n", rm_quotes(shell_info->user_input, c));
 		if (c == '"')
 			expand_except_literal(shell_info);
 	}
@@ -344,10 +344,10 @@ void rm_ws_following_d_less(t_shell *shell_info)
 // char    *expand(t_shell *shell_info)
 void	ft_expand(t_shell *shell_info)
 {
-	// if (!shell_info->user_input)
-   	//  return ;
-  	// if (ft_strchr(shell_info->user_input, '$') == 0)
-   	//  return ;
+	if (!shell_info->user_input)
+   	 return ;
+  	if (ft_strchr(shell_info->user_input, '$') == 0)
+   	 return ;
 
 
 	// replace_bs_dollar(shell_info);
@@ -368,6 +368,8 @@ void	ft_expand(t_shell *shell_info)
 		rm_outest_q(shell_info);
 		shell_info->isheredoc = 0;
 	}
+	// expand_except_literal(shell_info);
+
 	// dollar_literal(shell_info);
 	// replace_expands_loop(shell_info);
 	ft_printf("EXPANDED: %s\n", shell_info->user_input); //OK
