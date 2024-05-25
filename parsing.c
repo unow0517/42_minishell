@@ -80,9 +80,9 @@ void	init_cmds_in_struct(t_command *cmd_node, char *to_split)
 	temp_cmd = NULL;
 	if (cmd_node->cmd)
 		temp_cmd = ft_strjoin(cmd_node->cmd, " ");
-	if (to_split)
+	if (cmd_node->cmd && to_split)
 		to_full_cmd = ft_strjoin(temp_cmd, to_split);
-	if (to_full_cmd)
+	if (cmd_node->cmd && to_full_cmd)
 		cmd_node->full_cmd = split_ms(to_full_cmd, ' ');
 	if (to_split)
 		cmd_node->options = split_ms(to_split, ' ');

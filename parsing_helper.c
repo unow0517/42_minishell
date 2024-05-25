@@ -207,14 +207,11 @@ char	*rm_quotes(char *to_fix, char c)
 		i++;
 	}
 	new = ft_calloc(i - q_counter + 1, sizeof(char));
-	// printf("rmq len %d\n", i - q_counter + 1);
 	if (!new)
 		return (NULL);
 	i = 0;
 	while (to_fix && to_fix[i])
 	{
-		if (to_fix[i] == c)
-			i++;
 		if (to_fix[i] != '\0' && to_fix[i] != c)
 		{
 			new[j] = to_fix[i];
