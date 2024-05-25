@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/25 16:35:48 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/25 17:34:52 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,6 +239,7 @@ void	ft_expand(t_shell *shell_info);
 void	replace_caret(t_shell *shell_info);
 
 //UNSET.C
+char	**path_in_env_mini(t_env_mini *env_mini);
 void	run_unset(char *str, t_shell *shell_info);
 
 //FREES
