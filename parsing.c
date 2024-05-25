@@ -63,9 +63,9 @@ void	set_executable_nodes(t_shell *shell_info, t_token *iterate)
 			else if (iterate && builtin_case(iterate) == true)
 				iterate = initialise_builtin_type_arg(cmd_node, iterate);
 			else if (iterate && empty_cmd_case(iterate, cmd_node) == true)
-				iterate = initialize_cmd(shell_info, iterate, cmd_node);
+				iterate = initialize_cmd(iterate, cmd_node);
 			else if (iterate && full_cmd_case(iterate, cmd_node) == true)
-				iterate = initialize_cmd_options(shell_info, iterate, cmd_node);
+				iterate = initialize_cmd_options(iterate, cmd_node);
 		}
 		finalise_node(shell_info, cmd_node);
 	}
@@ -105,7 +105,7 @@ int	open_file(t_command *cmd_node, t_token *iterate, int flag)
 	}
 	if ((flag == S_MORE || flag == D_MORE) && cmd_node->output_fd == -1) // add checks
 		return (-1);
-	else if (flag == S_LESS && cmd_node->input_fd ==  -1)
+	else if (flag == S_LESS && cmd_node->input_fd == -1)
 		return (-1);
 	else
 		return (0);

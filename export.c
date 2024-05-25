@@ -181,6 +181,7 @@ void	run_export(char *str, t_shell *shell_info)
 	char	**keywords;
 
 	inpt = str;
+	// printf("str = %s\n", str);
 	// printf("inpy%s\n", inpt);
 	//OPTION1. WHEN ONLY KEYWORDS ARE PASSED
 	if (!str || !ft_strlen(inpt))
@@ -203,6 +204,7 @@ void	run_export(char *str, t_shell *shell_info)
 			// ft_printf("kwlen %d\n", ft_strlen(*keywords));
 		while (keywords && *keywords)
 		{
+		// printf("kw %s\n", *keywords);
 			run_export_keyword(*keywords, shell_info);
 			keywords++;
 		}

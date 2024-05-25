@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 13:39:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/24 14:27:25 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/25 20:30:11 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@ void	print_linked_tokens(t_token *token)
 
 void	print_split(char **str)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	while (str[i])
 	{
 		printf("str[%i] = %s\n", i, str[i]);
@@ -46,8 +47,9 @@ void	print_split(char **str)
 
 void	print_split_no_newline(char **str)
 {
-	int i = 0;
+	int i;
 
+	i = 0;
 	while (str[i])
 	{
 		printf("\t\t\tstr[%i] = %s\n", i, str[i]);
@@ -72,8 +74,6 @@ void	print_cmd_list(t_command *cmd_node)
 			print_split_no_newline(cmd_node->full_cmd);
 		printf("cmd_node->input_fd\t%i\n", cmd_node->input_fd);
 		printf("cmd_node->output_fd\t%i\n", cmd_node->output_fd);
-		// printf("cmd_node->output_path\t%s\n", cmd_node->output_path);
-		// printf("cmd_node->input_path\t%s\n", cmd_node->input_path);
 		printf("cmd_node->is_heredoc\t%i\n", cmd_node->is_heredoc);
 		printf("cmd_node->file_not_found\t%i\n", cmd_node->file_not_found);
 		printf("cmd_node->filename\t%s\n", cmd_node->filename);
@@ -94,9 +94,7 @@ void	print_token_types(t_shell *shell_info)
 	while (token)
 	{
 		printf("\t");
-		if (token->token_type == 0)
-			printf("NO_TOKEN");
-		else if (token->token_type == 1)
+		if (token->token_type == 1)
 			printf("WORD");
 		else if (token->token_type == 2)
 			printf("PIPE");
@@ -164,24 +162,3 @@ void	syntax_error_check(t_shell *shell_info)
 		}
 	}
 }
-
-// bash: syntax error near unexpected token `newline'
-// bash-3.2$ < out < out |
-// > 
-// > <
-// bash: syntax error near unexpected token `newline'
-// bash-3.2$ |
-// bash: syntax error near unexpected token `|'
-// bash-3.2$ ls |
-// > |
-// bash: syntax error near unexpected token `|'
-// bash-3.2$ |
-// bash: syntax error near unexpected token `|'
-// bash-3.2$ |||||
-// bash: syntax error near unexpected token `||'
-// bash-3.2$ ||||||||||||
-// bash: syntax error near unexpected token `||'
-// bash-3.2$ |||||||||
-// bash: syntax error near unexpected token `||'
-// bash-3.2$ | ls
-// bash: syntax error near unexpected token `|'

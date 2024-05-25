@@ -1,15 +1,15 @@
 #include "minishell.h"
 
-t_token *initialize_cmd(t_shell *shell_info, t_token *iterate, t_command *cmd_node)
+t_token	*initialize_cmd(t_token *iterate, t_command *cmd_node)
 {
 	char	*quoted_str;
-	char *temp_cmd;
-	char *first_word;
+	char	*temp_cmd;
+	char	*first_word;
 
 	quoted_str = NULL;
 	first_word = get_first_word(iterate->content);
 	if (first_word && ft_strncmp("awk", first_word, 3) == 0)
-		iterate = handle_awk(shell_info, iterate, cmd_node);
+		iterate = handle_awk(iterate, cmd_node);
 	else if (first_word && iterate->token_type == WORD)
 	{
 		cmd_node->cmd = get_first_word(iterate->content);
@@ -17,14 +17,14 @@ t_token *initialize_cmd(t_shell *shell_info, t_token *iterate, t_command *cmd_no
 	}
 	else if (iterate->token_type == D_QUOTE)
 	{
-		temp_cmd = quote_handler(shell_info, iterate, quoted_str, D_QUOTE);
+		temp_cmd = quote_handler(iterate, quoted_str, D_QUOTE);
 		cmd_node->cmd = rm_quotes(temp_cmd, '"');
 		free(temp_cmd);
 		iterate = skip_quoted_str(iterate, D_QUOTE);
 	}
 	else if (iterate->token_type == S_QUOTE)
 	{
-		temp_cmd = quote_handler(shell_info, iterate, quoted_str, S_QUOTE);
+		temp_cmd = quote_handler(iterate, quoted_str, S_QUOTE);
 		cmd_node->cmd = rm_quotes(temp_cmd, '\'');
 		free(temp_cmd);
 		iterate = skip_quoted_str(iterate, S_QUOTE);
@@ -41,17 +41,18 @@ static void	nullify_ints(int *inside_sq, int *inside_dq, int *i)
 	*inside_sq = 0;
 }
 
-t_token	*handle_awk(t_shell *shell_info, t_token *iterate, t_command *cmd_node)
+t_token	*handle_awk(t_token *iterate, t_command *cmd_node)
 {
 	int		i;
 	int		j;
+	int		h;
 	int		inside_sq;
 	int		inside_dq;
+	char	*temp;
 	char	*to_split_options;
 	char	*to_split_options_rest;
 	char	*to_split_options_total;
 
-	(void)shell_info;
 	nullify_ints(&inside_sq, &inside_dq, &i);
 	cmd_node->cmd = get_first_word(iterate->content);
 	iterate = iterate->next;
@@ -65,12 +66,12 @@ t_token	*handle_awk(t_shell *shell_info, t_token *iterate, t_command *cmd_node)
 		i++;
 	}
 	nullify_ints(&inside_sq, &inside_dq, &j);
-	int h = i;
+	h = i;
 	while (iterate->content[i] != '\0') //LENGTH OF FILES
 	{
 		update_quote_state(iterate, &inside_sq, &inside_dq, i);
 		if (is_redir_pipe(iterate->content[h]) == true && inside_sq == 0 && inside_dq == 0)
-			break;
+			break ;
 		i++;
 		j++;
 	}
@@ -80,12 +81,11 @@ t_token	*handle_awk(t_shell *shell_info, t_token *iterate, t_command *cmd_node)
 	{
 		update_quote_state(iterate, &inside_sq, &inside_dq, i);
 		if (is_redir_pipe(iterate->content[h]) == true && inside_sq == 0 && inside_dq == 0)
-			break;
+			break ;
 		to_split_options_rest[i] = iterate->content[h];
 		i++;
 		h++;
 	}
-	char *temp;
 	temp = ft_strjoin(to_split_options, " ");
 	to_split_options_total = ft_strjoin(temp, to_split_options_rest); //JOIN STRINGS TO CREATE OPTIONS
 	cmd_node->to_split = to_split_options_total;
@@ -94,13 +94,13 @@ t_token	*handle_awk(t_shell *shell_info, t_token *iterate, t_command *cmd_node)
 	{
 		update_quote_state_token(iterate, &inside_sq, &inside_dq);
 		if(is_redir_pipe(iterate->token_type) == true && inside_dq == 0 && inside_sq == 0 && i != 0)
-			break;
+			break ;
 		iterate = iterate->next;
 	}
 	return (iterate);
 }
 
-t_token	*initialize_cmd_options(t_shell *shell_info, t_token *iterate, t_command *cmd_node)
+t_token	*initialize_cmd_options(t_token *iterate, t_command *cmd_node)
 {
 	char	*quoted_str;
 	char	*temp;
@@ -109,7 +109,7 @@ t_token	*initialize_cmd_options(t_shell *shell_info, t_token *iterate, t_command
 	quoted_str = NULL;
 	if (iterate->token_type == D_QUOTE)
 	{
-		quoted_str = quote_handler(shell_info, iterate, quoted_str, D_QUOTE);
+		quoted_str = quote_handler(iterate, quoted_str, D_QUOTE);
 		temp = ft_strjoin(cmd_node->to_split, " ");
 		temp1 = quoted_str; //-l
 		cmd_node->to_split = ft_strjoin(temp, temp1);
@@ -119,8 +119,7 @@ t_token	*initialize_cmd_options(t_shell *shell_info, t_token *iterate, t_command
 	}
 	else if (iterate->token_type == S_QUOTE)
 	{
-		// iterate = iterate->next;
-		quoted_str = quote_handler(shell_info, iterate, quoted_str, S_QUOTE);
+		quoted_str = quote_handler(iterate, quoted_str, S_QUOTE);
 		temp = ft_strjoin(cmd_node->to_split, " ");
 		temp1 = quoted_str; //-l							//remove
 		cmd_node->to_split = ft_strjoin(temp, quoted_str);
@@ -144,10 +143,10 @@ t_token	*initialize_cmd_options(t_shell *shell_info, t_token *iterate, t_command
 
 void	quote_removal_in_exec_arg(t_command *cur_cmd)
 {
-	int			i;
-	char		**to_fix;
-	char		*temp;
-	char		c;
+	int		i;
+	char	**to_fix;
+	char	*temp;
+	char	c;
 
 	i = 0;
 	while (cur_cmd)
@@ -206,12 +205,10 @@ char	*rm_quotes(char *to_fix, char c)
 			q_counter++;
 		i++;
 	}
-	printf("to_fix %s i %d, q_cnt: %d\n", to_fix, i, q_counter);
 	new = ft_calloc(i - q_counter + 1, sizeof(char));
 	if (!new)
 		return (NULL);
 	i = 0;
-	// while (to_fix[i])
 	while (to_fix && to_fix[i])
 	{
 		if (to_fix[i] != '\0' && to_fix[i] != c)
@@ -222,19 +219,16 @@ char	*rm_quotes(char *to_fix, char c)
 		i++;
 // free(to_fix);
 	}
-	printf("end i %d\n", i);
-
 	new[i] = '\0';
 	if (new && new[0] == '\0')
 		return (NULL);
 	ft_printf("inrmquote %s\n\n\n", new);
-	
 	return (new);
 }
 
 t_token	*skip_q_tokens(t_token *iterate)
 {
-	t_token_type hold_type;
+	t_token_type	hold_type;
 
 	if (!iterate)
 		return (NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_functions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:36:23 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/21 14:45:48 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/25 20:53:29 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,15 @@ char	*get_first_word(char *argv)
 	char	*small_cmd;
 
 	i = 0;
-	while (argv[i] != '\0' && argv[i] != ' ' && argv[i] != '>' && argv[i] != '<' && argv[i] != '|' && argv[i] != '"' && argv[i] != '\'')
+	while (argv[i] != '\0' && argv[i] != ' ' && argv[i] != '>' && \
+	argv[i] != '<' && argv[i] != '|' && argv[i] != '"' && argv[i] != '\'')
 		i++;
 	small_cmd = ft_calloc(i + 1, sizeof(char));
 	if (!small_cmd)
 		return (NULL);
 	i = 0;
-	while (argv[i] != '\0' && argv[i] != ' ' && argv[i] != '>' && argv[i] != '<' && argv[i] != '|' && argv[i] != '"' && argv[i] != '\'')
+	while (argv[i] != '\0' && argv[i] != ' ' && argv[i] != '>' && \
+	argv[i] != '<' && argv[i] != '|' && argv[i] != '"' && argv[i] != '\'')
 	{
 		small_cmd[i] = argv[i];
 		i++;

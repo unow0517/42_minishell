@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/25 18:21:09 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/25 20:34:13 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,14 +140,23 @@ int	num_of_total_cmds(t_command *cur)
 
 void	close_fds(t_shell *shell_info, t_command *cur)
 {
-	if (cur->input_fd != -1)
-		close(cur->input_fd);
-	if (cur->output_fd != -1)
-		close(cur->output_fd);
+	close_io(cur);
+	// if (cur->input_fd != -1)
+	// 	close(cur->input_fd);
+	// if (cur->output_fd != -1)
+	// 	close(cur->output_fd);
 	if (shell_info->fd[0] != -1)
 		close(shell_info->fd[0]);
 	if (shell_info->fd[1] != -1)
 		close(shell_info->fd[1]);
+}
+
+void	close_io(t_command *cur)
+{
+	if (cur->input_fd != -1)
+		close(cur->input_fd);
+	if (cur->output_fd != -1)
+		close(cur->output_fd);
 }
 
 int	handle_exit(int status)
