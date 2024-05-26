@@ -231,7 +231,7 @@ char	*rm_quotes(char *to_fix, char c)
 	new[i] = '\0';
 	if (new && new[0] == '\0')
 		return (NULL);
-	ft_printf("inrmquote %s\n\n\n", new);
+	// ft_printf("inrmquote %s\n\n\n", new);
 	
 	return (new);
 }

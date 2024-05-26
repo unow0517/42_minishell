@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/26 13:28:31 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/26 16:37:37 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_shell
 				// #define PATH_MAX        4096 
 	int			*status;
 	bool		isheredoc;
+	char		*temp;
 }	t_shell;
 
 //inpt_functions.C
@@ -235,7 +236,11 @@ t_env_mini *ft_lstnew_envmini(char *name, char *value);
 t_env_mini *ft_lstlast_envmini(t_env_mini *lst);
 void	run_export(char *str, t_shell *shell_info);
 
-//DOLLAR_EXPAND.C
+//EXPAND.C
+int		is_al_num_udsc_c(char c);
+int		ft_varname_len(char *str);
+char    *ft_varvalue(int var_name_len, char *str, t_env_mini *env_mini);
+char    *replace_expand(char *inpt, char *var_value, int var_name_len);
 void	ft_expand(t_shell *shell_info);
 void	replace_caret(t_shell *shell_info);
 

@@ -144,7 +144,14 @@ void	run_export_keyword(char	*str, t_shell *shell_info)
 	char		*var_value;
 	t_env_mini	*env_mini;
 
-	ptr = str;
+	char		q;
+	char		*str_q_removed;;
+
+	q = first_quote(str);
+	str_q_removed = rm_quotes(str, q);
+
+	// ptr = str;
+	ptr = str_q_removed;
 	// printf("hi\n");
 	ptr_to_equal = ft_strchr(ptr, '=');
 	if (ptr_to_equal == 0)
@@ -199,8 +206,10 @@ void	run_export(char *str, t_shell *shell_info)
 	// 	keywords = ft_split(inpt + 7, ' ');
 	// //OPTION2. END
 
+
+
 		// printf("kw %s\n", *keywords);
-		if (keywords  && *keywords && ft_strlen(*keywords))
+		// if (keywords  && *keywords && ft_strlen(*keywords))
 			// ft_printf("kwlen %d\n", ft_strlen(*keywords));
 
 		while (keywords && *keywords)

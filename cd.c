@@ -13,25 +13,22 @@
 #include "minishell.h"
 
 //FIND ENV WITH NAME
-t_env_mini *env_search_name(char *name, t_env_mini *env_mini)
+t_env_mini	*env_search_name(char *name, t_env_mini *env_mini)
 {
-  if (!name || !env_mini)
-    return (0);
-  // printf("name=%s\n", name);
-
-  while(env_mini)
-  {
-    if (inputis(env_mini->name, name))
-      return (env_mini);
-    if (env_mini->next)
-      env_mini = env_mini->next;
-    else
-      break ;
-  }
-  return (0);
+	if (!name || !env_mini)
+		return (0);
+	while (env_mini)
+	{
+		if (inputis(env_mini->name, name))
+			return (env_mini);
+		if (env_mini->next)
+			env_mini = env_mini->next;
+		else
+			break ;
+	}
+	return (0);
 }
 
-//ABS PATH
 void	run_cd(char *inpt, t_shell *shell_info)
 {
 	char	*path_input;
