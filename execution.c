@@ -90,9 +90,9 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 	pid_t		pid;
 	char		*full_path;
 	char		**paths_in_env;
-	int			i;
+	// int			i;
 
-	i = 0;
+	// i = 0;
 	paths_in_env = ft_path_in_envmini(shell_info->env_mini);
 	pid = fork();
 	if (pid == -1)

@@ -35,14 +35,44 @@ void	run_cd(char *inpt, t_shell *shell_info)
 	t_env_mini	*env_mini;
 	t_env_mini	*env_mini_pwd;
 	t_env_mini	*env_mini_oldpwd;
+  t_env_mini  *env_mini_home;
+  char    **splitted;
 
-  	getcwd(cwd, sizeof(cwd));
-  	env_mini_pwd = 0;
-  	env_mini_oldpwd = 0;
-  	env_mini_pwd = env_search_name("PWD", shell_info->env_mini);
-  	env_mini_oldpwd = env_search_name("OLDPWD", shell_info->env_mini);
-  	path_input = inpt;
-	if (chdir(path_input) == -1)
+  splitted = ft_split(inpt, ' ');
+  if (!inpt || !*inpt)
+    return;
+  if (splitted[1])
+  {
+    *(shell_info->status) = 1;
+	  ft_printf("minishell: cd : too many arguments\n");
+    return ;
+  }
+
+  getcwd(cwd, sizeof(cwd));
+  env_mini_pwd = 0;
+  env_mini_oldpwd = 0;
+  env_mini_home = 0;
+  env_mini_pwd = env_search_name("PWD", shell_info->env_mini);
+  env_mini_oldpwd = env_search_name("OLDPWD", shell_info->env_mini);
+  env_mini_home = env_search_name("HOME", shell_info->env_mini);
+  path_input = inpt;
+  if (inputis(inpt,"~"))
+  {
+		ft_memset(shell_info->oldpwd, 0, 1024);
+		ft_strlcat(shell_info->oldpwd, shell_info->cwd, 1024);
+		ft_memset(shell_info->cwd, 0, 1024);
+		ft_strlcat(shell_info->cwd, env_mini_home->value, 1024);
+    env_mini_pwd->value = shell_info->cwd;
+	  if (env_mini_oldpwd)
+	   	env_mini_oldpwd->value = shell_info->oldpwd;
+	  else
+	  {
+	   	env_mini = ft_lstnew_envmini("OLDPWD", shell_info->oldpwd);
+	   	ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
+	  }
+		*(shell_info->status) = 0;
+  }
+	else if (chdir(path_input) == -1)
 	{
 		*(shell_info->status) = 1;
 	  	ft_printf("minishell: cd : %s: No such file or directory\n", path_input);	
