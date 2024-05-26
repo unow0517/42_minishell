@@ -279,8 +279,8 @@ void rm_outest_q_and_exp(t_shell *shell_info)
 	// ptr = str;
 	if (c != 'n')
 	{
-		ft_printf("C %c\n", c);
-		ft_printf("Input %s\n", shell_info->user_input);
+		// ft_printf("C %c\n", c);
+		// ft_printf("Input %s\n", shell_info->user_input);
 		// shell_info->user_input = rm_quotes(shell_info->user_input, c);
 		// ft_printf("after_rm_quotes %s\n", rm_quotes(shell_info->user_input, c));
 		if (c == '"')
@@ -372,7 +372,7 @@ void	ft_expand(t_shell *shell_info)
 
 	// dollar_literal(shell_info);
 	// replace_expands_loop(shell_info);
-	ft_printf("EXPANDED: %s\n", shell_info->user_input); //OK
+	// ft_printf("EXPANDED: %s\n\n", shell_info->user_input); //OK
     // ft_printf("repex1 %s\n", shell_info->user_input); //OK
     // replace_caret(shell_info);
     // ft_printf("reca %s\n", shell_info->user_input); //OK

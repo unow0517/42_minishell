@@ -33,9 +33,6 @@ static int	ft_count(char const *s, char c)
 	return (count);
 }
 
-// Allocates (with malloc(3)) and returns an array of strings obtained by
-// splitting ’s’ using the character ’c’ as a delimiter. The array must end
-// with a NULL pointer.
 char	**split_ms(char const *s, char c)
 {
 	char	**array;

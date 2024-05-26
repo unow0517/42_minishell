@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:36:23 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/25 20:53:29 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/26 19:45:32 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ void	free_split_thalia(char **str)
 	free(str);
 }
 
-void	handle_error(char *str)
-{
-	perror(str);
-	exit(EXIT_FAILURE);
-}
+// void	handle_error(char *str)
+// {
+// 	perror(str);
+// 	exit(EXIT_FAILURE);
+// }

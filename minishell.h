@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/25 20:56:28 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/26 18:32:30 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,7 +248,7 @@ void		free_cmd_list(t_command **cmds);
 void		free_shell(t_shell *shell_info);
 
 //QUOTES
-char		*quote_handler(t_token *iterate, char *quoted_str, \
+char		*quote_handler(t_token *iterate, \
 t_token_type flag);
 t_token		*skip_quoted_str(t_token *to_skip, t_token_type flag);
 

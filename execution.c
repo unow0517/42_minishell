@@ -15,16 +15,19 @@
 //YUN: RUN CMD OR PIPE DEPENDING ON THE # OF CMDS
 void	execution_cases(t_shell *shell_info)
 {
+	pid_t	pid;
+
+	pid = 0;
 	if (shell_info->syntax_error == false)
 	{
 		if (num_of_total_cmds(shell_info->first_command) == 1 && \
 		shell_info->first_command->is_builtin == true)
 			execute_builtin(shell_info, shell_info->first_command);
 		else if (num_of_total_cmds(shell_info->first_command) == 1)
-			exec_single_cmd(shell_info, shell_info->first_command);
+			pid = exec_single_cmd(shell_info, shell_info->first_command);
 		else
-			exec_pipeline(shell_info);
-		while (waitpid(-1, shell_info->status, WNOHANG) != -1) //WUNTRACED
+			pid = exec_pipeline(shell_info);
+		while (waitpid(pid, shell_info->status, WNOHANG) != -1) //WUNTRACED
 			;
 		*shell_info->status = handle_exit(*shell_info->status);
 	}

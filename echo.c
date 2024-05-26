@@ -12,53 +12,81 @@
 
 #include "minishell.h"
 
+static void	echo_without_flag(char **split_arg);
+static void	echo_with_flag(char **split_arg);
+
 void	run_echo(char *inpt, t_shell *shell_info)
 {
-	// write(2, "HELLO\n", ft_strlen("HELLO\n"));
-	//OPTION 1. WHEN THE WHOLE INPUT IS PASSED
-	// if (inputstartswith(inpt, "echo -n "))
-	// 	ft_printf("%s", inpt + 5);
-	// else
-	// 	ft_printf("%s\n", inpt + 5);
-	// *(shell_info->status) = 0;
-	//OPTION 1. END
+	char	**split_arg;
 
-	// //OPTION 2. WHEN THE STRING AFTER 'cd ' IS PASSED
-	if (inputstartswith(inpt, "echo -n "))
-		ft_printf("%s", inpt);
+	if (inpt)
+	{
+		split_arg = split_ms(inpt, ' ');
+		if (split_arg && ft_strncmp("-n", split_arg[0], 2) == 0 && strlen(split_arg[0]) == 2)
+			echo_with_flag(split_arg);
+		else if (split_arg)
+			echo_without_flag(split_arg);
+		if (split_arg)
+			free(split_arg);
+	}
 	else
-		ft_printf("%s\n", inpt);
+		write (1, "\n", 1);
 	*(shell_info->status) = 0;
-	// //OPTION 2. END
-
-
-	// char	**output;
-	// char	*str;
-
-	// output = ft_split(inpt + 5, ' ');
-	// // str = *output;
-	// // while (str)
-	// // {
-	// // 	str = backslash_piece(str);
-	// // 	str++;
-	// // }
-	// while (*output)
-	// {
-	// ft_printf("op %s\n",*output);
-	// // ft_printf("bs %s\n",backslash_piece(*output));
-	// 	// *output = backslash_piece(*output);
-	// 	output++;
-	// }
-	// str = *output;
-	// while (str)
-	// {
-	// 	ft_printf("%s", str);
-	// 	str++;
-	// }
-	// ft_printf("bs %s\n",backslash(inpt));
-	// ft_printf('\\');
 }
 
+static void	echo_without_flag(char **split_arg)
+{
+	int		i;
+	int		j;
+	int		sq;
+	int		dq;
 
+	i = 0;
+	sq = 0;
+	dq = 0;
+	while (split_arg &&split_arg[i])
+	{
+		j = 0;
+		if (i != 0)
+			write (1, " ", 1);
+		while (split_arg[i][j])
+		{
+			if ((split_arg[i][j] == '\'' && dq == 0) || \
+			(split_arg[i][j] == '"' && sq == 0))
+				update_quote_state_str(split_arg[i], &sq, &dq, j);
+			else
+				write (1, &(split_arg[i][j]), 1);
+			j++;
+		}
+		i++;
+	}
+	write (1, "\n", 1);
+}
 
-//ECHO WITH OPTION N!
+static void	echo_with_flag(char **split_arg)
+{
+	int		i;
+	int		j;
+	int		sq;
+	int		dq;
+
+	i = 1;
+	sq = 0;
+	dq = 0;
+	while (split_arg &&split_arg[i])
+	{
+		j = 0;
+		if (i != 1)
+			write (1, " ", 1);
+		while (split_arg[i][j])
+		{
+			if ((split_arg[i][j] == '\'' && dq == 0) || \
+			(split_arg[i][j] == '"' && sq == 0))
+				update_quote_state_str(split_arg[i], &sq, &dq, j);
+			else
+				write (1, &(split_arg[i][j]), 1);
+			j++;
+		}
+		i++;
+	}
+}

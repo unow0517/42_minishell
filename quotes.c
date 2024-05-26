@@ -1,10 +1,11 @@
 #include "minishell.h"
 
-char	*quote_handler(t_token *iterate, char *quoted_str, t_token_type flag)
+char	*quote_handler(t_token *iterate, t_token_type flag)
 {
 	int		len;
 	int		i;
 	char	c;
+	char *quoted_str;
 
 	if (flag == D_QUOTE)
 		c = '"';
