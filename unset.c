@@ -6,32 +6,42 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 17:51:49 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/25 17:57:53 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/26 13:57:12 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**path_in_env_mini(t_env_mini *env_mini)
+char	**ft_path_in_envmini(t_env_mini *env_mini)
 {
 	char	**output;
 
 	output = 0;
 	while (env_mini)
 	{
-			printf("HOO\n");
+			// printf("HOO\n");
 		if (inputis(env_mini->name, "PATH"))
 		{
 
-			printf("hello");
+			// printf("hello\n");
 			output = ft_split(env_mini->value, ':');
+			// printf("op 0 %s\n", output[0]);
 			return (output);
 		}
+	// printf("helloaaa\n");
+		
 		if (env_mini->next)
 			env_mini = env_mini->next;
 		else
 			break ;
 	}
+	// printf("hellobbbb\n");
+	// printf("op %d\n", output == 0);
+	// if (!output)
+	// {
+	// 	*(shell_info->status) = 1;
+	// 	ft_printf("minishell: %s: No such file or directory\n", path_input);	
+	// }
 	return (output);
 }
 

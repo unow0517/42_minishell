@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:11:21 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/25 15:21:52 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/26 14:31:22 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,34 @@ char	*find_cmd_in_env(char *cmd, char **env)
 	while (env[i] && ft_strncmp(env[i], path_from_env, 5) != 0)
 		i++;
 	path_from_env = env[i];
+	printf("pfe %s\n", path_from_env);
 	paths = ft_split(path_from_env + 5, ':');
 	i = 0;
 	slash_cmd = ft_strjoin("/", cmd);
 	while (paths[i] && ft_strlen(paths[i]) > 0)
+	{
+		cmd_path = ft_strjoin(paths[i], slash_cmd);
+		if (access(cmd_path, X_OK) != -1)
+			return (free_split_thalia(paths), free(slash_cmd), cmd_path);
+		else
+			free(cmd_path);
+		i++;
+	}
+	return (free_split_thalia(paths), free(slash_cmd), NULL);
+}
+
+char	*find_cmd_in_env_mini(char *cmd, char **env)
+{
+	// char	*path_from_env;
+	int		i;
+	char	**paths;
+	char	*slash_cmd;
+	char	*cmd_path;
+
+	paths = env;
+	i = 0;
+	slash_cmd = ft_strjoin("/", cmd);
+	while (paths && paths[i] && ft_strlen(paths[i]) > 0)
 	{
 		cmd_path = ft_strjoin(paths[i], slash_cmd);
 		if (access(cmd_path, X_OK) != -1)

@@ -23,7 +23,7 @@ void	run_echo(char *inpt, t_shell *shell_info)
 	// *(shell_info->status) = 0;
 	//OPTION 1. END
 
-	// //OPTION 2. WHEN THE STRING AFTER 'cd ' IS PASSED
+	// //OPTION 2. WHEN THE STRING AFTER 'echo ' IS PASSED
 	if (inputstartswith(inpt, "echo -n "))
 		ft_printf("%s", inpt);
 	else

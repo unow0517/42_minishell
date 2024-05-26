@@ -89,7 +89,11 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 {
 	pid_t		pid;
 	char		*full_path;
+	char		**paths_in_env;
+	int			i;
 
+	i = 0;
+	paths_in_env = ft_path_in_envmini(shell_info->env_mini);
 	pid = fork();
 	if (pid == -1)
 	{
@@ -108,15 +112,10 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 			{
 				if (cmd_to_exec->cmd == NULL || cmd_to_exec->cmd[0] == '\0')
 					exit(0);
-				// full_path = find_cmd_in_env(cmd_to_exec->cmd, shell_info->env);
-				full_path = find_cmd_in_env(cmd_to_exec->cmd, path_in_env_mini(shell_info->env_mini));
-			printf("full_path = %s\n", full_path);
-			printf("HEY\n");
-				if (!full_path)
+				full_path = find_cmd_in_env_mini(cmd_to_exec->cmd, paths_in_env);
+				if (!full_path || !paths_in_env)
 					cmd_error(cmd_to_exec); // exit (127);
-				execve(full_path, cmd_to_exec->full_cmd, shell_info->env);
-				// execve(full_path, cmd_to_exec->full_cmd, path_in_env_mini(shell_info->env_mini));
-				// execve(full_path, cmd_to_exec->full_cmd, 0);
+				execve(full_path, cmd_to_exec->full_cmd, paths_in_env);
 				free(full_path);
 				cmd_error(cmd_to_exec);
 			}

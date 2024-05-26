@@ -351,7 +351,7 @@ void	ft_expand(t_shell *shell_info)
 
 
 	// replace_bs_dollar(shell_info);
-    // ft_printf("rebsd %s\n", shell_info->user_input); //OK
+    ft_printf("rebsd %s\n", shell_info->user_input); //OK
     // replaced = replace_expand(inpt, var_value, len);
 	// printf("rmq %s\n", rm_quotes(shell_info->user_input, '"'));
 	// printf("rmoq %s\n", rm_outest_q(shell_info));
