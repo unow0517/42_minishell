@@ -38,72 +38,6 @@ t_token	*initialize_cmd(t_token *iterate, t_command *cmd_node)
 	return (iterate);
 }
 
-static void	nullify_ints(int *inside_sq, int *inside_dq, int *i)
-{
-	*i = 0;
-	*inside_dq = 0;
-	*inside_sq = 0;
-}
-
-t_token	*handle_awk(t_token *iterate, t_command *cmd_node)
-{
-	int		i;
-	int		j;
-	int		h;
-	int		inside_sq;
-	int		inside_dq;
-	char	*temp;
-	char	*to_split_options;
-	char	*to_split_options_rest;
-	char	*to_split_options_total;
-
-	nullify_ints(&inside_sq, &inside_dq, &i);
-	cmd_node->cmd = get_first_word(iterate->content);
-	iterate = iterate->next;
-	while (iterate->content[i] != '\0' && (iterate->content[i] != '\'' || i == 0)) //LENGTH OF 'single_quoted_part' PART
-		i++;
-	to_split_options = ft_calloc(i + 1, sizeof(char));
-	i = 0;
-	while (iterate->content[i] != '\0' && (iterate->content[i] != '\'' || i == 0)) //CREATE 'single_quoted_part' STRING
-	{
-		to_split_options[i] = iterate->content[i];
-		i++;
-	}
-	nullify_ints(&inside_sq, &inside_dq, &j);
-	h = i;
-	while (iterate->content[i] != '\0') //LENGTH OF FILES
-	{
-		update_quote_state(iterate, &inside_sq, &inside_dq, i);
-		if (is_redir_pipe(iterate->content[h]) == true && inside_sq == 0 && inside_dq == 0)
-			break ;
-		i++;
-		j++;
-	}
-	to_split_options_rest = ft_calloc(j + 1, sizeof(char));
-	nullify_ints(&inside_sq, &inside_dq, &i);
-	while (iterate->content[h] != '\0') //CREATE FILE STRING // && is_redir_pipe(iterate->content[h]) == false
-	{
-		update_quote_state(iterate, &inside_sq, &inside_dq, i);
-		if (is_redir_pipe(iterate->content[h]) == true && inside_sq == 0 && inside_dq == 0)
-			break ;
-		to_split_options_rest[i] = iterate->content[h];
-		i++;
-		h++;
-	}
-	temp = ft_strjoin(to_split_options, " ");
-	to_split_options_total = ft_strjoin(temp, to_split_options_rest); //JOIN STRINGS TO CREATE OPTIONS
-	cmd_node->to_split = to_split_options_total;
-	nullify_ints(&inside_sq, &inside_dq, &i);
-	while (iterate)
-	{
-		update_quote_state_token(iterate, &inside_sq, &inside_dq);
-		if(is_redir_pipe(iterate->token_type) == true && inside_dq == 0 && inside_sq == 0 && i != 0)
-			break ;
-		iterate = iterate->next;
-	}
-	return (iterate);
-}
-
 static t_token	*initialize_cmd_options_helper(t_token *iterate, t_command *cmd_node, t_token_type flag)
 {
 	char	*quoted_str;
@@ -141,12 +75,29 @@ t_token	*initialize_cmd_options(t_token *iterate, t_command *cmd_node)
 	return (iterate);
 }
 
+static char *rm_q_in_fullcmd(char *to_fix)
+{
+	char	*temp;
+	char	c;
+
+	temp = NULL;
+	c = first_quote(to_fix);
+	if (c != 'n')
+	{
+		temp = ft_calloc(ft_strlen(to_fix), sizeof(char));
+		if (!temp)
+			return (NULL);
+		temp = to_fix;
+		to_fix = rm_quotes(temp, c);
+		free(temp);
+	}
+	return (to_fix);
+}
+
 void	quote_removal_in_exec_arg(t_command *cur_cmd)
 {
 	int		i;
 	char	**to_fix;
-	char	*temp;
-	char	c;
 
 	i = 0;
 	while (cur_cmd)
@@ -156,16 +107,7 @@ void	quote_removal_in_exec_arg(t_command *cur_cmd)
 			to_fix = cur_cmd->full_cmd;
 			while (to_fix && to_fix[i])
 			{
-				c = first_quote(to_fix[i]);
-				if (c != 'n')
-				{
-					temp = ft_calloc(ft_strlen(to_fix[i]), sizeof(char));
-					if (!temp)
-						return ;
-					temp = to_fix[i];
-					to_fix[i] = rm_quotes(temp, c);
-					free(temp);
-				}
+				to_fix[i] = rm_q_in_fullcmd(to_fix[i]);
 				i++;
 			}
 		}
@@ -187,6 +129,10 @@ char	first_quote(char *str)
 	return ('n');
 }
 
+static int	count_quotes(char *to_fix, char c, int *q_counter, int *i);
+static char	*outer_q_removed_str(char *to_fix, char c, char *new);
+
+
 char	*rm_quotes(char *to_fix, char c)
 {
 	int		i;
@@ -199,15 +145,20 @@ char	*rm_quotes(char *to_fix, char c)
 	q_counter = 0;
 	if (!to_fix)
 		return (NULL);
-	while (to_fix && to_fix[i] != '\0')
-	{
-		if (to_fix[i] == c)
-			q_counter++;
-		i++;
-	}
+	count_quotes(to_fix, c, &q_counter, &i);
 	new = ft_calloc(i - q_counter + 1, sizeof(char));
 	if (!new)
 		return (NULL);
+	new = outer_q_removed_str(to_fix, c, new);
+	return (new);
+}
+
+static char	*outer_q_removed_str(char *to_fix, char c, char *new)
+{
+	int i;
+	int j;
+
+	j = 0;
 	i = 0;
 	while (to_fix && to_fix[i])
 	{
@@ -219,12 +170,20 @@ char	*rm_quotes(char *to_fix, char c)
 		i++;
 	}
 	new[i] = '\0';
-	// if (new && new[0] == '\0')
-	// 	return (NULL);
-	// free(to_fix);
-	
 	return (new);
 }
+
+static int	count_quotes(char *to_fix, char c, int *q_counter, int *i)
+{
+	while (to_fix && to_fix[*i] != '\0')
+	{
+		if (to_fix[*i] == c)
+			q_counter++;
+		(*i)++;
+	}
+	return (*i);
+}
+
 
 t_token	*skip_q_tokens(t_token *iterate)
 {

@@ -84,6 +84,7 @@ awk
 	awk 'NR>1 {print $1, "is", $2, "years old"}' data.txt
 
 awk '/main/ { print }' minishell.c
+awk '/main/ { print }' minishell.c | grep i
 char *args[] =			//(execve(awk_path, args, envp))
 {
 	"awk",				// argv[0] (name of the program)

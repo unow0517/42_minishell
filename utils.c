@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/26 19:48:34 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/27 13:19:20 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ bool	is_redir(int i)
 	return (false);
 }
 
-bool	is_redir_pipe(int i)
+bool	is_redir_pipe(t_token_type i)
 {
 	if (i == S_LESS || i == S_MORE || i == D_LESS || i == D_MORE || i == PIPE)
 		return (true);

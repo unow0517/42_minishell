@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/27 11:07:12 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/27 15:03:18 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,13 @@ typedef struct s_env_mini
 	struct s_env_mini	*next;
 }	t_env_mini;
 
+typedef struct s_awk_data
+{
+	char	*to_split_options;
+	char	*to_split_options_rest;
+	char	*temp;
+}	t_awk_data;
+
 typedef struct s_shell
 {
 	int			argc;
@@ -96,6 +103,16 @@ typedef struct s_shell
 	bool		isheredoc;
 	char		*temp;
 }	t_shell;
+
+// AWK.C
+t_token		*handle_awk(t_token *iterate, t_command *cmd_node);
+
+// AWK_UTILS.C
+int			awk_sqlen(t_token *iterate);
+int			awk_restlen(t_token *iterate, int *sq, int *dq);
+int			awk_sq_part(t_awk_data *data, t_token *iterate);
+void		awk_filestr(t_awk_data *data, t_token *iterate, int h);
+t_token		*skip_awk(t_token *iterate, int *sq, int *dq);
 
 //inpt_functions.C
 int			inputis(char *inpt, char *string);
@@ -171,7 +188,7 @@ int			handle_exit(int status);
 bool		is_metacharacter_type(int i);
 int			token_count(t_shell *shell_info);
 bool		is_redir(int i);
-bool		is_redir_pipe(int i);
+bool		is_redir_pipe(t_token_type i);
 bool		is_redir_pipe_char(char i);
 bool		ft_is_builtin(char *str);
 char		*get_argument(char *argv);
