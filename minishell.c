@@ -89,8 +89,8 @@ int	create_prompt(t_shell *shell_info)
 	prompt_with_dollar = ft_strjoin(prompt, "$ ");
 	if (!prompt_with_dollar)
 		return (free(prompt), 1);
-	ft_memset(shell_info->prompt, 0, 1024);
-	ft_strlcat(shell_info->prompt, prompt_with_dollar, 1024);
+	ft_memset(shell_info->prompt, 0, 2048);
+	ft_strlcat(shell_info->prompt, prompt_with_dollar, 2048);
 	free(prompt);
 	free(prompt_with_dollar);
 	return (0);

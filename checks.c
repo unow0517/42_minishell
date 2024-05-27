@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 13:39:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/25 20:30:11 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/27 11:29:53 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	print_cmd_list(t_command *cmd_node)
 {
 	while (cmd_node)
 	{
-		printf("________________________________________________________\n");
+		printf("\n______________________________________________________\n");
 		printf("cmd_node\t\t%p\n", cmd_node);
 		if (cmd_node->cmd)
 			printf("cmd_node->cmd\t\t%s\n", cmd_node->cmd);
@@ -81,7 +81,7 @@ void	print_cmd_list(t_command *cmd_node)
 		printf("cmd_node->builtin_type\t%s\n", cmd_node->builtin_type);
 		printf("cmd_node->builtin_arg\t%s\n", cmd_node->builtin_arg);
 		printf("cmd_node->to_split\t%s\n", cmd_node->to_split);
-		printf("cmd_node->next\t%p\n", cmd_node->next);
+		printf("cmd_node->next\t%p\n\n\n", cmd_node->next);
 		cmd_node = cmd_node->next;
 	}
 }

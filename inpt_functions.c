@@ -52,7 +52,7 @@ int	inputhas(char *input, char c)
 char	*make_abs_path(char *input)
 {
 	char	*full_path;
-	char	cwd[1024];
+	char	cwd[2048];
 	char	*slash_input;
 
 	getcwd(cwd, sizeof(cwd));

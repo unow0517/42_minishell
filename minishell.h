@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/26 18:32:30 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/27 11:07:12 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,18 +84,17 @@ typedef struct s_shell
 	char		**argv;
 	char		**env;
 	t_env_mini	*env_mini;
-	char		cwd[1024];
-	char		oldpwd[1024];
+	char		cwd[2048];
+	char		oldpwd[2048];
 	t_token		*tokens;
 	char		*user_input;
-	char		prompt[1024];
+	char		prompt[2048];
 	t_command	*first_command;
 	int			fd[2];
 	bool		syntax_error;
-				//Its in linux/limits.h.
-				// #define PATH_MAX        4096 
 	int			*status;
 	bool		isheredoc;
+	char		*temp;
 }	t_shell;
 
 //inpt_functions.C
@@ -115,10 +114,8 @@ void		catchsignal(void);
 void		run_pwd(t_shell *shell_info);
 
 //PIPE.C
-void		execute(char *full_path, char *argv, char **env);
-// void	run_pipe(char *inpt);
-void		run_pipe(char *inpt, char **argv, char **env);
-char		*find_cmd_in_env(char *cmd, char **env);
+// char		*find_cmd_in_env(char *cmd, char **env);
+char		*find_cmd_in_env_mini(char *cmd, char **env);
 
 //ECHO.C
 void		run_echo(char *inpt, t_shell *shell_info);
@@ -145,7 +142,7 @@ void		syntax_error_check(t_shell *shell_info);
 
 // //PIPEX_FUNCTIONS.C
 char		*get_first_word(char *argv);
-void		handle_error(char *str);
+// void		handle_error(char *str);
 void		free_split_thalia(char **str);
 
 //MINISHELL.C
@@ -201,10 +198,8 @@ bool		empty_cmd_case(t_token *iterate, t_command *cmd_node);
 bool		full_cmd_case(t_token *iterate, t_command *cmd_node);
 
 //PARSING_HELPER.C
-t_token		*initialize_cmd(t_token *iterate, \
-t_command *cmd_node);
-t_token		*initialize_cmd_options(t_token *iterate, \
-t_command *cmd_node);
+t_token		*initialize_cmd(t_token *iterate, t_command *cmd_node);
+t_token		*initialize_cmd_options(t_token *iterate, t_command *cmd_node);
 void		quote_removal_in_exec_arg(t_command *cur_cmd);
 char		*rm_quotes(char *to_fix, char c);
 char		first_quote(char *str);
@@ -229,17 +224,23 @@ void		heredoc_error(t_command *cmd_node);
 void		cmd_error(t_command *cmd_node);
 void		unexpected_token(t_shell *shell_info, char *flag);
 void		quote_error(t_shell *shell_info);
+void		env_error(char *cmd);
 
 //EXPORT.C
 t_env_mini	*ft_lstnew_envmini(char *name, char *value);
 t_env_mini	*ft_lstlast_envmini(t_env_mini *lst);
 void		run_export(char *str, t_shell *shell_info);
 
-//DOLLAR_EXPAND.C
+//EXPAND.C
+int			is_al_num_udsc_c(char c);
+int			ft_varname_len(char *str);
+char    	*ft_varvalue(int var_name_len, char *str, t_env_mini *env_mini);
+char    	*replace_expand(char *inpt, char *var_value, int var_name_len);
 void		ft_expand(t_shell *shell_info);
 void		replace_caret(t_shell *shell_info);
 
 //UNSET.C
+char		**ft_path_in_envmini(t_env_mini *env_mini);
 void		run_unset(char *str, t_shell *shell_info);
 
 //FREES
@@ -248,8 +249,7 @@ void		free_cmd_list(t_command **cmds);
 void		free_shell(t_shell *shell_info);
 
 //QUOTES
-char		*quote_handler(t_token *iterate, \
-t_token_type flag);
+char		*quote_handler(t_token *iterate, t_token_type flag);
 t_token		*skip_quoted_str(t_token *to_skip, t_token_type flag);
 
 //SPLIT_MS.C
@@ -265,9 +265,6 @@ void		update_quote_state_token(t_token *cur, int \
 *inside_sq, int *inside_dq);
 t_token		*skip_tokens_of_builtin_arg(t_token *iterate);
 t_token		*initialise_builtin_type_arg(t_command *cmd_node, t_token *iterate);
-
-//BACKSLASH.C
-char		*backslash_piece(char	*str);
 
 //REDIR.C
 t_token		*set_redirections(t_command *cmd_node, t_token *iterate);

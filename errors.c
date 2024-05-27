@@ -26,6 +26,14 @@ void	cmd_error(t_command *cmd_node)
 	exit(127);
 }
 
+void	env_error(char *cmd)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
+	exit(127);
+}
+
 void	unexpected_token(t_shell *shell_info, char *flag)
 {
 	ft_putstr_fd("minishell: ", 2);

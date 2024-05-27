@@ -3,9 +3,15 @@
 static t_token	*initialize_cmd_helper(t_token *iterate, t_command *cmd_node, t_token_type flag)
 {
 	char	*temp_cmd;
+	char	c;
 
+	c = 0;
+	if (flag == D_QUOTE)
+		c = '"';
+	else if (flag == S_QUOTE)
+		c = '\'';
 	temp_cmd = quote_handler(iterate, flag);
-	cmd_node->cmd = rm_quotes(temp_cmd, '"');
+	cmd_node->cmd = rm_quotes(temp_cmd, c);
 	free(temp_cmd);
 	iterate = skip_quoted_str(iterate, flag);
 	return (iterate);
@@ -24,9 +30,9 @@ t_token	*initialize_cmd(t_token *iterate, t_command *cmd_node)
 		iterate = iterate->next;
 	}
 	else if (iterate->token_type == D_QUOTE)
-		initialize_cmd_helper(iterate, cmd_node, D_QUOTE);
+		iterate = initialize_cmd_helper(iterate, cmd_node, D_QUOTE);
 	else if (iterate->token_type == S_QUOTE)
-		initialize_cmd_helper(iterate, cmd_node, S_QUOTE);
+		iterate = initialize_cmd_helper(iterate, cmd_node, S_QUOTE);
 	if (first_word)
 		free(first_word);
 	return (iterate);
@@ -109,7 +115,6 @@ static t_token	*initialize_cmd_options_helper(t_token *iterate, t_command *cmd_n
 	temp1 = quoted_str; //-l
 	cmd_node->to_split = ft_strjoin(temp, temp1);
 	free(temp);
-	// free(temp1);
 	iterate = skip_quoted_str(iterate, flag);
 	return (iterate);
 }
@@ -216,6 +221,8 @@ char	*rm_quotes(char *to_fix, char c)
 	new[i] = '\0';
 	if (new && new[0] == '\0')
 		return (NULL);
+	// free(to_fix);
+	
 	return (new);
 }
 

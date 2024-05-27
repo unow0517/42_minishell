@@ -144,7 +144,22 @@ void	run_export_keyword(char	*str, t_shell *shell_info)
 	char		*var_value;
 	t_env_mini	*env_mini;
 
-	ptr = str;
+	char		q;
+	char		*str_q_removed;
+
+	if (ft_strchr(str, '\'') != 0 || ft_strchr(str, '"') != 0)
+	{
+		q = first_quote(str);
+		str_q_removed = rm_quotes(str, q);
+		ptr = str_q_removed;
+	}
+	else
+		ptr = str;
+	// printf("q = %c\n", q);
+	// printf("qrmed %s\n", str_q_removed);
+
+	// ptr = str;
+	// printf("hi\n");
 	ptr_to_equal = ft_strchr(ptr, '=');
 	if (ptr_to_equal == 0)
 	{
@@ -199,8 +214,10 @@ void	run_export(char *str, t_shell *shell_info)
 	// 	keywords = ft_split(inpt + 7, ' ');
 	// //OPTION2. END
 
+
+
 		// printf("kw %s\n", *keywords);
-		if (keywords  && *keywords && ft_strlen(*keywords))
+		// if (keywords  && *keywords && ft_strlen(*keywords))
 			// ft_printf("kwlen %d\n", ft_strlen(*keywords));
 		while (keywords && *keywords)
 		{
