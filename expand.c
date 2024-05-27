@@ -12,36 +12,6 @@
 
 #include "minishell.h"
 
-int	is_al_num_udsc_c(char c)
-{
-	if (ft_isalnum(c) || c == '_')
-		return (1);
-	return (0);
-}
-
-int	ft_varname_len(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (*str && str)
-	{
-		if (*str == '$')
-		{
-			str++;
-			while (is_al_num_udsc_c(*str))
-			{
-				i++;
-				str++;
-			}
-			if (!is_al_num_udsc_c(*str))
-				break ;
-		}
-		str++;
-	}
-	return (i);
-}
-
 char	*ft_varvalue(int var_name_len, char *str, t_env_mini *env_mini)
 {
 	char	*ptr_dollar;
@@ -85,17 +55,6 @@ void	replace_bs_dollar(t_shell *shell_info)
 	}
 }
 
-char	*join_three(char *str1, char *str2, char *str3)
-{
-	char	*join1;
-	char	*join2;
-
-	join1 = ft_strjoin(str1, str2);
-	join2 = ft_strjoin(join1, str3);
-	free(join1);
-	return (join2);
-}
-
 char	*replace_expand(char *inpt, char *var_value, int var_name_len)
 {
 	char	*str_till_dollar;
@@ -109,13 +68,27 @@ char	*replace_expand(char *inpt, char *var_value, int var_name_len)
 	ptr_dollar = ft_strchr(inpt, '$');
 	if (ptr_dollar)
 	{
+		// printf("lkjjh");
 		str_till_dollar = ft_substr(inpt, 0, ptr_dollar - inpt);
+		// if (*(ptr_dollar + var_name_len + 1) != '\n' || *(ptr_dollar + var_name_len + 1) != '\0')
+		// 	str_after_varname = ptr_dollar + var_name_len + 1;
 		str_after_varname = ptr_dollar + var_name_len + 1;
 	}
+		// printf("%s\n",str_after_varname);
 	if (str_till_dollar && var_value && str_after_varname)
 		return (join_three(str_till_dollar, var_value, str_after_varname));
 	else if (ptr_dollar && !var_value)
-		return (ft_strjoin(str_till_dollar, str_after_varname));
+	{
+		// printf("std %s\n", str_till_dollar);
+		// printf("sav %s\n", str_after_varname);
+		// printf("jh %s\n", ft_strjoin(str_till_dollar, str_after_varname));
+		if (!ft_strlen(str_till_dollar) && !ft_strlen(str_after_varname))
+		{
+			return ("");
+		}
+		else
+			return (ft_strjoin(str_till_dollar, str_after_varname));
+	}
 	else
 		return (inpt);
 }
@@ -124,9 +97,8 @@ void	replace_dollar_question(t_shell *shell_info)
 {
 	char	*str;
 	char	*inpt;
-	// char    *ptr_question;
-    char    *str_till_dollar;
-    char    *str_after_varname;
+    char    *str_till_dol;
+    char    *str_after_var;
     char    *join1;
     char    *join2;
 
@@ -134,18 +106,16 @@ void	replace_dollar_question(t_shell *shell_info)
 	if (shell_info->user_input)
 		str = shell_info->user_input;
 	inpt = str;
-	str_till_dollar = 0;
-  	str_after_varname = 0;
+	str_till_dol = 0;
+	str_after_var = 0;
 	while (*str)
 	{
 		if (*str == '$' && *(str + 1) == '?')
 		{
-			str_till_dollar = ft_substr(inpt, 0, str - inpt);
-    // ft_printf("std %s\n", str_till_dollar);
-			str_after_varname = str + 2;
-    // ft_printf("sav %s\n", str_after_varname);
-  	  		join1 = ft_strjoin(str_till_dollar, ft_itoa(*(shell_info->status)));
-  	  		join2 = ft_strjoin(join1, str_after_varname);
+			str_till_dol = ft_substr(inpt, 0, str - inpt);
+			str_after_var = str + 2;
+			join1 = ft_strjoin(str_till_dol, ft_itoa(*(shell_info->status)));
+			join2 = ft_strjoin(join1, str_after_var);
 			shell_info->user_input = join2;
 			free(join1);
 		}

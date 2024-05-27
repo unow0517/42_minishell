@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/27 14:16:27 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/27 14:33:14 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,8 @@ void		quote_error(t_shell *shell_info);
 void		env_error(char *cmd);
 
 //EXECUTION.C
-// void	executor(t_shell *shell_info, t_command *cur);
-// void	init_pipe(t_shell *shell_info, t_command *cur);
+// void		executor(t_shell *shell_info, t_command *cur);
+// void		init_pipe(t_shell *shell_info, t_command *cur);
 void		handle_redir(t_shell *shell_info, t_command *cur);
 void		execution_cases(t_shell *shell_info);
 pid_t		exec_pipeline(t_shell *shell_info);
@@ -142,15 +142,25 @@ pid_t		exec_single_cmd(t_shell *shell_info, t_command	*cmd_to_exec);
 void		pipe_handling(t_shell *shell_info, t_command *cur);
 void		close_pipes(t_shell *shell_info);
 void		execute_builtin(t_shell *shell_info, t_command *cur);
-// void execute_builtin_no_fork(t_shell *shell_info, char *builtin, char *arg);
+// void		execute_builtin_no_fork(t_shell *shell_info, \
+//			char *builtin,char *arg);
 
 //EXPAND.C
+char		*ft_varvalue(int var_name_len, char *str, t_env_mini *env_mini);
+void		replace_bs_dollar(t_shell *shell_info);
+char		*replace_expand(char *inpt, char *var_value, int var_name_len);
+// void		replace_caret(t_shell *shell_info);
+// void		expand_except_literal(t_shell *shell_info);
+// void 	rm_outest_q_and_exp(t_shell *shell_info);
+// void		rm_outest_q(t_shell *shell_info);
+// void		rm_ws_following_d_less(t_shell *shell_info);
+void		ft_expand(t_shell *shell_info);
+
+//EXPAND_UTIL.C
 int			is_al_num_udsc_c(char c);
 int			ft_varname_len(char *str);
-char		*ft_varvalue(int var_name_len, char *str, t_env_mini *env_mini);
-char		*replace_expand(char *inpt, char *var_value, int var_name_len);
-void		ft_expand(t_shell *shell_info);
-void		replace_caret(t_shell *shell_info);
+char		*join_three(char *str1, char *str2, char *str3);
+
 
 //EXPORT.C
 t_env_mini	*ft_lstnew_envmini(char *name, char *value);

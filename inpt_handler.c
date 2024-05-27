@@ -41,11 +41,11 @@ void	inpt_handler(t_shell *shell_info)
 			// free(shell_info);
 			exit(0) ;
 		}
-		if (inputis(shell_info->user_input, ""))
-		{
-			rl_on_new_line();
-			rl_redisplay();
-		}
+		// if (inputis(shell_info->user_input, ""))
+		// {
+		// 	rl_on_new_line();
+		// 	rl_redisplay();
+		// }
 	reset(shell_info);
 	}
 }
