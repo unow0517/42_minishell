@@ -3,48 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 08:44:48 by yowoo             #+#    #+#             */
-/*   Updated: 2024/03/07 12:44:05 by yowoo            ###   ########.fr       */
+/*   Created: 2023/10/19 20:58:56 by tsimitop          #+#    #+#             */
+/*   Updated: 2023/10/28 13:40:57 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
+
+// The atoi() function converts the initial portion of the string pointed to by
+// str to int representation.
 int	ft_atoi(const char *str)
 {
-	int	sign;
-	int	res;
+	int		i;
+	int		sign;
+	int		result;
 
+	i = 0;
 	sign = 1;
-	while ((*str >= 9 && *str <= 13) || *str == 32)
-		str++;
-	if (*str == '-')
+	result = 0;
+	while (str[i] == '\n' || str[i] == '\t' || str[i] == '\v'
+		|| str[i] == '\f' || str[i] == ' ' || str[i] == '\r')
+		i++;
+	if (str[i] == '-' || str[i] == '+')
 	{
-		sign = -1;
-		str++;
+		if (str[i] == '-' || str[i] == '+')
+			if (str[i] == '-')
+				sign = -1;
+		i++;
 	}
-	else if (*str == '+')
-		str++;
-	res = 0;
-	while (*str != '\0')
+	while (str[i] >= '0' && str[i] <= '9')
 	{
-		if (*str >= 48 && *str <= 57)
-			res = res * 10 + (*str - 48);
-		else if (!(*str >= 48 && *str <= 57))
-			return (sign * res);
-		str++;
+		result = result * 10 + str[i] - '0';
+		i++;
 	}
-	return (sign * res);
+	return (result * sign);
 }
+// #include <stdio.h>
+// #include <stdlib.h>
 
-// -,+ = 0
-// -0123 = -123
-// 0123 = 123
-// abc123 = 0
-// int main(){
-//     char str[]="";
-//     int res = atoi(str);
-//     int myRes = ft_atoi(str);
-//     printf("String: %s, Int: %d\n", str, res);
-//     printf("String: %s, Int: %d", str, myRes);    
+// int	main(void)
+// {
+// 	const char	*str = "   -978uio";
+
+// 	printf("%d", ft_atoi(str));
+// 	return (0);
 // }

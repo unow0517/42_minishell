@@ -79,7 +79,7 @@ void	handle_heredoc(t_command *cmd_node, char *delimiter)
 	close(fd);
 	cmd_node->input_fd = open("/tmp/heredoc", O_RDONLY);
 	if (cmd_node->input_fd == -1)
-		ft_printf("failed to open /tmp/heredoc\n");
+		printf("failed to open /tmp/heredoc\n");
 }
 
 void	file_opener(t_command *cmd_node, int flag, char *file)

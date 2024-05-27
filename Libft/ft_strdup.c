@@ -3,49 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/11 12:24:07 by yowoo             #+#    #+#             */
-/*   Updated: 2023/10/30 12:37:49 by yowoo            ###   ########.fr       */
+/*   Created: 2023/10/20 18:01:12 by tsimitop          #+#    #+#             */
+/*   Updated: 2023/11/25 16:00:32 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include "libft.h"
 
-char	*ft_strdup(const char *src)
+// The strdup() function allocates sufficient memory for a copy of the string
+// s1, does the copy, and returns a pointer to it.
+char	*ft_strdup(const char *s1)
 {
-	char	*result;
-	int		i;
-	int		j;
+	char	*ptr;
+	size_t	i;
+	size_t	len_s1cpy;
 
+	len_s1cpy = ft_strlen(s1);
 	i = 0;
-	result = (char *)malloc((ft_strlen(src)+1) * sizeof(char));
-	if (!result)
-		return (0);
-	while (src[i] != '\0')
+	ptr = (char *)malloc(len_s1cpy + 1);
+	if (ptr)
 	{
-		result[i] = src[i];
-		i++;
+		while (len_s1cpy > i)
+		{
+			ptr[i] = s1[i];
+			i++;
+		}
+		ptr[i] = '\0';
 	}
-	result[i] = '\0';
-	j = 0;
-	if (src[j] == '\0')
-		result[j] = '\0';
-	return (result);
+	return (ptr);
 }
 
-// int main(){
-//     char src[] = "lorem ipsum dolor sit amet";
-//     char* target = strdup(src);
-//     char* target_1 = ft_strdup(src);
-
-//     printf("target: %s\n", target);
-//     printf("target_1: %s\n", target_1);
-//     // printf("target[0]: %c\n", target[0]);
-//     free(target_1);
-//     // printf("target[0]_after free: %c\n", *target_1);
-//     return 0;
-// }
+// why malloc instead of calloc (len_s1cpy, sizeof(char))= one block, strlen
+// doesn't include \0

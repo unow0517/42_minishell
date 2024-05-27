@@ -3,44 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/23 10:04:23 by yowoo             #+#    #+#             */
-/*   Updated: 2023/11/01 11:02:09 by yowoo            ###   ########.fr       */
+/*   Created: 2023/10/25 18:51:28 by tsimitop          #+#    #+#             */
+/*   Updated: 2023/10/28 13:42:06 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+// Outputs the integer ’n’ to the given file descriptor.
 void	ft_putnbr_fd(int n, int fd)
 {
-	int	output;
+	char	digit;
 
 	if (n == -2147483648)
 	{
-		write(fd, "-2", 2);
-		write(fd, "147483648", 9);
+		write(fd, "-2147483648", 11);
+		return ;
 	}
-	else if (n < 0)
+	if (n < 0)
 	{
 		write(fd, "-", 1);
 		n = -n;
-		ft_putnbr_fd(n, fd);
 	}
-	else if (n >= 10)
+	if (n / 10 > 0)
 	{
 		ft_putnbr_fd(n / 10, fd);
-		ft_putnbr_fd(n % 10, fd);
 	}
-	else if (n < 10 && n >= 0)
-	{
-		output = n + 48;
-		write(fd, &output, 1);
-	}
+	digit = (n % 10) + '0';
+	write(fd, &digit, 1);
 }
-
-// int main()
-// {
-// 	int	res = -15 ;
-// 	ft_putnbr_fd(res, 1);
-// }

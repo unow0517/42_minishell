@@ -3,38 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/26 12:56:47 by yowoo             #+#    #+#             */
-/*   Updated: 2023/10/26 17:19:49 by yowoo            ###   ########.fr       */
+/*   Created: 2024/03/24 20:07:40 by tsimitop          #+#    #+#             */
+/*   Updated: 2024/03/24 20:07:42 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+// Iterates the list ’lst’ and applies the function ’f’ on the content of each
+// node. Creates a new list resulting of the successive applications of the
+// function ’f’. The ’del’ function is used to delete the content of a node
+// if needed.
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	t_list	*res;
-	void	*content;
-	t_list	*new_node;
+	t_list	*tmp;
+	t_list	*new_list;
+	void	*f_content;
 
-	res = 0;
+	if (!lst || !f || !del)
+		return (NULL);
+	new_list = NULL;
 	while (lst)
 	{
-		if (f)
-			content = f(lst->content);
-		if (!content)
-			ft_lstclear(&res, del);
-		new_node = ft_lstnew(content);
-		if (!new_node)
+		f_content = f(lst->content);
+		tmp = ft_lstnew(f_content);
+		if (!tmp)
 		{
-			ft_lstclear(&res, del);
-			del(content);
+			ft_lstclear(&new_list, del);
+			del(f_content);
+			return (NULL);
 		}
-		ft_lstadd_back(&res, new_node);
+		ft_lstadd_back(&new_list, tmp);
 		lst = lst->next;
 	}
-	return (res);
+	return (new_list);
 }
-
-//making head, then iterate following nodes.

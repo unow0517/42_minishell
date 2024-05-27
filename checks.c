@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 13:39:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/27 15:46:02 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:58:16 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 
 void	print_token(t_token *token)
 {
-	ft_printf("current token = %p\n", token);
-	ft_printf("token->input = %s\n", token->input);
-	ft_printf("token->len = %i\n", token->len);
-	ft_printf("token->idx = %i\n", token->idx);
-	ft_printf("token->content = %s\n", &token->input[token->idx]);
-	ft_printf("token->token_type = %i\n", token->token_type);
-	ft_printf("token->next = %p\n", token->next);
+	printf("current token = %p\n", token);
+	printf("token->input = %s\n", token->input);
+	printf("token->len = %i\n", token->len);
+	printf("token->idx = %i\n", token->idx);
+	printf("token->content = %s\n", &token->input[token->idx]);
+	printf("token->token_type = %i\n", token->token_type);
+	printf("token->next = %p\n", token->next);
 }
 
 void	print_linked_tokens(t_token *token)
 {
 	while (token)
 	{
-		ft_printf("________________________________________________________\n");
+		printf("________________________________________________________\n");
 		print_token(token);
 		token = token->next;
 	}

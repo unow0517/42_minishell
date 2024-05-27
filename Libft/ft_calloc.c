@@ -3,45 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/11 11:13:33 by yowoo             #+#    #+#             */
-/*   Updated: 2023/10/18 18:41:06 by yowoo            ###   ########.fr       */
+/*   Created: 2023/10/11 12:54:04 by tsimitop          #+#    #+#             */
+/*   Updated: 2023/10/28 13:41:15 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "libft.h"
 
-void	*ft_calloc(unsigned int nitems, unsigned int size)
+// the calloc() function allocates memory and initializes all bits to zero.
+void	*ft_calloc(size_t count, size_t size)
 {
-	void	*ptr;
+	int	*ptr;
 
-	ptr = malloc(nitems * size);
+	ptr = malloc(size * count);
 	if (!ptr)
-		return (0);
-	ft_bzero(ptr, nitems * size);
+		return (NULL);
+	ft_bzero(ptr, size * count);
 	return (ptr);
 }
+/*
+ptr = (castType*) malloc(size);				MALLOC SYNTAX
+ptr = (float*) malloc(100 * sizeof(float));	MALLOC EXAMPLE
+	The above statement allocates 400 bytes of memory. It's because the size of 
+	float is 4 bytes. And, the pointer ptr holds the address of the first byte 
+	in the allocated memory.
 
-// calloc initialize the memory allocating 0 on it
-// int main(){
-//     int i, n;
-//     int* a;
-//     printf("Number of elements to be entered:");
-//     scanf("%d", &n);
-//     // a=(int*)calloc(n,sizeof(int));
-//     a=(int*)ft_calloc(n,sizeof(int));
-//     printf("a[0]: %d, a[1]: %d,  a[2]: %d\n", a[0],a[1],a[2]);
-//     printf("Enter %d numbers:\n",n);
-//     for(i=0; i < n; i++){
-//         scanf("%d",&a[i]);
-//     }
-//     printf("The numbers entered are: ");
-//     for(i=0; i<n; i++){
-//         printf("%d",a[i]);
-//     }
-//     free (a);
-//     return 0;
-// }
+The malloc() function allocates memory and leaves the memory uninitialized, 
+whereas the calloc() function allocates memory and initializes all bits to zero.
+The name "calloc" stands for contiguous allocation.
+
+ptr = (castType*)calloc(n,size);			CALLOC SYNTAX
+ptr = (float*) calloc(25, sizeof(float));	CALLOC EXAMPLE
+	The above statement allocates contiguous space in memory for 25 elements of 
+	type float.
+*/

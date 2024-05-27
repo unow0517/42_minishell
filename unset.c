@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 17:51:49 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/27 10:57:57 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/27 15:58:16 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	**ft_path_in_envmini(t_env_mini *env_mini)
 	// if (!output)
 	// {
 	// 	*(shell_info->status) = 1;
-	// 	ft_printf("minishell: %s: No such file or directory\n", path_input);	
+	// 	printf("minishell: %s: No such file or directory\n", path_input);	
 	// }
 	return (output);
 }

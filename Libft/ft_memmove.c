@@ -3,52 +3,65 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/09 11:20:33 by yowoo             #+#    #+#             */
-/*   Updated: 2023/10/17 14:20:20 by yowoo            ###   ########.fr       */
+/*   Created: 2023/10/17 16:25:55 by tsimitop          #+#    #+#             */
+/*   Updated: 2023/10/29 13:30:32 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "libft.h"
 
+// The memmove() function copies len bytes from string src to string dst.
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	const char	*s;
-	char		*d;
+	unsigned char	*dest;
+	unsigned char	*source;
 
-	s = (char *)src;
-	d = (char *)dst;
-	if (!d && !s)
-		return (NULL);
-	if (d < s)
+	dest = (unsigned char *) dst;
+	source = (unsigned char *) src;
+	if (dst == src)
+		return (dst);
+	if (dst < src)
 	{
-		while (len--)
-			*d++ = *s++;
+		while (0 < len--)
+			*dest++ = *source++;
 	}
-	else if (d > s)
+	if (dst > src)
 	{
-		d = d + len - 1;
-		s = s + len - 1;
-		while (len--)
-			*d-- = *s--;
+		{
+			dest += len;
+			source += len;
+			while (len-- > 0)
+				*(--dest) = *(--source);
+		}
 	}
 	return (dst);
 }
+// #include <stdio.h>
 
-// int main(){
-//     const char src[50] = "SrcSrcSrc";
-//     char dest[50];
-//     strcpy(dest,"DestDestDest");
-//     printf("Before memmove dest = %s\n", dest);
-//     memmove(dest, src, strlen(src)+1);
-//     printf("After memmove dest = %s\n\n", dest);
-//     const char src_1[50] = "SrcSrcSrc";
-//     char dest_1[50];
-//     strcpy(dest_1,"DestDestDest");
-//     printf("Before ft_memmove dest = %s\n", dest_1);
-//     ft_memmove(dest_1, src_1, strlen(src_1)+1);
-//     printf("After ft_memmove dest = %s\n", dest_1);
+// int main(void)
+// {
+// 	//overlap case
+// 	// char dst[] ="oldstring";
+// 	// const char src[] = "secondone";
+
+// 	// printf("Before: dest = %p, dest = %s,
+//  src = %p, src = %s,\n", dst, dst, src, src);
+	// ft_memmove(dst, src, 5);
+
+// 	// printf("After: dest = %p, dest = %s, 
+// src = %p, src = %s,\n", dst, dst, src, src);
+
+// 	// null case
+// 	char dst[] ="          ";
+// 	const char src[] = "      ";
+
+// 	printf("Before: dest = %p, dest = %s, src = %p,
+//  src = %s,\n", dst, dst, src, src);
+// 	ft_memmove(dst, src, 5);
+
+// 	printf("After: dest = %p, dest = %s, src = %p, 
+// src = %s,\n", dst, dst, src, src);
+// 	return (0);
 // }

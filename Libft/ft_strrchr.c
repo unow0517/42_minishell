@@ -3,49 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/09 17:40:33 by yowoo             #+#    #+#             */
-/*   Updated: 2023/10/26 15:22:53 by yowoo            ###   ########.fr       */
+/*   Created: 2023/10/18 17:22:21 by tsimitop          #+#    #+#             */
+/*   Updated: 2023/10/28 13:42:54 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strrchr(const char *str, int c)
+// The strrchr() function locates the last occurrence of c (converted to a char)
+// in the string pointed to by s.
+char	*ft_strrchr(const char *s, int c)
 {
-	char	*ptr;
-	int		i;
+	int	i;
+	int	last_occurence;
 
-	ptr = (char *) str;
 	i = 0;
-	while (ptr[i] != '\0')
-		i++;
-	while (i >= 0)
+	last_occurence = -1;
+	while (s[i] != '\0')
 	{
-		if (ptr[i] == (char)c)
-			return (ptr + i);
-		i--;
+		if (s[i] == (char)c)
+			last_occurence = i;
+		i++;
 	}
-	return (0);
+	if ((char)c == '\0')
+		return ((char *)&s[i]);
+	else if (last_occurence >= 0)
+		return ((char *)&s[last_occurence]);
+	return (NULL);
 }
-
-// #include <stdio.h>
-// #include <string.h>
-
-// int main () {
-//    const char str[] = "https://www.tutorialspoint.com";
-//    const char ch = 'o';
-//    char *ret;
-
-//    ret = strrchr(str, ch);
-
-//    printf("String after |%c| is - |%s|\n", ch, ret);
-
-//    char* ft_ret;
-
-//    ft_ret = ft_strrchr(str,ch);
-
-//    printf("String after |%c| is - |%s|\n", ch, ft_ret);
-//    return(0);
-// }

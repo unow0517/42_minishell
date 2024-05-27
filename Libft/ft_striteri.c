@@ -3,18 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/20 10:34:45 by yowoo             #+#    #+#             */
-/*   Updated: 2023/10/26 17:28:25 by yowoo            ###   ########.fr       */
+/*   Created: 2023/10/25 16:57:11 by tsimitop          #+#    #+#             */
+/*   Updated: 2023/10/28 13:42:24 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+// Applies the function ’f’ on each character of the string passed as argument,
+// passing its index as first argument. Each character is passed by address to
+// ’f’ to be modified if necessary.
 void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
-	int	i;
+	unsigned int	i;
 
 	i = 0;
 	while (s[i] != '\0')
@@ -24,15 +27,13 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 	}
 }
 
-// int	main(void)
-// {
-// 	// char	*res;
-// 	char	*str;
-
-// 	str = "Hello World";
-// 	printf("str: %s\n", str);
-// 	ft_striteri(str, my_convert);
-// 	printf("str_after: %s", str);
-// 	// printf("res: %s", "Hello");
-// 	return (0);
-// }
+/*
+Parameters 			s: The string on which to iterate.
+					f: The function to apply to each character.
+Return value		None
+External functs. 	None
+Description 		Applies the function ’f’ on each character of
+					the string passed as argument, passing its index
+					as first argument. Each character is passed by
+					address to ’f’ to be modified if necessary.
+*/

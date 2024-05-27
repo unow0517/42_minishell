@@ -3,27 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/09 11:20:50 by yowoo             #+#    #+#             */
-/*   Updated: 2023/10/17 12:42:10 by yowoo            ###   ########.fr       */
+/*   Created: 2023/10/06 18:10:46 by tsimitop          #+#    #+#             */
+/*   Updated: 2023/10/28 13:41:35 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
+
 int	ft_isprint(int c)
 {
-	if ((c >= 040 && c <= 0176) || (c >= 0x20 && c <= 0x7e))
+	if (c >= 32 && c < 127)
+	{
 		return (1);
-	if ((c >= 32 && c <= 126))
-		return (1);
-	return (0);
+	}
+	else
+	{
+		return (0);
+	}
 }
-
-//return ( ( c >= 040 && c <= 0176) || 
-//( c >= 0x20 && c <= 0x7e) || ( c >= 32 && c <= 126));
 // #include <stdio.h>
-// int main(){
-//     int result = ft_isprint(31);
-//     printf("%d",result);
-//     printf("%c", 0176);
+// int main(void)
+// {
+// 	printf("%i: if 1 the character is printable", ft_isprint('\0'));
+// 	return (0);
 // }

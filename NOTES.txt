@@ -129,6 +129,6 @@ SRC = awk.c awk_utils.c redir.c builtin_args.c split_ms.c parsing_helper.c parsi
 CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
 RM = rm -rf
 LIBFT_AR = Libft/libft.a
-PRINTF_AR = ft_printf/libftprintf.a
+PRINTF_AR = printf/libftprintf.a
 
 cc -g -Wall -Wextra -Werror awk.c awk_utils.c redir.c builtin_args.c split_ms.c Libft/libft.a ft_printf/libftprintf.a -o minishell -lreadline
