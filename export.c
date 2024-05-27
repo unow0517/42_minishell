@@ -17,13 +17,13 @@ void	run_declare_env(t_shell *shell_info)
 	t_env_mini	*env_mini;
 
 	env_mini = shell_info->env_mini;
-	// ft_printf("envmini %d\n", shell_info->env_mini->name);
+	// printf("envmini %d\n", shell_info->env_mini->name);
 	while (env_mini)
 	{
 		if (env_mini->value)
-			ft_printf("declare -x %s=\"%s\"\n", env_mini->name, env_mini->value);
+			printf("declare -x %s=\"%s\"\n", env_mini->name, env_mini->value);
 		else
-			ft_printf("declare -x %s\n", env_mini->name);
+			printf("declare -x %s\n", env_mini->name);
 		env_mini = env_mini->next;
 	}
 	*(shell_info->status) = 0;
@@ -124,7 +124,7 @@ int	is_al_num_underscore(char *str)
 // 	// printf("isalnu %d\n",  is_al_num_underscore(inpt + 7));
 // 	// printf("inpt7 %s\n", inpt + 7);
 // 	if (!var_name || !is_al_num_underscore(var_name))
-// 		ft_printf("minishell: export: `%s' not a valid identifier\n", inpt + 7);
+// 		printf("minishell: export: `%s' not a valid identifier\n", inpt + 7);
 // 	if (inputis(inpt, "export") || inputis(inpt, "export "))
 // 		run_declare_env(shell_info);
 // 	else if (inputstartswith(inpt, "export ") && is_al_num_underscore(var_name))
@@ -176,7 +176,7 @@ void	run_export_keyword(char	*str, t_shell *shell_info)
 	if (!var_name || !is_al_num_underscore(var_name))
 	{
 		*(shell_info->status) = 1;
-		ft_printf("minishell: export: `%s' not a valid identifier\n", ptr);
+		printf("minishell: export: `%s' not a valid identifier\n", ptr);
 	}
 	else if (is_al_num_underscore(var_name))
 	{
@@ -218,7 +218,7 @@ void	run_export(char *str, t_shell *shell_info)
 
 		// printf("kw %s\n", *keywords);
 		// if (keywords  && *keywords && ft_strlen(*keywords))
-			// ft_printf("kwlen %d\n", ft_strlen(*keywords));
+			// printf("kwlen %d\n", ft_strlen(*keywords));
 		while (keywords && *keywords)
 		{
 		// printf("kw %s\n", *keywords);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/27 14:33:14 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/27 16:42:50 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <signal.h>
 # include <termios.h>
 # include "Libft/libft.h"
-# include "ft_printf/ft_printf.h"
+// # include "printf/printf.h"
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <stdbool.h>
@@ -78,6 +78,13 @@ typedef struct s_env_mini
 	struct s_env_mini	*next;
 }	t_env_mini;
 
+typedef struct s_awk_data
+{
+	char	*to_split_options;
+	char	*to_split_options_rest;
+	char	*temp;
+}	t_awk_data;
+
 typedef struct s_shell
 {
 	int					argc;
@@ -96,6 +103,16 @@ typedef struct s_shell
 	bool				isheredoc;
 	char				*temp;
 }	t_shell;
+
+// AWK.C
+t_token		*handle_awk(t_token *iterate, t_command *cmd_node);
+
+// AWK_UTILS.C
+int			awk_sqlen(t_token *iterate);
+int			awk_restlen(t_token *iterate, int *sq, int *dq);
+int			awk_sq_part(t_awk_data *data, t_token *iterate);
+void		awk_filestr(t_awk_data *data, t_token *iterate, int h);
+t_token		*skip_awk(t_token *iterate, int *sq, int *dq);
 
 //BUILTIN_ARGS.C
 char		*arg_for_export(t_token *cur);
@@ -267,7 +284,7 @@ int			handle_exit(int status);
 bool		is_metacharacter_type(int i);
 int			token_count(t_shell *shell_info);
 bool		is_redir(int i);
-bool		is_redir_pipe(int i);
+bool		is_redir_pipe(t_token_type i);
 bool		is_redir_pipe_char(char i);
 bool		ft_is_builtin(char *str);
 char		*get_argument(char *argv);
@@ -278,6 +295,99 @@ void		finalise_node(t_shell *shell_info, t_command *cmd_node);
 void		nullify_ints_four(int *inside_sq, int *inside_dq, int *i, \
 int *counter);
 void		reset(t_shell *shell_info);
+bool		has_double_pipe(t_token *iter, int dq, int sq);
+t_token		*double_pipe_case(t_shell *shell_info, t_token *iter);
+bool	has_redir_twice(t_token *iter, int dq, int sq);
+t_token	*twice_redir_case(t_shell *shell_info, t_token *iter);
+bool	syntax_error_at_start(t_token *iter);
+void	syntax_error_at_start_msg(t_shell *shell_info, t_token *iter);
+//PARSING.C
+void		parse_input(t_shell *shell_info);
+void		parse_tokens(t_shell *shell_info);
+int			number_of_tokens(t_shell *shell_info);
+void		set_executable_nodes(t_shell *shell_info, t_token *iterate);
+int			open_file(t_command *cmd_node, t_token *iterate, int flag);
+void		initialise_cmd_node(t_command *cmd_node);
+void		init_cmds_in_struct(t_command *cmd_node, char *to_split);
+
+//PARSING_CASES.C
+bool		builtin_case(t_token *iterate);
+bool		empty_cmd_case(t_token *iterate, t_command *cmd_node);
+bool		full_cmd_case(t_token *iterate, t_command *cmd_node);
+
+//PARSING_HELPER.C
+t_token		*initialize_cmd(t_token *iterate, t_command *cmd_node);
+t_token		*initialize_cmd_options(t_token *iterate, t_command *cmd_node);
+void		quote_removal_in_exec_arg(t_command *cur_cmd);
+char		*rm_quotes(char *to_fix, char c);
+char		first_quote(char *str);
+t_token		*skip_q_tokens(t_token *iterate);
+t_token		*handle_awk(t_token *iterate, t_command *cmd_node);
+
+//EXECUTION.C
+// void	executor(t_shell *shell_info, t_command *cur);
+// void	init_pipe(t_shell *shell_info, t_command *cur);
+void		handle_redir(t_shell *shell_info, t_command *cur);
+void		execution_cases(t_shell *shell_info);
+pid_t		exec_pipeline(t_shell *shell_info);
+pid_t		exec_single_cmd(t_shell *shell_info, t_command	*cmd_to_exec);
+void		pipe_handling(t_shell *shell_info, t_command *cur);
+void		close_pipes(t_shell *shell_info);
+void		execute_builtin(t_shell *shell_info, t_command *cur);
+// void execute_builtin_no_fork(t_shell *shell_info, char *builtin, char *arg);
+
+//ERRORS
+void		file_error(t_command *cmd_node);
+void		heredoc_error(t_command *cmd_node);
+void		cmd_error(t_command *cmd_node);
+void		unexpected_token(t_shell *shell_info, char *flag);
+void		quote_error(t_shell *shell_info);
+void		env_error(char *cmd);
+
+//EXPORT.C
+t_env_mini	*ft_lstnew_envmini(char *name, char *value);
+t_env_mini	*ft_lstlast_envmini(t_env_mini *lst);
+void		run_export(char *str, t_shell *shell_info);
+
+//EXPAND.C
+int			is_al_num_udsc_c(char c);
+int			ft_varname_len(char *str);
+char    	*ft_varvalue(int var_name_len, char *str, t_env_mini *env_mini);
+char    	*replace_expand(char *inpt, char *var_value, int var_name_len);
+void		ft_expand(t_shell *shell_info);
+void		replace_caret(t_shell *shell_info);
+
+//UNSET.C
+char		**ft_path_in_envmini(t_env_mini *env_mini);
+void		run_unset(char *str, t_shell *shell_info);
+
+//FREES
+void		free_tokens(t_token **shell_info);
+void		free_cmd_list(t_command **cmds);
+void		free_shell(t_shell *shell_info);
+
+//QUOTES
+char		*quote_handler(t_token *iterate, t_token_type flag);
+t_token		*skip_quoted_str(t_token *to_skip, t_token_type flag);
+
+//SPLIT_MS.C
+char		**split_ms(char const *s, char c);
+void		update_quote_state_str(const char *str, int *inside_sq, \
+int *inside_dq, int i);
+
+//BUILTIN_ARGS
+char		*arg_for_export(t_token *cur);
+void		update_quote_state(t_token *cur, int *inside_sq, \
+int *inside_dq, int i);
+void		update_quote_state_token(t_token *cur, int \
+*inside_sq, int *inside_dq);
+t_token		*skip_tokens_of_builtin_arg(t_token *iterate);
+t_token		*initialise_builtin_type_arg(t_command *cmd_node, t_token *iterate);
+
+//REDIR.C
+t_token		*set_redirections(t_command *cmd_node, t_token *iterate);
+void		handle_heredoc(t_command *cmd_node, char *delimiter);
+void		file_opener(t_command *cmd_node, int flag, char *file);
 
 //WHITE_SPACE.C
 char		*rm_starting_ws(char *string);

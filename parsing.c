@@ -8,8 +8,8 @@ void	parse_input(t_shell *shell_info)
 		syntax_error_check(shell_info);
 		if (shell_info->syntax_error == false)
 			parse_tokens(shell_info);
-		// print_token_types(shell_info);
-		// print_cmd_list(shell_info->first_command); //delete
+		// print_token_types(shell_info); //delete
+		print_cmd_list(shell_info->first_command); //delete
 	}
 	else
 		quote_error(shell_info);
@@ -103,7 +103,7 @@ int	open_file(t_command *cmd_node, t_token *iterate, int flag)
 		file_opener(cmd_node, flag, file);
 		free(file);
 	}
-	if ((flag == S_MORE || flag == D_MORE) && cmd_node->output_fd == -1) // add checks
+	if ((flag == S_MORE || flag == D_MORE) && cmd_node->output_fd == -1)
 		return (-1);
 	else if (flag == S_LESS && cmd_node->input_fd == -1)
 		return (-1);

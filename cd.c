@@ -71,7 +71,7 @@ char	*rm_outest_quote_cd(char *str, t_shell *shell_info)
 		if (splitted[1])
 		{
 			*(shell_info->status) = 1;
-			ft_printf("minishell: cd : too many arguments\n");
+			printf("minishell: cd : too many arguments\n");
 			return (0);
 		}
 		return (str);
@@ -96,7 +96,7 @@ void	run_cd(char *inpt, t_shell *shell_info)
 	else if (chdir(path_input) == -1)
 	{
 		*(shell_info->status) = 1;
-		ft_printf("minishell: cd : %s: No such file or directory\n",
+		printf("minishell: cd : %s: No such file or directory\n",
 			path_input);
 	}
 	else

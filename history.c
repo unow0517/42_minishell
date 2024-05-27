@@ -30,8 +30,8 @@ void	print_history(t_shell *shell_info)
 	i = 0;
 	while (i < my_hist->length)
 	{
-		ft_printf("\t%i  ", i + 1);
-		ft_printf("%s\n", his_list[i]->line);
+		printf("\t%i  ", i + 1);
+		printf("%s\n", his_list[i]->line);
 		i++;
 	}
 	free(my_hist);

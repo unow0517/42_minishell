@@ -92,8 +92,8 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 			{
 				if (cmd_to_exec->cmd == NULL)
 					exit(0); ///check exit value
-				if (cmd_to_exec->cmd[0] == '\0')
-					exit(0); 
+				// if (cmd_to_exec->cmd[0] == '\0')
+				// 	exit(0); 
 				full_path = find_cmd_in_env_mini(cmd_to_exec->cmd, paths_in_env);
 				if (!full_path || !paths_in_env)
 					cmd_error(cmd_to_exec); // exit (127);

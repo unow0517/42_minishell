@@ -3,66 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 14:44:57 by yowoo             #+#    #+#             */
-/*   Updated: 2023/10/26 15:05:42 by yowoo            ###   ########.fr       */
+/*   Created: 2023/10/09 17:38:24 by tsimitop          #+#    #+#             */
+/*   Updated: 2023/10/28 13:42:32 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcat(char	*dst, const char *src, unsigned int size)
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
-	unsigned int	result;
-	unsigned int	i;
-	unsigned int	j;
+	size_t	i;
+	size_t	j;
+	size_t	srclen;
+	size_t	dstlen;
 
-	result = 0;
+	srclen = ft_strlen(src);
+	dstlen = ft_strlen(dst);
 	i = 0;
-	while (dst[i] != '\0')
-	{
-		result++;
-		i++;
-	}
 	j = 0;
-	while (src[j] != '\0' && i < size -1 && size)
+	if (dstlen >= dstsize)
+		return (srclen + dstsize);
+	while (dst[i] != '\0')
+		i++;
+	while (src[j] != '\0' && (i + 1) < dstsize)
 	{
 		dst[i] = src[j];
 		i++;
 		j++;
 	}
 	dst[i] = '\0';
-	while (src[j] != '\0')
-		j++;
-	if (size < i)
-		return (ft_strlen(src) + size);
-	return (result + ft_strlen(src));
+	return (srclen + dstlen);
 }
-
-// int main(){
-//     int size = 0;
-//     printf("size: %d\n",size);
-//     char dStr[30] = "rrrrrr\0\0\0\0a\0\0\0\0";
-//     // char dStr[30] = "pqrstuvwxyz";
-//     char sStr[] = "lorem ipsum dolor sit amet"; 
-//length 26 without null term.
-//     printf("lensum: %lu\n\n", ft_strlen(dStr) + ft_strlen(sStr));
-
-//     int res = strlcat(dStr, sStr, size);
-//     printf("res is: %d\n", res);
-//     printf("dest is: %s\n", dStr);
-
-//     char dStr_1[30] = "rrrrrr\0\0\0\0a\0\0\0\0";
-//     // char dStr_1[30] = "pqrstuvwxyz";
-//     char sStr_1[] = "lorem ipsum dolor sit amet";
-
-//     int res_1 = ft_strlcat(dStr_1, sStr_1, size);
-//     printf("myres is: %d\n", res_1);
-//     printf("mydest is: %s\n", dStr_1);
-//     return 0;
+// #include <stdio.h>
+// int main()
+// {
+// 	char	dest[30];
+// 	ft_memset(dest, 0, 30);
+// 	char * src = (char *)"BBBB";
+// 	dest[0] = 'B';
+// 	size_t x = ft_strlcat(dest, src, 3);
+// 	// size_t x = strlcat(dest, src, 6);
+// 	printf("%s\n%lu", dest, x);
 // }
-
-//return value = length sum of dStr, sStr
-//len is to be # of letter in dest - 1.
-//dest should be same or bigger than len, otherwise error(illegal instruction)

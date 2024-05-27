@@ -20,8 +20,7 @@ bool	empty_cmd_case(t_token *iterate, t_command *cmd_node)
 {
 	if (iterate && (iterate->token_type == WORD || \
 	iterate->token_type == D_QUOTE \
-	|| iterate->token_type == S_QUOTE) && (cmd_node->cmd == NULL || \
-	cmd_node->cmd[0] == '\0') && iterate->token_type != PIPE)
+	|| iterate->token_type == S_QUOTE) && (cmd_node->cmd == NULL) && iterate->token_type != PIPE)
 		return (true);
 	return (false);
 }
@@ -30,7 +29,7 @@ bool	full_cmd_case(t_token *iterate, t_command *cmd_node)
 {
 	if (iterate && (iterate->token_type == WORD \
 	|| iterate->token_type == D_QUOTE || iterate->token_type == S_QUOTE) \
-	&& cmd_node->cmd != NULL && cmd_node->cmd[0] != '\0' && \
+	&& cmd_node->cmd != NULL && \
 	iterate->token_type != PIPE)
 		return (true);
 	return (false);

@@ -1,28 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   ft_atoll.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/17 15:27:42 by tsimitop          #+#    #+#             */
-/*   Updated: 2023/10/28 13:41:10 by tsimitop         ###   ########.fr       */
+/*   Created: 2024/03/02 17:33:12 by tsimitop          #+#    #+#             */
+/*   Updated: 2024/03/06 12:54:58 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-// The bzero() function writes n zeroed bytes to the string s.
-void	ft_bzero(void *s, size_t n)
+long long	ft_atoll(const char *str)
 {
-	size_t			i;
-	unsigned char	*uc;
+	int			i;
+	int			sign;
+	long long	result;
 
 	i = 0;
-	uc = s;
-	while (i < n)
+	sign = 1;
+	result = 0;
+	while (str[i] == '\n' || str[i] == '\t' || str[i] == '\v'
+		|| str[i] == '\f' || str[i] == ' ' || str[i] == '\r')
+		i++;
+	if (str[i] == '-' || str[i] == '+')
 	{
-		uc[i] = 0;
+		if (str[i] == '-')
+			sign = -1;
 		i++;
 	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = result * 10 + str[i] - '0';
+		i++;
+	}
+	return (result * sign);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/09 11:20:56 by yowoo             #+#    #+#             */
-/*   Updated: 2023/10/26 15:02:08 by yowoo            ###   ########.fr       */
+/*   Created: 2023/10/06 18:12:26 by tsimitop          #+#    #+#             */
+/*   Updated: 2023/10/28 13:42:39 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,29 @@
 
 size_t	ft_strlen(const char *str)
 {
-	unsigned int	len;
+	int	i;
 
-	len = 0;
-	while (*str != '\0')
+	i = 0;
+	while (str[i] != '\0')
 	{
-		len++;
-		str++;
+		i++;
 	}
-	return (len);
+	return (i);
 }
-
+// strlen does not do a NULL check (NULL edge case), results in seg fault
+//-> if (str == NULL) return (0)
 // #include <stdio.h>
-// int main(){
-//     char str[] = "";
-//     unsigned int len = ft_strlen(str);
-//     printf("%u", len);
+// #include <string.h>
+// int	main(void)
+// {
+// 	char *str = "food";
+// 	printf("%lu", ft_strlen(str));
+// 	printf("\n");
+// 	printf("%lu", strlen(str));
+// 	printf("\n");
+// 	//str = NULL;
+// 	printf("%lu", ft_strlen(str));
+// 	printf("\n");
+// 	printf("%lu", strlen(str));
+// 	return (0);
 // }

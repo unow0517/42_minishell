@@ -1,33 +1,80 @@
+################################################################################
+#									CONSTANTS								   #
+################################################################################
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+LIBS = libft.h minishell.h
+LIBFT_PATH = ./Libft
+LIBFT := $(LIBFT_PATH)/libft.a
+LDFLAGS = -L $(LIBFT_PATH) -lft -lreadline
+
 NAME = minishell
-CC = cc #-fsanitize=address -g
-SRC = redir.c builtin_args.c split_ms.c parsing_helper.c parsing_cases.c errors.c quotes.c execution.c parsing.c inpt_handler.c freeing.c minishell.c inpt_functions.c history.c sig_functions.c pwd.c pipe.c echo.c cd.c env.c white_space.c tokenizer.c pipex_functions.c checks.c utils.c expand.c expand_util.c export.c unset.c
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
-RM = rm -rf
-LIBFT_AR = Libft/libft.a
-PRINTF_AR = ft_printf/libftprintf.a
 
-all: $(LIBFT_AR) $(PRINTF_AR) $(NAME)
+################################################################################
+#									MAIN PART								   #
+################################################################################
 
-$(NAME): $(SRC)
-	@$(CC) $(CFLAGS) $(SRC) $(LIBFT_AR) $(PRINTF_AR) -o $(NAME) -lreadline
+SRCS =	awk.c \
+		awk_utils.c \
+		builtin_args.c \
+		cd.c \
+		checks.c \
+		echo.c \
+		env.c \
+		errors.c \
+		execution.c \
+		expand.c \
+		export.c \
+		freeing.c \
+		history.c \
+		inpt_functions.c \
+		inpt_handler.c \
+		minishell.c \
+		parsing.c \
+		parsing_cases.c \
+		parsing_helper.c \
+		pipe.c \
+		pipex_functions.c \
+		pwd.c \
+		quotes.c \
+		redir.c \
+		sig_functions.c \
+		split_ms.c \
+		tokenizer.c \
+		unset.c \
+		utils.c \
+		white_space.c \
+		expand_util.c
 
-#for wsl
-# https://stackoverflow.com/questions/53507756/undefined-reference-to-readline-in-c-file-on-ubuntu-18-04-libreadline-dev-ins
+OBJ = $(SRCS:.c=.o)
 
-$(LIBFT_AR):
-	cd Libft && make
+all : $(LIBFT) $(NAME)
 
-$(PRINTF_AR):
-	cd ft_printf && make
+$(NAME) : $(OBJ)
+	@$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@
 
-clean:
-	cd Libft && make clean
-	cd ft_printf && make clean
-	@$(RM) $(NAME)
+$(OBJ) : %.o : %.c
+	@$(CC) -c $(CFLAGS) -I$(LIBFT_PATH) $< -o $@
 
-fclean: clean
-	@$(RM) $(LIBFT_AR)
-	@$(RM) $(PRINTF_AR)
-	@$(RM) $(NAME)
+clean :
+	@echo "Removing $(OBJ)"
+	@rm -f $(OBJ)
+	@make -C $(LIBFT_PATH) clean
 
-re: fclean all
+fclean : clean
+	@echo "Removing $(NAME)"
+	@rm -f $(NAME)
+	@make -C $(LIBFT_PATH) fclean
+
+re : fclean all
+
+################################################################################
+#									LIBFT									   #
+################################################################################
+
+$(LIBFT):
+	@echo "Building libft..."
+	@make -C $(LIBFT_PATH) --no-print-directory
+
+.PHONY :
+	all clean fclean re

@@ -2,3 +2,5 @@
 *.dSYM
 .vscode
 minishell_tester/
+.gitignore
+Libft/objects

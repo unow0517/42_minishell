@@ -3,50 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/09 18:05:25 by yowoo             #+#    #+#             */
-/*   Updated: 2023/10/17 18:53:15 by yowoo            ###   ########.fr       */
+/*   Created: 2023/10/18 17:44:29 by tsimitop          #+#    #+#             */
+/*   Updated: 2023/10/28 13:42:47 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <string.h>
+#include "libft.h"
 
-int	ft_strncmp(const char *str1, const char *str2, unsigned int n)
+// strncmp() function lexicographically compares the null-terminated strings s1
+// and s2. Not more than n characters.
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	unsigned char	*str1_1;
-	unsigned char	*str2_1;
+	unsigned char	str1;
+	unsigned char	str2;
 
-	str1_1 = (unsigned char *)str1;
-	str2_1 = (unsigned char *)str2;
-	while ((*str1_1 != '\0' || *str2_1 != '\0') && n--)
+	while (n-- > 0)
 	{
-		if (*str1_1 != *str2_1)
-			return (*str1_1 - *str2_1);
-		else
+		str1 = (unsigned char)*s1++;
+		str2 = (unsigned char)*s2++;
+		if (str1 != str2)
 		{
-			str1_1++;
-			str2_1++;
+			return (str1 - str2);
+		}
+		if (str1 == '\0')
+		{
+			return (0);
 		}
 	}
 	return (0);
 }
-
-//char value range (-128 ~ 127  or 0 to 255)
-//unsigned char value range ( 0 to 255)
-// int main () {
-//     char str1[15];
-//     char str2[15];
-//     int ret;
-//     int myRet;
-//     strcpy(str1, "test\200");
-//     strcpy(str2, "test\0");
-//     ret = strncmp(str1, str2, 6);
-//     myRet = ft_strncmp(str1, str2, 6);
-//     printf("ret value is: %d\n", ret);
-//     printf("myRet value is: %d", myRet);
-//     return(0);
-// }
-
-//find the first different elemnt and get the value
+// str1 = (unsigned char)*s1++; it is needed within,
+// can't declare and just call, it's not a function...
+// (str1 == '\0') forces it to stop at '\0' else it doesn't stop

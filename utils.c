@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/26 19:48:34 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:41:46 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ bool	is_redir(int i)
 	return (false);
 }
 
-bool	is_redir_pipe(int i)
+bool	is_redir_pipe(t_token_type i)
 {
 	if (i == S_LESS || i == S_MORE || i == D_LESS || i == D_MORE || i == PIPE)
 		return (true);
@@ -300,4 +300,72 @@ void	reset(t_shell *shell_info)
 	free_tokens(&shell_info->tokens);
 	free_cmd_list(&shell_info->first_command);
 	shell_info->syntax_error = false;
+}
+
+bool	has_double_pipe(t_token *iter, int dq, int sq)
+{
+	if (iter->token_type == PIPE && iter->next && \
+	iter->next->token_type == PIPE && dq == 0 && sq == 0)
+		return (true);
+	return (false);
+}
+
+t_token	*double_pipe_case(t_shell *shell_info, t_token *iter)
+{
+	if (shell_info->tokens->token_type == WORD)
+		unexpected_token(shell_info, get_first_word(shell_info->tokens->content));
+	else
+		unexpected_token(shell_info, "|");
+	while (iter && iter->token_type == PIPE)
+		iter = iter->next;
+	return (iter);
+}
+
+bool	has_redir_twice(t_token *iter, int dq, int sq)
+{
+	if (is_redir(iter->token_type) && \
+	is_redir(iter->next->token_type) && dq == 0 && sq == 0)
+		return (true);
+	return (false);
+}
+
+t_token	*twice_redir_case(t_shell *shell_info, t_token *iter)
+{
+	if ((iter->token_type == S_MORE && iter->next->token_type == S_LESS) || \
+	(iter->token_type == S_LESS && iter->next->token_type == S_MORE))
+		unexpected_token(shell_info, "<>");
+	else if (iter->next->token_type == D_LESS || \
+	iter->next->token_type == S_LESS)
+		unexpected_token(shell_info, "<");
+	else if (iter->next->token_type == D_MORE || \
+	iter->next->token_type == S_MORE)
+		unexpected_token(shell_info, ">");
+	while (iter && is_redir(iter->token_type))
+		iter = iter->next;
+	return (iter);
+}
+
+bool	syntax_error_at_start(t_token *iter)
+{
+	if ((iter->token_type == PIPE && !iter->next) || \
+	(iter->token_type == PIPE && iter->next->token_type != PIPE))
+		return (true);
+	else if (iter->token_type == PIPE && iter->next && \
+	iter->next->token_type == PIPE)
+		return (true);
+	else if (is_redir(iter->token_type) == true && !iter->next)
+		return (true);
+	return (false);
+}
+
+void	syntax_error_at_start_msg(t_shell *shell_info, t_token *iter)
+{
+	if ((iter->token_type == PIPE && !iter->next) || \
+	(iter->token_type == PIPE && iter->next->token_type != PIPE))
+		unexpected_token(shell_info, "|");
+	else if (iter->token_type == PIPE && iter->next && \
+	iter->next->token_type == PIPE)
+		unexpected_token(shell_info, "|");
+	else if (is_redir(iter->token_type) == true && !iter->next)
+		unexpected_token(shell_info, "newline");
 }

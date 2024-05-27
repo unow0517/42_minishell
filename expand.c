@@ -142,13 +142,13 @@ void	replace_expands_loop(t_shell *shell_info)
 		{
 			// if (*(str + 1) == '?')
 			// {
-			// 	// ft_printf("%d\n",*(shell_info->status));
+			// 	// printf("%d\n",*(shell_info->status));
 			// 	varvalue = ft_itoa(*(shell_info->status));
 			// }
 			// else
 			varname_len = ft_varname_len(str);
 			varvalue = ft_varvalue(varname_len, str, shell_info->env_mini);
-			// ft_printf("vv %s\n", varvalue);
+			// printf("vv %s\n", varvalue);
 			shell_info->user_input = replace_expand(shell_info->user_input, varvalue, varname_len);
 		}
 		if (str + 1)
@@ -176,7 +176,7 @@ void	replace_caret(t_shell *shell_info)
     inpt++;
   }
   inpt = shell_info->user_input;
-    // ft_printf("stdlen %d\n", ft_strlen(inpt));
+    // printf("stdlen %d\n", ft_strlen(inpt));
   output = malloc(ft_strlen(inpt) - cnt + 1);
   i = 0;
   j = 0;
@@ -231,10 +231,10 @@ void rm_outest_q_and_exp(t_shell *shell_info)
 	// ptr = str;
 	if (c != 'n')
 	{
-		// ft_printf("C %c\n", c);
-		// ft_printf("Input %s\n", shell_info->user_input);
+		// printf("C %c\n", c);
+		// printf("Input %s\n", shell_info->user_input);
 		// shell_info->user_input = rm_quotes(shell_info->user_input, c);
-		// ft_printf("after_rm_quotes %s\n", rm_quotes(shell_info->user_input, c));
+		// printf("after_rm_quotes %s\n", rm_quotes(shell_info->user_input, c));
 		if (c == '"')
 			expand_except_literal(shell_info);
 	}
@@ -303,14 +303,14 @@ void	ft_expand(t_shell *shell_info)
 
 
 	// replace_bs_dollar(shell_info);
-    // ft_printf("rebsd %s\n", shell_info->user_input); //OK
+    // printf("rebsd %s\n", shell_info->user_input); //OK
     // replaced = replace_expand(inpt, var_value, len);
 	// printf("rmq %s\n", rm_quotes(shell_info->user_input, '"'));
 	// printf("rmoq %s\n", rm_outest_q(shell_info));
 	rm_ws_following_d_less(shell_info);
-    // ft_printf("rm << %s\n", shell_info->user_input); //OK
-	// ft_printf("rm_ws_following_d_less: %s\n", shell_info->user_input); //OK
-	// ft_printf("ishd %d\n", shell_info->isheredoc);
+    // printf("rm << %s\n", shell_info->user_input); //OK
+	// printf("rm_ws_following_d_less: %s\n", shell_info->user_input); //OK
+	// printf("ishd %d\n", shell_info->isheredoc);
 	if (shell_info->isheredoc == 0)
 	{
 		rm_outest_q_and_exp(shell_info);
@@ -324,9 +324,9 @@ void	ft_expand(t_shell *shell_info)
 
 	// dollar_literal(shell_info);
 	// replace_expands_loop(shell_info);
-	// ft_printf("EXPANDED: %s\n\n", shell_info->user_input); //OK
-    // ft_printf("repex1 %s\n", shell_info->user_input); //OK
+	// printf("EXPANDED: %s\n\n", shell_info->user_input); //OK
+    // printf("repex1 %s\n", shell_info->user_input); //OK
     // replace_caret(shell_info);
-    // ft_printf("reca %s\n", shell_info->user_input); //OK
+    // printf("reca %s\n", shell_info->user_input); //OK
 }
 
