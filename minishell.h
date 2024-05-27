@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/27 15:03:18 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:36:53 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,13 @@ void		finalise_node(t_shell *shell_info, t_command *cmd_node);
 void		nullify_ints_four(int *inside_sq, int *inside_dq, int *i, \
 int *counter);
 void		reset(t_shell *shell_info);
+bool		has_double_pipe(t_token *iter, int dq, int sq);
+t_token		*double_pipe_case(t_shell *shell_info, t_token *iter);
+bool	has_redir_twice(t_token *iter, int dq, int sq);
+t_token	*twice_redir_case(t_shell *shell_info, t_token *iter);
+bool	syntax_error_at_start(t_token *iter);
+void	syntax_error_at_start_msg(t_shell *shell_info, t_token *iter);
+
 
 //PARSING.C
 void		parse_input(t_shell *shell_info);

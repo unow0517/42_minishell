@@ -120,3 +120,15 @@ weird history behaviour
 printf("________________________________DEBUG____________________________");
 check redirections opening empty file
 echo "ls" hello 'lakdghsf"aljghd'ahdgsf"k" > out
+
+
+	@$(CC) $(CFLAGS) $(SRC) $(LIBFT_AR) $(PRINTF_AR) -o $(NAME) -lreadline
+NAME = minishell
+CC = cc #-fsanitize=address -g
+SRC = awk.c awk_utils.c redir.c builtin_args.c split_ms.c parsing_helper.c parsing_cases.c errors.c quotes.c execution.c parsing.c inpt_handler.c freeing.c minishell.c inpt_functions.c history.c sig_functions.c pwd.c pipe.c echo.c cd.c env.c white_space.c tokenizer.c pipex_functions.c checks.c utils.c expand.c export.c unset.c
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
+RM = rm -rf
+LIBFT_AR = Libft/libft.a
+PRINTF_AR = ft_printf/libftprintf.a
+
+cc -g -Wall -Wextra -Werror awk.c awk_utils.c redir.c builtin_args.c split_ms.c Libft/libft.a ft_printf/libftprintf.a -o minishell -lreadline
