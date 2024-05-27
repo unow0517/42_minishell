@@ -219,8 +219,8 @@ char	*rm_quotes(char *to_fix, char c)
 		i++;
 	}
 	new[i] = '\0';
-	if (new && new[0] == '\0')
-		return (NULL);
+	// if (new && new[0] == '\0')
+	// 	return (NULL);
 	// free(to_fix);
 	
 	return (new);
