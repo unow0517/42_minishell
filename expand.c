@@ -44,37 +44,32 @@ int	ft_varname_len(char *str)
 
 char	*ft_varvalue(int var_name_len, char *str, t_env_mini *env_mini)
 {
-    char    *ptr_dollar;
-    char    *varname;
+	char	*ptr_dollar;
+	char	*varname;
 
-    ptr_dollar = ft_strchr(str, '$'); //first $ position
-    if (!ptr_dollar)
-        return (0);
-    varname = ft_substr(ptr_dollar + 1, 0, var_name_len);
-    // ft_printf("vn %s\n", varname);
-    while (env_mini)
-    {
-        if (inputis(env_mini->name, varname))
-		{
-    // ft_printf("value %s\n", env_mini->value);
-            return (env_mini->value);
-		}
-        if (env_mini->next)
-            env_mini = env_mini->next;
-        else
-            break ;
-    }
-    return (0);
+	ptr_dollar = ft_strchr(str, '$');
+	if (!ptr_dollar)
+		return (0);
+	varname = ft_substr(ptr_dollar + 1, 0, var_name_len);
+	while (env_mini)
+	{
+		if (inputis(env_mini->name, varname))
+			return (env_mini->value);
+		if (env_mini->next)
+			env_mini = env_mini->next;
+		else
+			break ;
+	}
+	return (0);
 }
 
-// void	replace_bs_dollar(char *inpt)
 void	replace_bs_dollar(t_shell *shell_info)
 {
 	char	*inpt;
 
 	inpt = 0;
-  if (shell_info->user_input)
-    inpt = shell_info->user_input;
+	if (shell_info->user_input)
+		inpt = shell_info->user_input;
 	while (*inpt)
 	{
 		if (*inpt == '\\' && *(inpt + 1) == '$')
@@ -90,63 +85,39 @@ void	replace_bs_dollar(t_shell *shell_info)
 	}
 }
 
-//MALLOC!
-//IF /$ exist => replace it to /^,
-char    *replace_expand(char *inpt, char *var_value, int var_name_len)
+char	*join_three(char *str1, char *str2, char *str3)
 {
-    // int      var_value_len;
+	char	*join1;
+	char	*join2;
 
+	join1 = ft_strjoin(str1, str2);
+	join2 = ft_strjoin(join1, str3);
+	free(join1);
+	return (join2);
+}
 
-    char    *str_till_dollar;
-    char    *str_after_varname;
-    char    *join1;
-    char    *join2;
-	char    *ptr_dollar;
-    // var_value_len = ft_strlen(var_value);
-    // str_till_dollar = ft_substr(inpt, 0, ft_strchr(inpt, '$') - inpt);
+char	*replace_expand(char *inpt, char *var_value, int var_name_len)
+{
+	char	*str_till_dollar;
+	char	*str_after_varname;
+	char	*ptr_dollar;
 
 	if (!inpt)
 		return (0);
 	str_till_dollar = 0;
-  	str_after_varname = 0;
+	str_after_varname = 0;
 	ptr_dollar = ft_strchr(inpt, '$');
-	// printf("ptr$ %s\n", ptr_dollar );
-	// printf("ptr$-1 %c\n", *(ptr_dollar - 1));
-	// printf("ptr$-1 %d\n", *(ptr_dollar - 1) == '\\');
-
 	if (ptr_dollar)
-  	{
-  	  str_till_dollar = ft_substr(inpt, 0, ptr_dollar - inpt);
-  	  str_after_varname = ptr_dollar + var_name_len + 1;
-  	}
-  	else
-  	{
-  	  str_till_dollar = 0;
-  	  str_after_varname = 0;
-  	}
-
-	// ft_printf("inptrp %s\n", inpt);
-  	// ft_printf("len %d\n", var_name_len);
-    // ft_printf("std %s\n", str_till_dollar);
-    // ft_printf("sav %s\n", str_after_varname);
-    // ft_printf("vv %s\n", var_value);
-
-  	if (str_till_dollar && str_after_varname && var_value)
-  	{
-  	  // ft_printf("hi");
-  	  join1 = ft_strjoin(str_till_dollar, var_value);
-  	  join2 = ft_strjoin(join1, str_after_varname);
-		return (join2);
-  	}
-  	else if (ptr_dollar && !var_value)
 	{
-  	  join1 = ft_strjoin(str_till_dollar, str_after_varname);
-  	  return (str_till_dollar);
+		str_till_dollar = ft_substr(inpt, 0, ptr_dollar - inpt);
+		str_after_varname = ptr_dollar + var_name_len + 1;
 	}
-  	else
-  	  return (inpt);						//remove/change one of 2 returns
-  	// ft_printf("join2 %s\n", join2);
-  	  // return (free(join1), join2);
+	if (str_till_dollar && var_value && str_after_varname)
+		return (join_three(str_till_dollar, var_value, str_after_varname));
+	else if (ptr_dollar && !var_value)
+		return (ft_strjoin(str_till_dollar, str_after_varname));
+	else
+		return (inpt);
 }
 
 void	replace_dollar_question(t_shell *shell_info)
