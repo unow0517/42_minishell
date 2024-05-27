@@ -2,7 +2,10 @@
 
 static t_token *simple_file_redir(t_command *cmd_node, t_token *iter, t_token_type flag)
 {
+	t_token_type hold;
+
 	iter = iter->next;
+	hold = iter->token_type;
 	if (iter && (iter->token_type == S_QUOTE || iter->token_type == D_QUOTE))
 		iter = skip_q_tokens(iter);
 	if (cmd_node->file_not_found == 0)
@@ -16,7 +19,7 @@ static t_token *simple_file_redir(t_command *cmd_node, t_token *iter, t_token_ty
 			file_error(cmd_node);
 		}
 	}
-	if (iter && (iter->token_type == S_QUOTE || iter->token_type == D_QUOTE))
+	if (iter && (hold == S_QUOTE || hold == D_QUOTE))
 		iter = skip_q_tokens(iter);
 	if (iter)
 		iter = iter->next;

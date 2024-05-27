@@ -132,3 +132,6 @@ LIBFT_AR = Libft/libft.a
 PRINTF_AR = printf/libftprintf.a
 
 cc -g -Wall -Wextra -Werror awk.c awk_utils.c redir.c builtin_args.c split_ms.c Libft/libft.a ft_printf/libftprintf.a -o minishell -lreadline
+
+"ls" -l "-l" -a '-a' > "out"
+dprintf(2, "__________________DEBUG_____________________\n");

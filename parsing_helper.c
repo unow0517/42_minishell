@@ -193,6 +193,10 @@ t_token	*skip_q_tokens(t_token *iterate)
 		return (NULL);
 	hold_type = iterate->token_type;
 	while (iterate && iterate->token_type == hold_type)
+	{
+dprintf(2, "ERROR skip_q_tokens\n");
 		iterate = iterate->next;
+	}
+dprintf(2, "ERROR skip_q_tokens\n");
 	return (iterate);
 }
