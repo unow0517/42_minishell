@@ -12,28 +12,6 @@
 
 #include "minishell.h"
 
-static void	echo_without_flag(char **split_arg);
-static void	echo_with_flag(char **split_arg);
-
-void	run_echo(char *inpt, t_shell *shell_info)
-{
-	char	**split_arg;
-
-	if (inpt)
-	{
-		split_arg = split_ms(inpt, ' ');
-		if (split_arg && ft_strncmp("-n", split_arg[0], 2) == 0 && strlen(split_arg[0]) == 2)
-			echo_with_flag(split_arg);
-		else if (split_arg)
-			echo_without_flag(split_arg);
-		if (split_arg)
-			free(split_arg);
-	}
-	else
-		write (1, "\n", 1);
-	*(shell_info->status) = 0;
-}
-
 static void	echo_without_flag(char **split_arg)
 {
 	int		i;
@@ -44,7 +22,7 @@ static void	echo_without_flag(char **split_arg)
 	i = 0;
 	sq = 0;
 	dq = 0;
-	while (split_arg &&split_arg[i])
+	while (split_arg && split_arg[i])
 	{
 		j = 0;
 		if (i != 0)
@@ -73,7 +51,7 @@ static void	echo_with_flag(char **split_arg)
 	i = 1;
 	sq = 0;
 	dq = 0;
-	while (split_arg &&split_arg[i])
+	while (split_arg && split_arg[i])
 	{
 		j = 0;
 		if (i != 1)
@@ -89,4 +67,40 @@ static void	echo_with_flag(char **split_arg)
 		}
 		i++;
 	}
+}
+
+int	is_flag(char	*str)
+{
+	int	i;
+
+	i = 0;
+	if (ft_strncmp("-n", str, 2) == 0 && strlen(str) == 2)
+		i = 1;
+	else if (ft_strncmp("'-n'", str, 4) == 0 && strlen(str) == 4)
+		i = 1;
+	else if (ft_strncmp("\"-n\"", str, 4) == 0 && strlen(str) == 4)
+		i = 1;
+	return (i);
+}
+
+void	run_echo(char *inpt, t_shell *shell_info)
+{
+	char	**split_arg;
+
+	if (inpt)
+	{
+		split_arg = split_ms(inpt, ' ');
+		if (split_arg)
+		{
+			if (is_flag(split_arg[0]))
+				echo_with_flag(split_arg);
+			else
+				echo_without_flag(split_arg);
+		}
+		if (split_arg)
+			free(split_arg);
+	}
+	else
+		write (1, "\n", 1);
+	*(shell_info->status) = 0;
 }

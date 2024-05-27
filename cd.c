@@ -28,70 +28,80 @@ t_env_mini	*env_search_name(char *name, t_env_mini *env_mini)
 	return (0);
 }
 
-void	run_cd(char *inpt, t_shell *shell_info)
+void	update_pwd(char *str, t_shell *shell_info)
 {
-	char		*path_input;
 	char		cwd[2048];
 	t_env_mini	*env_mini;
 	t_env_mini	*env_mini_pwd;
 	t_env_mini	*env_mini_oldpwd;
-  	t_env_mini  *env_mini_home;
-  	char    **splitted;
 
-  if (!inpt || !*inpt)
-    return;
-  splitted = ft_split(inpt, ' ');
-  if (splitted[1])
-  {
-    *(shell_info->status) = 1;
-	  ft_printf("minishell: cd : too many arguments\n");
-    return ;
-  }
+	getcwd(cwd, sizeof(cwd));
+	env_mini_pwd = env_search_name("PWD", shell_info->env_mini);
+	env_mini_oldpwd = env_search_name("OLDPWD", shell_info->env_mini);
+	ft_memset(shell_info->oldpwd, 0, 2048);
+	ft_strlcat(shell_info->oldpwd, shell_info->cwd, 2048);
+	ft_memset(shell_info->cwd, 0, 2048);
+	ft_strlcat(shell_info->cwd, str, 2048);
+	env_mini_pwd->value = shell_info->cwd;
+	if (env_mini_oldpwd)
+		env_mini_oldpwd->value = shell_info->oldpwd;
+	else
+	{
+		env_mini = ft_lstnew_envmini("OLDPWD", shell_info->oldpwd);
+		ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
+	}
+	*(shell_info->status) = 0;
+}
 
-  getcwd(cwd, sizeof(cwd));
-  env_mini_pwd = 0;
-  env_mini_oldpwd = 0;
-  env_mini_home = 0;
-  env_mini_pwd = env_search_name("PWD", shell_info->env_mini);
-  env_mini_oldpwd = env_search_name("OLDPWD", shell_info->env_mini);
-  env_mini_home = env_search_name("HOME", shell_info->env_mini);
-  path_input = inpt;
-  if (inputis(inpt,"~"))
-  {
-		ft_memset(shell_info->oldpwd, 0, 2048);
-		ft_strlcat(shell_info->oldpwd, shell_info->cwd, 2048);
-		ft_memset(shell_info->cwd, 0, 2048);
-		ft_strlcat(shell_info->cwd, env_mini_home->value, 2048);
-    env_mini_pwd->value = shell_info->cwd;
-	  if (env_mini_oldpwd)
-	   	env_mini_oldpwd->value = shell_info->oldpwd;
-	  else
-	  {
-	   	env_mini = ft_lstnew_envmini("OLDPWD", shell_info->oldpwd);
-	   	ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
-	  }
-		*(shell_info->status) = 0;
-  }
+char	*rm_outest_quote_cd(char *str, t_shell *shell_info)
+{
+	char	q;
+	char	*str_q_removed;
+	char	**splitted;
+
+	if (ft_strchr(str, '\'') != 0 || ft_strchr(str, '"') != 0)
+	{
+		q = first_quote(str);
+		str_q_removed = rm_quotes(str, q);
+		return (str_q_removed);
+	}
+	else
+	{
+		splitted = ft_split(str, ' ');
+		if (splitted[1])
+		{
+			*(shell_info->status) = 1;
+			ft_printf("minishell: cd : too many arguments\n");
+			return (0);
+		}
+		return (str);
+	}
+}
+
+void	run_cd(char *inpt, t_shell *shell_info)
+{
+	char		*path_input;
+	char		cwd[2048];
+	t_env_mini	*env_mini_home;
+
+	if (!inpt || !*inpt)
+		return ;
+	path_input = rm_outest_quote_cd(inpt, shell_info);
+	if (!path_input)
+		return ;
+	getcwd(cwd, sizeof(cwd));
+	env_mini_home = env_search_name("HOME", shell_info->env_mini);
+	if (inputis(inpt, "~"))
+		update_pwd(env_mini_home->value, shell_info);
 	else if (chdir(path_input) == -1)
 	{
 		*(shell_info->status) = 1;
-	  	ft_printf("minishell: cd : %s: No such file or directory\n", path_input);	
+		ft_printf("minishell: cd : %s: No such file or directory\n",
+			path_input);
 	}
 	else
 	{
 		getcwd(cwd, sizeof(cwd));
-		ft_memset(shell_info->oldpwd, 0, 2048);
-		ft_strlcat(shell_info->oldpwd, shell_info->cwd, 2048);
-		ft_memset(shell_info->cwd, 0, 2048);
-		ft_strlcat(shell_info->cwd, cwd, 2048);
-	  	env_mini_pwd->value = shell_info->cwd;
-	  	if (env_mini_oldpwd)
-	    	env_mini_oldpwd->value = shell_info->oldpwd;
-	  	else
-	  	{
-	    	env_mini = ft_lstnew_envmini("OLDPWD", shell_info->oldpwd);
-	    	ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
-	  	}
-		*(shell_info->status) = 0;
+		update_pwd(cwd, shell_info);
 	}
 }
