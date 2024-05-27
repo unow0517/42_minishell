@@ -14,7 +14,7 @@
 
 void	run_env(t_shell *shell_info)
 {
-	t_env_mini *env_mini;
+	t_env_mini	*env_mini;
 
 	env_mini = shell_info->env_mini;
 	while (env_mini)

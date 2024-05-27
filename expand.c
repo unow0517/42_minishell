@@ -1,41 +1,52 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/26 17:53:21 by yowoo             #+#    #+#             */
+/*   Updated: 2024/05/26 17:53:21 by yowoo            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int is_al_num_udsc_c(char c)
+int	is_al_num_udsc_c(char c)
 {
-    if (ft_isalnum(c) || c == '_')
-        return (1);
-    return (0);
+	if (ft_isalnum(c) || c == '_')
+		return (1);
+	return (0);
 }
 
-//if $ in str, return lenth of first varname
-int ft_varname_len(char *str)
+int	ft_varname_len(char *str)
 {
-    int         i;
-    // char     *ptr;
-    i = 0;
-    while (*str && str)
-    {
-        if (*str == '$')
-        {
-            str++;
-            while (is_al_num_udsc_c(*str))
-            {
-                i++;
-                str++;
-            }
-            if (!is_al_num_udsc_c(*str))
-                break ;
-        }
-        str++;
-    }
-    return (i);
+	int	i;
+
+	i = 0;
+	while (*str && str)
+	{
+		if (*str == '$')
+		{
+			str++;
+			while (is_al_num_udsc_c(*str))
+			{
+				i++;
+				str++;
+			}
+			if (!is_al_num_udsc_c(*str))
+				break ;
+		}
+		str++;
+	}
+	return (i);
 }
 
-//return var value from string, namelen, envlist.
-char    *ft_varvalue(int var_name_len, char *str, t_env_mini *env_mini)
+char	*ft_varvalue(int var_name_len, char *str, t_env_mini *env_mini)
 {
     char    *ptr_dollar;
     char    *varname;
+
     ptr_dollar = ft_strchr(str, '$'); //first $ position
     if (!ptr_dollar)
         return (0);
