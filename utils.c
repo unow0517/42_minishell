@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/27 15:41:46 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/28 12:40:03 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,11 +157,17 @@ void	close_io(t_command *cur)
 
 int	handle_exit(int status)
 {
-	if (WIFEXITED(status))
-		status = WEXITSTATUS(status);
-	else
-		status = EXIT_FAILURE;
-	return (status);
+	int	exit_code;
+	int	signal;
+
+	if (WIFEXITED(status) == 1)
+		exit_code =  WEXITSTATUS(status);
+	if (WIFSIGNALED(status))
+	{
+		signal = WTERMSIG(status);
+		exit_code = signal + 128;
+	}
+	return (exit_code);
 }
 
 int	token_count(t_shell *shell_info)

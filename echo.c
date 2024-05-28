@@ -102,5 +102,7 @@ void	run_echo(char *inpt, t_shell *shell_info)
 	}
 	else
 		write (1, "\n", 1);
+	if (num_of_total_cmds(shell_info->first_command) > 1)
+		exit(0);
 	*(shell_info->status) = 0;
 }

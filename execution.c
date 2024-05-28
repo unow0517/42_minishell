@@ -23,12 +23,15 @@ void	execution_cases(t_shell *shell_info)
 		if (num_of_total_cmds(shell_info->first_command) == 1 && \
 		shell_info->first_command->is_builtin == true)
 			execute_builtin(shell_info, shell_info->first_command);
-		else if (num_of_total_cmds(shell_info->first_command) == 1)
-			pid = exec_single_cmd(shell_info, shell_info->first_command);
+		// else if (num_of_total_cmds(shell_info->first_command) == 1)
+		// 	pid = exec_single_cmd(shell_info, shell_info->first_command);
 		else
 			pid = exec_pipeline(shell_info);
-		while (waitpid(pid, shell_info->status, WNOHANG) != -1) //WUNTRACED
+		waitpid(pid, shell_info->status, 0);
+		while (waitpid(-1, NULL, WNOHANG) != -1) //WUNTRACED
 			;
+		// while (waitpid(pid, shell_info->status, WNOHANG) != -1) //WUNTRACED
+		// 	;
 		*shell_info->status = handle_exit(*shell_info->status);
 	}
 }
@@ -94,8 +97,6 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 					exit(0); ///check exit value
 				// if (cmd_to_exec->cmd[0] == '\0')
 				// 	exit(0); 
-dprintf(2, "__________________DEBUG_____________________\n");
-
 				full_path = find_cmd_in_env_mini(cmd_to_exec->cmd, paths_in_env);
 				if (!full_path || !paths_in_env)
 					cmd_error(cmd_to_exec); // exit (127);
