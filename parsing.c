@@ -8,7 +8,7 @@ void	parse_input(t_shell *shell_info)
 		syntax_error_check(shell_info);
 		if (shell_info->syntax_error == false)
 			parse_tokens(shell_info);
-		// print_token_types(shell_info); //delete
+		// print_token(shell_info->tokens); //delete
 		// print_cmd_list(shell_info->first_command); //delete
 	}
 	else

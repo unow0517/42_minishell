@@ -135,3 +135,8 @@ cc -g -Wall -Wextra -Werror awk.c awk_utils.c redir.c builtin_args.c split_ms.c 
 
 "ls" -l "-l" -a '-a' > "out"
 dprintf(2, "__________________DEBUG_____________________\n");
+
+norminette
+execution.c
+
+awk '/int/ { print $1 }' minishell.c "pipe.c" | grep i segfault with -fsanitize

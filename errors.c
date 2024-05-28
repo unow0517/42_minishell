@@ -33,24 +33,3 @@ void	env_error(char *cmd)
 	ft_putstr_fd(": No such file or directory\n", 2);
 	exit(127);
 }
-
-void	unexpected_token(t_shell *shell_info, char *flag)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd("syntax error near unexpected token `", 2);
-	if (shell_info->tokens->token_type == WORD)
-		ft_putstr_fd(get_first_word(shell_info->tokens->content), 2);
-	else
-		ft_putstr_fd(flag, 2);
-	ft_putstr_fd("'\n", 2);
-	shell_info->syntax_error = true;
-	*shell_info->status = 258;
-}
-
-void	quote_error(t_shell *shell_info)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd("syntax error: ", 2);
-	ft_putstr_fd("can't handle unclosed quotes\n", 2);
-	*shell_info->status = 258;
-}

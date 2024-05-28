@@ -1,8 +1,9 @@
 #include "minishell.h"
 
-static t_token *simple_file_redir(t_command *cmd_node, t_token *iter, t_token_type flag)
+static t_token	*simple_file_redir(t_command *cmd_node, t_token *iter, \
+t_token_type flag)
 {
-	t_token_type hold;
+	t_token_type	hold;
 
 	iter = iter->next;
 	hold = iter->token_type;
@@ -26,7 +27,7 @@ static t_token *simple_file_redir(t_command *cmd_node, t_token *iter, t_token_ty
 	return (iter);
 }
 
-static t_token *heredoc_redir(t_command *cmd_node, t_token *iter)
+static t_token	*heredoc_redir(t_command *cmd_node, t_token *iter)
 {
 	iter = iter->next;
 	if (iter && (iter->token_type == S_QUOTE || iter->token_type == D_QUOTE))
@@ -91,7 +92,7 @@ void	file_opener(t_command *cmd_node, int flag, char *file)
 	{
 		if (cmd_node->input_fd != -1)
 			close(cmd_node->input_fd);
-		cmd_node->input_fd = open(file, O_RDONLY); //
+		cmd_node->input_fd = open(file, O_RDONLY);
 	}
 	else if (flag == S_MORE)
 	{

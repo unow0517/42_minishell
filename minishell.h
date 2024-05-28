@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/27 16:42:50 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/28 14:36:22 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,6 @@ t_token		*skip_awk(t_token *iterate, int *sq, int *dq);
 
 //BUILTIN_ARGS.C
 char		*arg_for_export(t_token *cur);
-void		update_quote_state(t_token *cur, int *inside_sq, \
-int *inside_dq, int i);
-void		update_quote_state_token(t_token *cur, int \
-*inside_sq, int *inside_dq);
 t_token		*skip_tokens_of_builtin_arg(t_token *iterate);
 t_token		*initialise_builtin_type_arg(t_command *cmd_node, t_token *iterate);
 
@@ -133,7 +129,6 @@ void		print_split(char **str);
 void		print_cmd_list(t_command *cmd_node);
 void		print_split_no_newline(char **str);
 void		print_token_types(t_shell *shell_info);
-void		syntax_error_check(t_shell *shell_info);
 
 //ECHO.C
 void		run_echo(char *inpt, t_shell *shell_info);
@@ -159,7 +154,7 @@ pid_t		exec_single_cmd(t_shell *shell_info, t_command	*cmd_to_exec);
 void		pipe_handling(t_shell *shell_info, t_command *cur);
 void		close_pipes(t_shell *shell_info);
 void		execute_builtin(t_shell *shell_info, t_command *cur);
-// void		execute_builtin_no_fork(t_shell *shell_info, \
+// void		execute_builtin_no_fork(t_shell *shell_info, 
 //			char *builtin,char *arg);
 
 //EXPAND.C
@@ -177,7 +172,6 @@ void		ft_expand(t_shell *shell_info);
 int			is_al_num_udsc_c(char c);
 int			ft_varname_len(char *str);
 char		*join_three(char *str1, char *str2, char *str3);
-
 
 //EXPORT.C
 t_env_mini	*ft_lstnew_envmini(char *name, char *value);
@@ -256,8 +250,10 @@ void		catchsignal(void);
 
 //SPLIT_MS.C
 char		**split_ms(char const *s, char c);
-void		update_quote_state_str(const char *str, int *inside_sq, \
-int *inside_dq, int i);
+void		update_quote_state_str(const char *str, int *sq, int *dq, int i);
+void		update_ints(char const *s, int *end, int *dq, int*sq);
+void		update_position(int *end, int *start, char const *s, char c);
+char		*create_ms_split_array(char *array, int *end, int *start, char const *s);
 
 //TOKENIZER.C
 void		create_tokens(t_shell *shell_info);
@@ -292,15 +288,13 @@ bool		quotes_even(char *input);
 char		*remove_unecessary_q(t_shell *shell_info);
 bool		is_double(t_shell *shell_info, int i);
 void		finalise_node(t_shell *shell_info, t_command *cmd_node);
-void		nullify_ints_four(int *inside_sq, int *inside_dq, int *i, \
-int *counter);
+void		nullify_ints_four(int *sq, int *dq, int *i, int *counter);
 void		reset(t_shell *shell_info);
 bool		has_double_pipe(t_token *iter, int dq, int sq);
 t_token		*double_pipe_case(t_shell *shell_info, t_token *iter);
-bool	has_redir_twice(t_token *iter, int dq, int sq);
-t_token	*twice_redir_case(t_shell *shell_info, t_token *iter);
-bool	syntax_error_at_start(t_token *iter);
-void	syntax_error_at_start_msg(t_shell *shell_info, t_token *iter);
+bool		has_redir_twice(t_token *iter, int dq, int sq);
+t_token		*twice_redir_case(t_shell *shell_info, t_token *iter);
+
 //PARSING.C
 void		parse_input(t_shell *shell_info);
 void		parse_tokens(t_shell *shell_info);
@@ -309,6 +303,8 @@ void		set_executable_nodes(t_shell *shell_info, t_token *iterate);
 int			open_file(t_command *cmd_node, t_token *iterate, int flag);
 void		initialise_cmd_node(t_command *cmd_node);
 void		init_cmds_in_struct(t_command *cmd_node, char *to_split);
+void		update_quote_state(t_token *cur, int *sq, int *dq, int i);
+void		update_quote_state_token(t_token *cur, int *sq, int *dq);
 
 //PARSING_CASES.C
 bool		builtin_case(t_token *iterate);
@@ -352,8 +348,8 @@ void		run_export(char *str, t_shell *shell_info);
 //EXPAND.C
 int			is_al_num_udsc_c(char c);
 int			ft_varname_len(char *str);
-char    	*ft_varvalue(int var_name_len, char *str, t_env_mini *env_mini);
-char    	*replace_expand(char *inpt, char *var_value, int var_name_len);
+char		*ft_varvalue(int var_name_len, char *str, t_env_mini *env_mini);
+char		*replace_expand(char *inpt, char *var_value, int var_name_len);
 void		ft_expand(t_shell *shell_info);
 void		replace_caret(t_shell *shell_info);
 
@@ -369,18 +365,16 @@ void		free_shell(t_shell *shell_info);
 //QUOTES
 char		*quote_handler(t_token *iterate, t_token_type flag);
 t_token		*skip_quoted_str(t_token *to_skip, t_token_type flag);
+char		*rm_q_in_fullcmd(char *to_fix);
 
 //SPLIT_MS.C
 char		**split_ms(char const *s, char c);
-void		update_quote_state_str(const char *str, int *inside_sq, \
-int *inside_dq, int i);
+void		update_quote_state_str(const char *str, int *sq, int *dq, int i);
 
 //BUILTIN_ARGS
 char		*arg_for_export(t_token *cur);
-void		update_quote_state(t_token *cur, int *inside_sq, \
-int *inside_dq, int i);
-void		update_quote_state_token(t_token *cur, int \
-*inside_sq, int *inside_dq);
+void		update_quote_state(t_token *cur, int *sq, int *dq, int i);
+void		update_quote_state_token(t_token *cur, int *sq, int *dq);
 t_token		*skip_tokens_of_builtin_arg(t_token *iterate);
 t_token		*initialise_builtin_type_arg(t_command *cmd_node, t_token *iterate);
 
@@ -393,5 +387,10 @@ void		file_opener(t_command *cmd_node, int flag, char *file);
 char		*rm_starting_ws(char *string);
 char		*multiple_ws_to_single(char	*str);
 char		*ptr_ws(char *inpt);
+
+//SYNTAX
+void		syntax_error_check(t_shell *shell_info);
+bool		syntax_error_at_start(t_token *iter);
+void		syntax_error_at_start_msg(t_shell *shell_info, t_token *iter);
 
 #endif

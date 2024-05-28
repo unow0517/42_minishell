@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 13:39:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/27 15:58:16 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/28 13:15:07 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,16 @@
 
 void	print_token(t_token *token)
 {
-	printf("current token = %p\n", token);
-	printf("token->input = %s\n", token->input);
-	printf("token->len = %i\n", token->len);
-	printf("token->idx = %i\n", token->idx);
-	printf("token->content = %s\n", &token->input[token->idx]);
-	printf("token->token_type = %i\n", token->token_type);
-	printf("token->next = %p\n", token->next);
-}
-
-void	print_linked_tokens(t_token *token)
-{
 	while (token)
 	{
 		printf("________________________________________________________\n");
-		print_token(token);
+		printf("current token = %p\n", token);
+		printf("token->input = %s\n", token->input);
+		printf("token->len = %i\n", token->len);
+		printf("token->idx = %i\n", token->idx);
+		printf("token->content = %s\n", &token->input[token->idx]);
+		printf("token->token_type = %i\n", token->token_type);
+		printf("token->next = %p\n", token->next);
 		token = token->next;
 	}
 }
@@ -47,7 +42,7 @@ void	print_split(char **str)
 
 void	print_split_no_newline(char **str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -56,7 +51,6 @@ void	print_split_no_newline(char **str)
 		i++;
 	}
 }
-
 
 void	print_cmd_list(t_command *cmd_node)
 {
@@ -88,7 +82,7 @@ void	print_cmd_list(t_command *cmd_node)
 
 void	print_token_types(t_shell *shell_info)
 {
-	t_token *token;
+	t_token	*token;
 
 	token = shell_info->tokens;
 	while (token)
@@ -113,32 +107,4 @@ void	print_token_types(t_shell *shell_info)
 		token = token->next;
 	}
 	printf("\n");
-}
-
-void	syntax_error_check(t_shell *shell_info)
-{
-	t_token	*iter;
-	int		dq;
-	int		sq;
-
-	dq = 0;
-	sq = 0;
-	if (!shell_info->tokens)
-		return ;
-	iter = shell_info->tokens;
-	if (syntax_error_at_start(iter) == true)
-		syntax_error_at_start_msg(shell_info, iter);
-	else
-	{
-		while (iter && iter->next)
-		{
-			update_quote_state(iter, &sq, &dq, 0);
-			if (has_redir_twice(iter, dq, sq) == true)
-				iter = twice_redir_case(shell_info, iter);
-			else if (has_double_pipe(iter, dq, sq) == true)
-				iter = double_pipe_case(shell_info, iter);
-			if (iter)
-				iter = iter->next;
-		}
-	}
 }

@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **env)
 
 	// atexit(&leaks);
 	if (argc != 1)
-		printf("Minishell executable does not use arguments\n");	
+		printf("Minishell executable does not use arguments\n");
 	initialise_basics(argc, argv, env, &shell_info);
 	if (create_prompt(&shell_info) != 0)
 		return (EXIT_FAILURE);
@@ -48,7 +48,7 @@ t_env_mini	*env_to_envmini(char	**env, t_env_mini *env_mini)
 		env_mini->name = name;
 		env_mini->value = value;
 		env++;
-		if (env && *env && !inputis(name,"OLDPWD"))
+		if (env && *env && !inputis(name, "OLDPWD"))
 		{
 			env_mini->next = malloc(sizeof(t_env_mini));
 			env_mini = env_mini->next;
@@ -57,13 +57,14 @@ t_env_mini	*env_to_envmini(char	**env, t_env_mini *env_mini)
 	return (ptr);
 }
 
-void	initialise_basics(int argc, char **argv, char **env, t_shell *shell_info)
+void	initialise_basics(int argc, char **argv, char **env, \
+t_shell *shell_info)
 {
 	shell_info->argc = argc;
 	shell_info->argv = argv;
 	shell_info->env = env;
 	shell_info->env_mini = malloc(sizeof(t_env_mini));
-	shell_info->env_mini = env_to_envmini(env, shell_info->env_mini);	
+	shell_info->env_mini = env_to_envmini(env, shell_info->env_mini);
 	getcwd(shell_info->cwd, sizeof(shell_info->cwd));
 	shell_info->tokens = NULL;
 	shell_info->user_input = NULL;

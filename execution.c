@@ -143,7 +143,7 @@ void	close_pipes(t_shell *shell_info)
 	}
 }
 
-void	handle_redir(t_shell *shell_info, t_command *cur) ///////close pipe in each case
+void	handle_redir(t_shell *shell_info, t_command *cur)
 {
 	if (cur->input_fd != -1)
 	{

@@ -50,18 +50,6 @@ char	*arg_for_export(t_token *cur)
 	return (arg);
 }
 
-void	update_quote_state(t_token *cur, int *inside_sq, int *inside_dq, int i)
-{
-	if (cur->content[i] == '\'' && *inside_sq == 0)
-		*inside_sq = 1;
-	else if (cur->content[i] == '\'' && *inside_sq == 1)
-		*inside_sq = 0;
-	if (cur->content[i] == '"' && *inside_dq == 0)
-		*inside_dq = 1;
-	else if (cur->content[i] == '"' && *inside_dq == 1)
-		*inside_dq = 0;
-}
-
 t_token	*skip_tokens_of_builtin_arg(t_token *iterate)
 {
 	int	inside_sq;
@@ -80,18 +68,6 @@ t_token	*skip_tokens_of_builtin_arg(t_token *iterate)
 		iterate = iterate->next;
 	}
 	return (iterate);
-}
-
-void	update_quote_state_token(t_token *cur, int *inside_sq, int *inside_dq)
-{
-	if (cur->token_type == S_QUOTE && *inside_sq == 0)
-		*inside_sq = 1;
-	else if (cur->token_type == S_QUOTE && *inside_sq == 1)
-		*inside_sq = 0;
-	if (cur->token_type == D_QUOTE && *inside_dq == 0)
-		*inside_dq = 1;
-	else if (cur->token_type == D_QUOTE && *inside_dq == 1)
-		*inside_dq = 0;
 }
 
 t_token	*initialise_builtin_type_arg(t_command *cmd_node, t_token *iterate)

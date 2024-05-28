@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/28 12:40:03 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/28 13:18:39 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -351,27 +351,26 @@ t_token	*twice_redir_case(t_shell *shell_info, t_token *iter)
 	return (iter);
 }
 
-bool	syntax_error_at_start(t_token *iter)
+void	update_quote_state_token(t_token *cur, int *sq, int *dq)
 {
-	if ((iter->token_type == PIPE && !iter->next) || \
-	(iter->token_type == PIPE && iter->next->token_type != PIPE))
-		return (true);
-	else if (iter->token_type == PIPE && iter->next && \
-	iter->next->token_type == PIPE)
-		return (true);
-	else if (is_redir(iter->token_type) == true && !iter->next)
-		return (true);
-	return (false);
+	if (cur->token_type == S_QUOTE && *sq == 0)
+		*sq = 1;
+	else if (cur->token_type == S_QUOTE && *sq == 1)
+		*sq = 0;
+	if (cur->token_type == D_QUOTE && *dq == 0)
+		*dq = 1;
+	else if (cur->token_type == D_QUOTE && *dq == 1)
+		*dq = 0;
 }
 
-void	syntax_error_at_start_msg(t_shell *shell_info, t_token *iter)
+void	update_quote_state(t_token *cur, int *sq, int *dq, int i)
 {
-	if ((iter->token_type == PIPE && !iter->next) || \
-	(iter->token_type == PIPE && iter->next->token_type != PIPE))
-		unexpected_token(shell_info, "|");
-	else if (iter->token_type == PIPE && iter->next && \
-	iter->next->token_type == PIPE)
-		unexpected_token(shell_info, "|");
-	else if (is_redir(iter->token_type) == true && !iter->next)
-		unexpected_token(shell_info, "newline");
+	if (cur->content[i] == '\'' && *sq == 0)
+		*sq = 1;
+	else if (cur->content[i] == '\'' && *sq == 1)
+		*sq = 0;
+	if (cur->content[i] == '"' && *dq == 0)
+		*dq = 1;
+	else if (cur->content[i] == '"' && *dq == 1)
+		*dq = 0;
 }
