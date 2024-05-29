@@ -21,15 +21,21 @@ int	main(int argc, char **argv, char **env)
 {
 	t_shell	shell_info;
 
-	// atexit(&leaks);
 	if (argc != 1)
-		printf("Minishell executable does not use arguments\n");	
-	initialise_basics(argc, argv, env, &shell_info);
+		printf("Minishell executable does not use arguments\n");
+	initialise_basics(argv, env, &shell_info);
 	if (create_prompt(&shell_info) != 0)
 		return (EXIT_FAILURE);
 	catchsignal();
 	inpt_handler(&shell_info);
 	return (0);
+}
+
+void	init_env_mini(t_env_mini *env_mini)
+{
+	env_mini->name = NULL;
+	env_mini->value = NULL;
+	env_mini->next = NULL;
 }
 
 t_env_mini	*env_to_envmini(char	**env, t_env_mini *env_mini)
@@ -48,22 +54,24 @@ t_env_mini	*env_to_envmini(char	**env, t_env_mini *env_mini)
 		env_mini->name = name;
 		env_mini->value = value;
 		env++;
-		if (env && *env && !inputis(name,"OLDPWD"))
+		if (env && *env && !inputis(name, "OLDPWD"))
 		{
 			env_mini->next = malloc(sizeof(t_env_mini));
+			env_mini->next->name = NULL;
+			env_mini->next->value = NULL;
 			env_mini = env_mini->next;
 		}
 	}
 	return (ptr);
 }
 
-void	initialise_basics(int argc, char **argv, char **env, t_shell *shell_info)
+void	initialise_basics(char **argv, char **env, t_shell *shell_info)
 {
-	shell_info->argc = argc;
 	shell_info->argv = argv;
 	shell_info->env = env;
 	shell_info->env_mini = malloc(sizeof(t_env_mini));
-	shell_info->env_mini = env_to_envmini(env, shell_info->env_mini);	
+	init_env_mini(shell_info->env_mini);
+	shell_info->env_mini = env_to_envmini(env, shell_info->env_mini);
 	getcwd(shell_info->cwd, sizeof(shell_info->cwd));
 	shell_info->tokens = NULL;
 	shell_info->user_input = NULL;
@@ -82,7 +90,6 @@ int	create_prompt(t_shell *shell_info)
 	char	*prompt_with_dollar;
 
 	prompt = NULL;
-	// prompt = ft_strjoin("\033[0;35mminishell\033[0m ", getenv("USER"));
 	prompt = ft_strjoin("minishell__", getenv("USER"));
 	if (!prompt)
 		return (1);
@@ -91,7 +98,6 @@ int	create_prompt(t_shell *shell_info)
 		return (free(prompt), 1);
 	ft_memset(shell_info->prompt, 0, 2048);
 	ft_strlcat(shell_info->prompt, prompt_with_dollar, 2048);
-	// free(prompt);
 	free(prompt_with_dollar);
 	return (0);
 }

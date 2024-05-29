@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/27 16:42:50 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:42:57 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,22 +162,31 @@ void		execute_builtin(t_shell *shell_info, t_command *cur);
 // void		execute_builtin_no_fork(t_shell *shell_info, \
 //			char *builtin,char *arg);
 
-//EXPAND.C
-char		*ft_varvalue(int var_name_len, char *str, t_env_mini *env_mini);
+//EXPAND_REPLACES.C
 void		replace_bs_dollar(t_shell *shell_info);
-char		*replace_expand(char *inpt, char *var_value, int var_name_len);
-// void		replace_caret(t_shell *shell_info);
+char		*replace_exp(char *inpt, char *var_value, int var_name_len);
+void		replace_dollar_question(t_shell *shell_info);
+void		replace_caret(t_shell *shell_info);
+void		replace_exps_loop(t_shell *shell_info);
+
+//EXPAND_UTIL_2.C
+void		cpy_str(char *str, char *dst, int cnt);
+void		update_quoted(char *str, int *i_sq);
+
+//EXPAND_UTIL.C
+int			is_al_num_udsc_c(char c);
+int			ft_varname_len(char *str);
+char		*ft_varvalue(int var_name_len, char *str, t_env_mini *env_mini);
+char		*join_three(char *str1, char *str2, char *str3);
+void		rm_ws_aft_dl(char *before, char *after, t_shell *shell_info);
+
+
+//EXPAND.C
 // void		expand_except_literal(t_shell *shell_info);
 // void 	rm_outest_q_and_exp(t_shell *shell_info);
 // void		rm_outest_q(t_shell *shell_info);
 // void		rm_ws_following_d_less(t_shell *shell_info);
 void		ft_expand(t_shell *shell_info);
-
-//EXPAND_UTIL.C
-int			is_al_num_udsc_c(char c);
-int			ft_varname_len(char *str);
-char		*join_three(char *str1, char *str2, char *str3);
-
 
 //EXPORT.C
 t_env_mini	*ft_lstnew_envmini(char *name, char *value);
@@ -202,7 +211,7 @@ int			inputhas(char *input, char c);
 
 //MINISHELL.C
 void		inpt_handler(t_shell *shell_info);
-void		initialise_basics(int argc, char **argv, char **env, t_shell *info);
+void		initialise_basics(char **argv, char **env, t_shell *info);
 int			create_prompt(t_shell *shell_info);
 
 //PARSING_CASES.C
@@ -353,7 +362,7 @@ void		run_export(char *str, t_shell *shell_info);
 int			is_al_num_udsc_c(char c);
 int			ft_varname_len(char *str);
 char    	*ft_varvalue(int var_name_len, char *str, t_env_mini *env_mini);
-char    	*replace_expand(char *inpt, char *var_value, int var_name_len);
+char    	*replace_exp(char *inpt, char *var_value, int var_name_len);
 void		ft_expand(t_shell *shell_info);
 void		replace_caret(t_shell *shell_info);
 

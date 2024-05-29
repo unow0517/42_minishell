@@ -14,17 +14,16 @@
 
 int	inputis(char *inpt, char *string)
 {
-	// int	len;
-
-	// len = 0;
-	// if (ft_strlen(inpt) < ft_strlen(string))
-	// 	len = ft_strlen(string);
-	// else
-	// 	len = ft_strlen(inpt);
-  if ((!ft_strncmp(inpt, string, ft_strlen(inpt))) && (ft_strlen(inpt) == ft_strlen(string)))
-		return (1);
+	if (!inpt || !string)
+		return (0);
+	if ((!ft_strncmp(inpt, string, ft_strlen(inpt))))
+	{
+		if (ft_strlen(inpt) == ft_strlen(string))
+			return (1);
+	}
 	else
 		return (0);
+	return (0);
 }
 
 int	inputstartswith(char *inpt, char *string)
@@ -67,6 +66,4 @@ char	*make_abs_path(char *input)
 		full_path = ft_strjoin(cwd, slash_input);
 		return (free(slash_input), free(full_path), full_path);
 	}
-
-
 }
