@@ -4,3 +4,4 @@
 minishell_tester/
 .gitignore
 Libft/objects
+leaks.txt

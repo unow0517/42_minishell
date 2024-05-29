@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 16:41:03 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/29 18:26:33 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,6 +349,8 @@ void		run_unset(char *str, t_shell *shell_info);
 void		free_tokens(t_token **shell_info);
 void		free_cmd_list(t_command **cmds);
 void		free_shell(t_shell *shell_info);
+void		free_env_mini(t_env_mini *env_mini);
+
 
 //QUOTES
 char		*quote_handler(t_token *iterate, t_token_type flag);
