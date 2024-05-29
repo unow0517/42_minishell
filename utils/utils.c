@@ -1,16 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_functions.c                                  :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/25 16:36:23 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/26 19:45:32 by tsimitop         ###   ########.fr       */
+/*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
+/*   Updated: 2024/05/29 11:38:53 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
+
+int	skip_whitespace(char *inpt, int i)
+{
+	while (inpt[i] != '\0' && \
+	(inpt[i] == ' ' || inpt[i] == '\t' || inpt[i] == '\r' || \
+	inpt[i] == '\n' || inpt[i] == '\v' || inpt[i] == '\f'))
+		i++;
+	return (i);
+}
+
+void	nullify_ints_four(int *inside_sq, int *inside_dq, int *i, int *counter)
+{
+	*i = 0;
+	*counter = 0;
+	*inside_dq = 0;
+	*inside_sq = 0;
+}
 
 //1ST WORD OF STRING, WHICH IS NOT METACHAR.
 char	*get_first_word(char *argv)
@@ -34,22 +51,3 @@ char	*get_first_word(char *argv)
 	}
 	return (small_cmd);
 }
-
-void	free_split_thalia(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str && str[i])
-	{
-		free(str[i]);
-		i++;
-	}
-	free(str);
-}
-
-// void	handle_error(char *str)
-// {
-// 	perror(str);
-// 	exit(EXIT_FAILURE);
-// }

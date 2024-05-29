@@ -7,6 +7,7 @@ LIBS = libft.h minishell.h
 LIBFT_PATH = ./Libft
 LIBFT := $(LIBFT_PATH)/libft.a
 LDFLAGS = -L $(LIBFT_PATH) -lft -lreadline
+UTILS = ./utils
 
 NAME = minishell
 
@@ -15,8 +16,6 @@ NAME = minishell
 ################################################################################
 
 SRCS =	awk.c \
-		awk_utils.c \
-		builtin_args.c \
 		cd.c \
 		checks.c \
 		echo.c \
@@ -34,18 +33,28 @@ SRCS =	awk.c \
 		parsing_cases.c \
 		parsing_helper.c \
 		pipe.c \
-		pipex_functions.c \
 		pwd.c \
-		quotes.c \
 		redir.c \
 		sig_functions.c \
-		split_ms.c \
 		tokenizer.c \
 		unset.c \
-		utils.c \
 		white_space.c \
 		expand_util.c \
-		syntax.c
+		syntax.c \
+		$(UTILS)/awk_utils.c \
+		$(UTILS)/builtin_args.c \
+		$(UTILS)/utils.c \
+		$(UTILS)/linked_lists.c \
+		$(UTILS)/if_cases.c \
+		$(UTILS)/if_cases_one.c \
+		$(UTILS)/if_cases_two.c \
+		$(UTILS)/redir_quote.c \
+		$(UTILS)/close_exit.c \
+		$(UTILS)/cmd_utils.c \
+		$(UTILS)/split_ms.c \
+		$(UTILS)/split_helper.c \
+		$(UTILS)/quotes.c \
+		$(UTILS)/quotes_one.c
 
 OBJ = $(SRCS:.c=.o)
 

@@ -23,7 +23,6 @@ void	inpt_handler(t_shell *shell_info)
 		shell_info->user_input = readline(shell_info->prompt);
 		if (shell_info->user_input && !inputis(shell_info->user_input, ""))
 			add_history(shell_info->user_input);
-		// shell_info->user_input = remove_unecessary_q(shell_info); //FIXES EMPTY QUOTES BUT DESTROYS CTRL+D SIGNAL
 		ft_expand(shell_info);
 		parse_input(shell_info);
 		execution_cases(shell_info);

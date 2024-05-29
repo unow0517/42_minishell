@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/28 14:36:22 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:39:57 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <signal.h>
 # include <termios.h>
 # include "Libft/libft.h"
-// # include "printf/printf.h"
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <stdbool.h>
@@ -29,8 +28,7 @@
 # define DFL 1
 # define IGN 2
 
-//added by thalia
-typedef enum e_token_type
+typedef enum	e_token_type
 {
 	NO_TOKEN,
 	WORD,
@@ -43,7 +41,7 @@ typedef enum e_token_type
 	D_MORE
 }	t_token_type;
 
-typedef struct s_token
+typedef struct	s_token
 {
 	char				*input;
 	int					len;
@@ -53,7 +51,7 @@ typedef struct s_token
 	struct s_token		*next;
 }	t_token;
 
-typedef struct s_command
+typedef struct	s_command
 {
 	char				*cmd;
 	char				**options;
@@ -124,7 +122,6 @@ void		run_cd(char *inpt, t_shell *shell_info);
 
 //CHECKS.C
 void		print_token(t_token *token);
-void		print_linked_tokens(t_token *token);
 void		print_split(char **str);
 void		print_cmd_list(t_command *cmd_node);
 void		print_split_no_newline(char **str);
@@ -182,6 +179,7 @@ void		run_export(char *str, t_shell *shell_info);
 void		free_tokens(t_token **shell_info);
 void		free_cmd_list(t_command **cmds);
 void		free_shell(t_shell *shell_info);
+void		free_split_thalia(char **str);
 
 //HISTORY.C
 void		print_history(t_shell *shell_info);
@@ -227,9 +225,7 @@ void		init_cmds_in_struct(t_command *cmd_node, char *to_split);
 char		*find_cmd_in_env_mini(char *cmd, char **env);
 
 //PIPEX_FUNCTIONS.C
-char		*get_first_word(char *argv);
 // void		handle_error(char *str);
-void		free_split_thalia(char **str);
 
 //PWD.C
 void		run_pwd(t_shell *shell_info);
@@ -264,11 +260,11 @@ t_token		*create_double_token(t_shell *shell_info, int i);
 char		**ft_path_in_envmini(t_env_mini *env_mini);
 void		run_unset(char *str, t_shell *shell_info);
 
-//UTILS.C
+//UTILS_DIRECTORY
 void		token_add_back(t_token **first_token, t_token *new);
 t_token		*token_last(t_token *token);
 int			skip_whitespace(char *inpt, int i);
-int			num_of_remaining_cmds(t_command *cur);
+// int			num_of_remaining_cmds(t_command *cur);
 int			num_of_total_cmds(t_command *cur);
 t_command	*get_last_cmd(t_command *cmd);
 void		close_fds(t_shell *shell_info, t_command *cur);
@@ -283,9 +279,7 @@ bool		is_redir(int i);
 bool		is_redir_pipe(t_token_type i);
 bool		is_redir_pipe_char(char i);
 bool		ft_is_builtin(char *str);
-char		*get_argument(char *argv);
 bool		quotes_even(char *input);
-char		*remove_unecessary_q(t_shell *shell_info);
 bool		is_double(t_shell *shell_info, int i);
 void		finalise_node(t_shell *shell_info, t_command *cmd_node);
 void		nullify_ints_four(int *sq, int *dq, int *i, int *counter);
@@ -294,6 +288,7 @@ bool		has_double_pipe(t_token *iter, int dq, int sq);
 t_token		*double_pipe_case(t_shell *shell_info, t_token *iter);
 bool		has_redir_twice(t_token *iter, int dq, int sq);
 t_token		*twice_redir_case(t_shell *shell_info, t_token *iter);
+char		*get_first_word(char *argv);
 
 //PARSING.C
 void		parse_input(t_shell *shell_info);

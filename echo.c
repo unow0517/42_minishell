@@ -98,7 +98,7 @@ void	run_echo(char *inpt, t_shell *shell_info)
 				echo_without_flag(split_arg);
 		}
 		if (split_arg)
-			free(split_arg);
+			free_split_thalia(split_arg);
 	}
 	else
 		write (1, "\n", 1);

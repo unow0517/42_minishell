@@ -61,3 +61,16 @@ void	free_shell(t_shell *shell_info)
 	free(shell_info->user_input);
 	free(shell_info->status);
 }
+
+void	free_split_thalia(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str && str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+}

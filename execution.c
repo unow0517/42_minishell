@@ -23,15 +23,11 @@ void	execution_cases(t_shell *shell_info)
 		if (num_of_total_cmds(shell_info->first_command) == 1 && \
 		shell_info->first_command->is_builtin == true)
 			execute_builtin(shell_info, shell_info->first_command);
-		// else if (num_of_total_cmds(shell_info->first_command) == 1)
-		// 	pid = exec_single_cmd(shell_info, shell_info->first_command);
 		else
 			pid = exec_pipeline(shell_info);
 		waitpid(pid, shell_info->status, 0);
-		while (waitpid(-1, NULL, WNOHANG) != -1) //WUNTRACED
+		while (waitpid(-1, NULL, WNOHANG) != -1)
 			;
-		// while (waitpid(pid, shell_info->status, WNOHANG) != -1) //WUNTRACED
-		// 	;
 		*shell_info->status = handle_exit(*shell_info->status);
 	}
 }
@@ -54,7 +50,8 @@ void execute_builtin(t_shell *shell_info, t_command *cmd)
 		print_history(shell_info);
 }
 
-//YUN: ITERATE TO RUN COMMANDS, shell_info->first_command IS LINKED LIST OF CMD STRUCTS
+//YUN: ITERATE TO RUN COMMANDS, shell_info->first_command IS LINKED LIST 
+//OF CMD STRUCTS
 pid_t	exec_pipeline(t_shell *shell_info)
 {
 	t_command	*iterate_cmd;
@@ -94,12 +91,10 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 			else
 			{
 				if (cmd_to_exec->cmd == NULL)
-					exit(0); ///check exit value
-				// if (cmd_to_exec->cmd[0] == '\0')
-				// 	exit(0); 
+					exit(0);
 				full_path = find_cmd_in_env_mini(cmd_to_exec->cmd, paths_in_env);
 				if (!full_path || !paths_in_env)
-					cmd_error(cmd_to_exec); // exit (127);
+					cmd_error(cmd_to_exec);
 				execve(full_path, cmd_to_exec->full_cmd, paths_in_env);
 				free(full_path);
 				cmd_error(cmd_to_exec);
