@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 15:55:48 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/29 16:41:03 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ int			is_al_num_underscore(char *str);
 char		*export_rm_quote(char *str);
 // char		*find_varname(char *str);
 // char		*find_varvalue(char *str);
-void		run_export_keyword(char	*str, t_shell *shell_info);
+void		run_export_keyword(char	*str, t_shell *shell_info, int *status);
 void		run_export(char *str, t_shell *shell_info);
 
 //FREEING.C

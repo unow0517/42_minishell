@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 12:09:53 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 15:56:32 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/29 16:09:00 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ void	run_declare_env(t_shell *shell_info)
 			printf("declare -x %s=\"%s\"\n", env_mini->name, env_mini->value);
 		else
 			printf("declare -x %s\n", env_mini->name);
-		env_mini = env_mini->next;
+		if (env_mini->next)
+			env_mini = env_mini->next;
+		else
+			break ;
 	}
 	proc_exit(0, shell_info);
 }

@@ -82,7 +82,9 @@ void	run_cd(char *inpt, t_shell *shell_info)
 	char		*path_input;
 	char		cwd[2048];
 	t_env_mini	*env_mini_home;
+	// int			status;
 
+	// status = 0;
 	if (!inpt || !*inpt)
 		return ;
 	path_input = rm_outest_quote_cd(inpt, shell_info);
@@ -92,6 +94,7 @@ void	run_cd(char *inpt, t_shell *shell_info)
 	env_mini_home = env_search_name("HOME", shell_info->env_mini);
 	if (inputis(inpt, "~"))
 	{
+		// status = 1;
 		update_pwd(env_mini_home->value, shell_info);
 		proc_exit(0, shell_info);
 	}

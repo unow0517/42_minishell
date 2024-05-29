@@ -24,11 +24,13 @@ void	execution_cases(t_shell *shell_info)
 		shell_info->first_command->is_builtin == true)
 			execute_builtin(shell_info, shell_info->first_command);
 		else
+		{
 			pid = exec_pipeline(shell_info);
-		waitpid(pid, shell_info->status, 0);
-		while (waitpid(-1, NULL, WNOHANG) != -1)
-			;
-		*shell_info->status = handle_exit(*shell_info->status);
+			waitpid(pid, shell_info->status, 0);
+			while (waitpid(-1, NULL, WNOHANG) != -1)
+				;
+			*shell_info->status = handle_exit(*shell_info->status);
+		}
 	}
 }
 

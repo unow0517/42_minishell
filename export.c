@@ -55,7 +55,7 @@ char	*find_varvalue(char *str)
 	return (var_value);
 }
 
-void	run_export_keyword(char	*str, t_shell *shell_info)
+void	run_export_keyword(char	*str, t_shell *shell_info, int *status)
 {
 	char		*var_name;
 	char		*var_value;
@@ -67,14 +67,20 @@ void	run_export_keyword(char	*str, t_shell *shell_info)
 	var_value = find_varvalue(ptr);
 	if (!var_name || !is_al_num_underscore(var_name))
 	{
-		proc_exit(1, shell_info);
-		printf("minishell: export: `%s' not a valid identifier\n", str);
+		// proc_exit(1, shell_info);
+		(*status)++;
+		printf("minishell: export: `%s' not a valid identifier\n", ptr);
+	}
+	else if (ft_strlen(ptr) && isdigit(*ptr))
+	{
+		// proc_exit(1, shell_info);
+		(*status)++;
+		printf("minishell: export: `%s' not a valid identifier\n", ptr);
 	}
 	else if (is_al_num_underscore(var_name))
 	{
 		env_mini = ft_lstnew_envmini(var_name, var_value);
 		ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
-		proc_exit(0, shell_info);
 	}
 }
 
@@ -82,8 +88,10 @@ void	run_export(char *str, t_shell *shell_info)
 {
 	char	*inpt;
 	char	**keywords;
+	int		status;
 
 	inpt = str;
+	status = 0;
 	if (!str || !ft_strlen(inpt))
 		run_declare_env(shell_info);
 	else
@@ -91,8 +99,13 @@ void	run_export(char *str, t_shell *shell_info)
 		keywords = ft_split(inpt, ' ');
 		while (keywords && *keywords)
 		{
-			run_export_keyword(*keywords, shell_info);
+			run_export_keyword(*keywords, shell_info, &status);
 			keywords++;
 		}
 	}
+	if (status)
+		proc_exit(1, shell_info);
+	else
+		proc_exit(0, shell_info);
+
 }
