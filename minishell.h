@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 15:03:35 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:26:07 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,8 @@ void		close_pipes(t_shell *shell_info);
 void		execute_builtin(t_shell *shell_info, t_command *cur);
 // void		execute_builtin_no_fork(t_shell *shell_info, 
 //			char *builtin,char *arg);
+void		fork_fail(void);
+void	execute_cmd(t_shell *shell_info, t_command *cmd_to_exec);
 
 //EXPAND_REPLACES.C
 void		replace_bs_dollar(t_shell *shell_info);
