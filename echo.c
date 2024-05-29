@@ -27,7 +27,6 @@ static void	echo_without_flag(char **split_arg)
 		j = 0;
 		if (i != 0)
 			write (1, " ", 1);
-		// printf("split_arg[i] %s\n", split_arg[i]);
 		while (split_arg[i][j])
 		{
 			if ((split_arg[i][j] == '\'' && dq == 0) || \
@@ -70,7 +69,7 @@ static void	echo_with_flag(char **split_arg)
 	}
 }
 
-int	is_flag(char	*str)
+int	is_flag(char *str)
 {
 	int	i;
 
@@ -90,7 +89,6 @@ void	run_echo(char *inpt, t_shell *shell_info)
 
 	if (inpt)
 	{
-		printf("inpt %s\n", inpt);
 		split_arg = split_ms(inpt, ' ');
 		if (split_arg)
 		{

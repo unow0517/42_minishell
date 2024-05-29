@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 11:42:57 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/29 11:54:05 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -400,6 +400,7 @@ void		file_opener(t_command *cmd_node, int flag, char *file);
 
 //WHITE_SPACE.C
 char		*rm_starting_ws(char *string);
+void		cpy_chars(char *str, int *i, int *j);
 char		*multiple_ws_to_single(char	*str);
 char		*ptr_ws(char *inpt);
 
