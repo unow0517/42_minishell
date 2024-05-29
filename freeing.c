@@ -74,3 +74,27 @@ void	free_split_thalia(char **str)
 	}
 	free(str);
 }
+
+// void	free_env_mini(t_env_mini *env_mini)
+// {
+// 	t_env_mini  *next_node;
+// 	t_env_mini  *current;
+// 	next_node = NULL;
+// 	current = NULL;
+// 	current->next = NULL;
+// 	if (env_mini->next)
+// 		next_node = env_mini->next;
+// 	else
+// 		return ;
+// 	free(env_mini);
+// 	while (next_node)
+// 	{
+// 		current = next_node;
+// 		if (current)
+// 		{
+// 			if (current->next)
+// 				next_node = current->next;
+// 			free(current);
+// 		}
+// 	}
+// }

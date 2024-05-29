@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:57:28 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 19:02:06 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 19:52:46 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,23 @@ static void	awk_data_init(t_awk_data *data)
 
 static void	awk_free(t_awk_data *data)
 {
+{
 	if (data->temp)
+	{
 		free(data->temp);
+		data->temp = NULL;
+	}
 	if (data->to_split_options)
+	{
 		free(data->to_split_options);
+		data->to_split_options = NULL;
+	}
 	if (data->to_split_options_rest)
+	{
 		free(data->to_split_options_rest);
+		data->to_split_options_rest = NULL;
+	}
+}
 }
 
 static void	nullify_ints(int *inside_sq, int *inside_dq, int *i)
@@ -52,8 +63,8 @@ t_token	*handle_awk(t_token *iterate, t_command *cmd_node)
 	dq = 0;
 	sq = 0;
 	h = awk_sq_part(&data, iterate);
-	data.to_split_options_rest = ft_calloc(awk_restlen(iterate, &sq, &dq) + 1, \
-	sizeof(char));
+	data.to_split_options_rest = ft_calloc(sizeof(char), \
+	awk_restlen(iterate, &sq, &dq) + 1);
 	nullify_ints(&sq, &dq, &i);
 	awk_filestr(&data, iterate, h);
 	data.temp = ft_strjoin(data.to_split_options, " ");
