@@ -6,11 +6,11 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:59:12 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 11:59:21 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 13:07:10 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	unexpected_token(t_shell *shell_info, char *flag)
 {

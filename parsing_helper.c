@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 12:34:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 12:34:28 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 13:41:18 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ t_token	*initialize_cmd(t_token *iterate, t_command *cmd_node)
 	char	*first_word;
 
 	first_word = get_first_word(iterate->content);
-	if (first_word && ft_strncmp("awk", first_word, 3) == 0)
+	if (first_word && ft_strncmp("awk", first_word, 3) == 0 && \
+	ft_strlen(first_word) == 3)
 		iterate = handle_awk(iterate, cmd_node);
 	else if (first_word && iterate->token_type == WORD)
 	{

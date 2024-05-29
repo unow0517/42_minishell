@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 12:28:48 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 12:31:35 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 13:20:34 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ t_token	*create_word_token(t_shell *sh_i, int i)
 		cur = ft_calloc(sizeof(t_token), 1);
 		if (!cur)
 			return (NULL);
+	initialize_token(cur);
+	
 	}
 	while (sh_i->user_input[i] != '\0' && is_ws(sh_i->user_input[i]) == false)
 	{
@@ -64,6 +66,8 @@ t_token	*create_single_token(t_shell *shell_info, int i)
 		cur = ft_calloc(sizeof(t_token), 1);
 		if (!cur)
 			return (NULL);
+	initialize_token(cur);
+	
 		cur->idx = i;
 		if (shell_info->user_input[i] == '>')
 			cur->token_type = S_MORE;
@@ -93,6 +97,7 @@ t_token	*create_double_token(t_shell *shell_info, int i)
 		cur = ft_calloc(sizeof(t_token), 1);
 		if (!cur)
 			return (NULL);
+	initialize_token(cur);
 		cur->idx = i;
 		if (shell_info->user_input[i] == '>' && \
 		shell_info->user_input[i + 1] == '>')

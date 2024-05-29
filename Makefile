@@ -2,7 +2,7 @@
 #									CONSTANTS								   #
 ################################################################################
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 LIBS = libft.h minishell.h
 LIBFT_PATH = ./Libft
 LIBFT := $(LIBFT_PATH)/libft.a
@@ -40,7 +40,6 @@ SRCS =	awk.c \
 		unset.c \
 		white_space.c \
 		expand_util.c \
-		syntax.c \
 		$(UTILS)/awk_utils.c \
 		$(UTILS)/builtin_args.c \
 		$(UTILS)/utils.c \
@@ -55,6 +54,7 @@ SRCS =	awk.c \
 		$(UTILS)/split_helper.c \
 		$(UTILS)/quotes.c \
 		$(UTILS)/quotes_one.c \
+		$(UTILS)/syntax.c \
 		$(UTILS)/tokenizer_utils.c
 
 OBJ = $(SRCS:.c=.o)

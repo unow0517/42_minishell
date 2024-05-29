@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 12:35:35 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 13:27:27 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,7 +246,7 @@ void		catchsignal(void);
 
 //SPLIT_MS.C
 char		**split_ms(char const *s, char c);
-void		update_quote_state_str(const char *str, int *sq, int *dq, int i);
+// void		update_quote_state_str(const char *str, int *sq, int *dq, int i);
 void		update_ints(char const *s, int *end, int *dq, int*sq);
 void		update_position(int *end, int *start, char const *s, char c);
 char		*create_ms_split_array(char *array, int *end, int *start, \
@@ -256,6 +256,7 @@ char const *s);
 void		create_tokens(t_shell *shell_info);
 t_token		*create_single_token(t_shell *shell_info, int i);
 t_token		*create_double_token(t_shell *shell_info, int i);
+void		initialize_token(t_token *tok);
 
 //UNSET.C
 char		**ft_path_in_envmini(t_env_mini *env_mini);

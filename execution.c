@@ -32,7 +32,7 @@ void	execution_cases(t_shell *shell_info)
 	}
 }
 
-void execute_builtin(t_shell *shell_info, t_command *cmd)
+void	execute_builtin(t_shell *shell_info, t_command *cmd)
 {
 	if (inputis(cmd->builtin_type, "echo"))
 		run_echo(cmd->builtin_arg, shell_info);

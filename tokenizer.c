@@ -46,3 +46,13 @@ void	create_tokens(t_shell *shell_info)
 		cur = cur->next;
 	}
 }
+
+void	initialize_token(t_token *tok)
+{
+	tok->input = NULL;
+	tok->len = 0;
+	tok->idx = 0;
+	tok->content = NULL;
+	tok->token_type = NO_TOKEN;
+	tok->next = NULL;
+}
