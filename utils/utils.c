@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:08:36 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 11:38:53 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:37:13 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,10 @@ char	*get_first_word(char *argv)
 		i++;
 	}
 	return (small_cmd);
+}
+void	proc_exit(int status, t_shell *shell_info)
+{
+	if (num_of_total_cmds(shell_info->first_command) > 1)
+		exit(status);
+	*(shell_info->status) = status;
 }

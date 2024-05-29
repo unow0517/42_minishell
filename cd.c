@@ -50,7 +50,6 @@ void	update_pwd(char *str, t_shell *shell_info)
 		env_mini = ft_lstnew_envmini("OLDPWD", shell_info->oldpwd);
 		ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
 	}
-	*(shell_info->status) = 0;
 }
 
 char	*rm_outest_quote_cd(char *str, t_shell *shell_info)
@@ -92,10 +91,13 @@ void	run_cd(char *inpt, t_shell *shell_info)
 	getcwd(cwd, sizeof(cwd));
 	env_mini_home = env_search_name("HOME", shell_info->env_mini);
 	if (inputis(inpt, "~"))
+	{
 		update_pwd(env_mini_home->value, shell_info);
+		proc_exit(0, shell_info);
+	}
 	else if (chdir(path_input) == -1)
 	{
-		*(shell_info->status) = 1;
+		proc_exit(1, shell_info);
 		printf("minishell: cd : %s: No such file or directory\n",
 			path_input);
 	}
@@ -103,5 +105,6 @@ void	run_cd(char *inpt, t_shell *shell_info)
 	{
 		getcwd(cwd, sizeof(cwd));
 		update_pwd(cwd, shell_info);
+		proc_exit(0, shell_info);
 	}
 }

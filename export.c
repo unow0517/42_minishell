@@ -67,14 +67,14 @@ void	run_export_keyword(char	*str, t_shell *shell_info)
 	var_value = find_varvalue(ptr);
 	if (!var_name || !is_al_num_underscore(var_name))
 	{
-		*(shell_info->status) = 1;
+		proc_exit(1, shell_info);
 		printf("minishell: export: `%s' not a valid identifier\n", str);
 	}
 	else if (is_al_num_underscore(var_name))
 	{
 		env_mini = ft_lstnew_envmini(var_name, var_value);
 		ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
-		*(shell_info->status) = 0;
+		proc_exit(0, shell_info);
 	}
 }
 

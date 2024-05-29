@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 12:09:53 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 15:09:11 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:56:32 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	run_declare_env(t_shell *shell_info)
 			printf("declare -x %s\n", env_mini->name);
 		env_mini = env_mini->next;
 	}
-	*(shell_info->status) = 0;
+	proc_exit(0, shell_info);
 }
 
 t_env_mini	*ft_lstnew_envmini(char *name, char *value)

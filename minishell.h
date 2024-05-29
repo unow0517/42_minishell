@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 15:03:35 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:55:48 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,9 +207,6 @@ int			inputis(char *inpt, char *string);
 int			inputstartswith(char *inpt, char *string);
 int			inputhas(char *input, char c);
 
-//INPT_HANDLER.C
-//void	inpt_handler(t_shell *shell_info);
-
 //MINISHELL.C
 void		inpt_handler(t_shell *shell_info);
 void		initialise_basics(char **argv, char **env, t_shell *info);
@@ -237,13 +234,11 @@ void		set_executable_nodes(t_shell *shell_info, t_token *iterate);
 int			open_file(t_command *cmd_node, t_token *iterate, int flag);
 void		initialise_cmd_node(t_command *cmd_node);
 void		init_cmds_in_struct(t_command *cmd_node, char *to_split);
+void		update_quote_state(t_token *cur, int *sq, int *dq, int i);
+void		update_quote_state_token(t_token *cur, int *sq, int *dq);
 
 //PIPE.C
-// char		*find_cmd_in_env(char *cmd, char **env);
 char		*find_cmd_in_env_mini(char *cmd, char **env);
-
-//PIPEX_FUNCTIONS.C
-// void		handle_error(char *str);
 
 //PWD.C
 void		run_pwd(t_shell *shell_info);
@@ -264,7 +259,7 @@ void		catchsignal(void);
 
 //SPLIT_MS.C
 char		**split_ms(char const *s, char c);
-// void		update_quote_state_str(const char *str, int *sq, int *dq, int i);
+void		update_quote_state_str(const char *str, int *sq, int *dq, int i);
 void		update_ints(char const *s, int *end, int *dq, int*sq);
 void		update_position(int *end, int *start, char const *s, char c);
 char		*create_ms_split_array(char *array, int *end, int *start, \
@@ -309,31 +304,7 @@ bool		has_redir_twice(t_token *iter, int dq, int sq);
 t_token		*twice_redir_case(t_shell *shell_info, t_token *iter);
 char		*get_first_word(char *argv);
 t_token		*create_word_token(t_shell *sh_i, int i);
-
-//PARSING.C
-void		parse_input(t_shell *shell_info);
-void		parse_tokens(t_shell *shell_info);
-int			number_of_tokens(t_shell *shell_info);
-void		set_executable_nodes(t_shell *shell_info, t_token *iterate);
-int			open_file(t_command *cmd_node, t_token *iterate, int flag);
-void		initialise_cmd_node(t_command *cmd_node);
-void		init_cmds_in_struct(t_command *cmd_node, char *to_split);
-void		update_quote_state(t_token *cur, int *sq, int *dq, int i);
-void		update_quote_state_token(t_token *cur, int *sq, int *dq);
-
-//PARSING_CASES.C
-bool		builtin_case(t_token *iterate);
-bool		empty_cmd_case(t_token *iterate, t_command *cmd_node);
-bool		full_cmd_case(t_token *iterate, t_command *cmd_node);
-
-//PARSING_HELPER.C
-t_token		*initialize_cmd(t_token *iterate, t_command *cmd_node);
-t_token		*initialize_cmd_options(t_token *iterate, t_command *cmd_node);
-void		quote_removal_in_exec_arg(t_command *cur_cmd);
-char		*rm_quotes(char *to_fix, char c);
-char		first_quote(char *str);
-t_token		*skip_q_tokens(t_token *iterate);
-t_token		*handle_awk(t_token *iterate, t_command *cmd_node);
+void		proc_exit(int status, t_shell *shell_info);
 
 //EXECUTION.C
 // void	executor(t_shell *shell_info, t_command *cur);
@@ -383,10 +354,6 @@ void		free_shell(t_shell *shell_info);
 char		*quote_handler(t_token *iterate, t_token_type flag);
 t_token		*skip_quoted_str(t_token *to_skip, t_token_type flag);
 char		*rm_q_in_fullcmd(char *to_fix);
-
-//SPLIT_MS.C
-char		**split_ms(char const *s, char c);
-void		update_quote_state_str(const char *str, int *sq, int *dq, int i);
 
 //BUILTIN_ARGS
 char		*arg_for_export(t_token *cur);

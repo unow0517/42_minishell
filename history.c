@@ -35,5 +35,5 @@ void	print_history(t_shell *shell_info)
 		i++;
 	}
 	free(my_hist);
-	*(shell_info->status) = 0;
+	proc_exit(0, shell_info);
 }
