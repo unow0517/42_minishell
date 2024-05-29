@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 12:34:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 20:59:59 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 21:54:55 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,12 @@ t_command *cmd_node, t_token_type flag)
 {
 	char	*quoted_str;
 	char	*temp;
-	char	*temp1;
 
 	quoted_str = quote_handler(iterate, flag);
 	temp = ft_strjoin(cmd_node->to_split, " ");
-	temp1 = quoted_str;
-	cmd_node->to_split = ft_strjoin(temp, temp1);
+	cmd_node->to_split = ft_strjoin(temp, quoted_str);
 	free(temp);
+	free(quoted_str);
 	iterate = skip_quoted_str(iterate, flag);
 	return (iterate);
 }
