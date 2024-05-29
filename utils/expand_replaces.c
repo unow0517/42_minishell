@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expand_replaces.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 10:57:48 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 14:36:34 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/29 15:09:00 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	replace_bs_dollar(t_shell *shell_info)
 {

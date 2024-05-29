@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:33:11 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 11:33:14 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 12:40:48 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,19 @@ void	update_quote_state(t_token *cur, int *sq, int *dq, int i)
 		*dq = 1;
 	else if (cur->content[i] == '"' && *dq == 1)
 		*dq = 0;
+}
+
+//CONNECT STDIN TO CURRENT CMD, STDOUT TO NEXT CMD, HANDLING FILE DESCRIPTOR
+void	pipe_handling(t_shell *shell_info, t_command *cur)
+{
+	t_command	*last_cmd;
+	t_command	*first_cmd;
+
+	first_cmd = shell_info->first_command;
+	last_cmd = get_last_cmd(first_cmd);
+	if (cur != last_cmd)
+		dup2(cur->next->fd[1], STDOUT_FILENO);
+	if (cur != first_cmd)
+		dup2(cur->fd[0], STDIN_FILENO);
+	close_pipes(shell_info);
 }

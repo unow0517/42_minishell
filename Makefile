@@ -3,7 +3,6 @@
 ################################################################################
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 LIBS = libft.h minishell.h
 LIBFT_PATH = ./Libft
 LIBFT := $(LIBFT_PATH)/libft.a
@@ -25,7 +24,6 @@ SRCS =	awk.c \
 		execution.c \
 		expand.c \
 		export.c \
-		export_utils.c \
 		freeing.c \
 		history.c \
 		inpt_functions.c \
@@ -41,10 +39,10 @@ SRCS =	awk.c \
 		tokenizer.c \
 		unset.c \
 		white_space.c \
-		expand_util.c \
-		expand_util_2.c \
-		expand_replaces.c \
-		syntax.c \
+		$(UTILS)/export_utils.c \
+		$(UTILS)/expand_util.c \
+		$(UTILS)/expand_util_2.c \
+		$(UTILS)/expand_replaces.c \
 		$(UTILS)/awk_utils.c \
 		$(UTILS)/builtin_args.c \
 		$(UTILS)/utils.c \
@@ -58,7 +56,9 @@ SRCS =	awk.c \
 		$(UTILS)/split_ms.c \
 		$(UTILS)/split_helper.c \
 		$(UTILS)/quotes.c \
-		$(UTILS)/quotes_one.c
+		$(UTILS)/quotes_one.c \
+		$(UTILS)/syntax.c \
+		$(UTILS)/tokenizer_utils.c
 
 OBJ = $(SRCS:.c=.o)
 

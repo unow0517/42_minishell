@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expand_util_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:33:41 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 14:36:45 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/29 15:09:17 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	cpy_str(char *str, char *dst, int cnt)
 {

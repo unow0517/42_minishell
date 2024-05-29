@@ -111,33 +111,6 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 	}
 }
 
-void	pipe_handling(t_shell *shell_info, t_command *cur)
-{
-	t_command	*last_cmd;
-	t_command	*first_cmd;
-
-	first_cmd = shell_info->first_command;
-	last_cmd = get_last_cmd(first_cmd);
-	if (cur != last_cmd)
-		dup2(cur->next->fd[1], STDOUT_FILENO);
-	if (cur != first_cmd)
-		dup2(cur->fd[0], STDIN_FILENO);
-	close_pipes(shell_info);
-}
-
-void	close_pipes(t_shell *shell_info)
-{
-	t_command	*iterate;
-
-	iterate = shell_info->first_command;
-	while (iterate)
-	{
-		close(iterate->fd[0]);
-		close(iterate->fd[1]);
-		iterate = iterate->next;
-	}
-}
-
 void	handle_redir(t_shell *shell_info, t_command *cur)
 {
 	if (cur->input_fd != -1)
