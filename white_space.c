@@ -58,10 +58,8 @@ char	*multiple_ws_to_single(char	*str)
 	int	i;
 	int	j;
 
-
 	i = 0;
 	j = 0;
-
 	cpy_chars(str, &i, &j);
 	str[j] = '\0';
 	return (str);

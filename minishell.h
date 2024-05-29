@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 11:54:05 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/29 12:42:38 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,9 +188,16 @@ void		rm_ws_aft_dl(char *before, char *after, t_shell *shell_info);
 // void		rm_ws_following_d_less(t_shell *shell_info);
 void		ft_expand(t_shell *shell_info);
 
-//EXPORT.C
+//EXPORT_UTILS.C
+void		run_declare_env(t_shell *shell_info);
 t_env_mini	*ft_lstnew_envmini(char *name, char *value);
 t_env_mini	*ft_lstlast_envmini(t_env_mini *lst);
+int			is_al_num_underscore(char *str);
+//EXPORT.C
+char		*export_rm_quote(char *str);
+// char		*find_varname(char *str);
+// char		*find_varvalue(char *str);
+void		run_export_keyword(char	*str, t_shell *shell_info);
 void		run_export(char *str, t_shell *shell_info);
 
 //FREEING.C

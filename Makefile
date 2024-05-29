@@ -25,6 +25,7 @@ SRCS =	awk.c \
 		execution.c \
 		expand.c \
 		export.c \
+		export_utils.c \
 		freeing.c \
 		history.c \
 		inpt_functions.c \
