@@ -12,31 +12,10 @@
 
 #include "minishell.h"
 
-// char	*rm_starting_ws(char *string)
-// {
-// 	char	*ptr;
-// 	char	*string_0;
-
-// 	string_0 = string;
-// 	string++;
-// 	while (*string != '\0')
-// 	{
-// 		if (*string == ' ')
-// 			string++;
-// 		else
-// 			break ;
-// 	}
-// 	ptr = ft_strdup(string);
-// 	return (ptr);
-// }
-
 char	*rm_starting_ws(char *string)
 {
 	char	*ptr;
-	// char	*string_0;
 
-	// string_0 = string;
-	// string++;
 	while (string && *string)
 	{
 		if (*string == ' ')
@@ -48,21 +27,16 @@ char	*rm_starting_ws(char *string)
 	return (ptr);
 }
 
-
-char	*multiple_ws_to_single(char	*str)
+void	cpy_chars(char *str, int *i, int *j)
 {
-	int	i;
-	int	j;
 	int	cnt;
 
-	i = 0;
-	j = 0;
 	cnt = 0;
-	while (str[i] != '\0')
+	while (str[*i] != '\0')
 	{
-		if (str[i] != ' ')
+		if (str[*i] != ' ')
 		{
-			str[j] = str[i];
+			str[*j] = str[*i];
 			j++;
 			cnt = 0;
 		}
@@ -71,12 +45,22 @@ char	*multiple_ws_to_single(char	*str)
 			cnt++;
 			if (cnt <= 1)
 			{
-				str[j] = str[i];
+				str[*j] = str[*i];
 				j++;
 			}
 		}
 		i++;
 	}
+}
+
+char	*multiple_ws_to_single(char	*str)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	cpy_chars(str, &i, &j);
 	str[j] = '\0';
 	return (str);
 }

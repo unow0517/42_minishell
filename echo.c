@@ -69,7 +69,7 @@ static void	echo_with_flag(char **split_arg)
 	}
 }
 
-int	is_flag(char	*str)
+int	is_flag(char *str)
 {
 	int	i;
 

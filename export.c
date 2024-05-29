@@ -12,226 +12,87 @@
 
 #include "minishell.h"
 
-void	run_declare_env(t_shell *shell_info)
+char	*export_rm_quote(char *str)
 {
-	t_env_mini	*env_mini;
-
-	env_mini = shell_info->env_mini;
-	// printf("envmini %d\n", shell_info->env_mini->name);
-	while (env_mini)
-	{
-		if (env_mini->value)
-			printf("declare -x %s=\"%s\"\n", env_mini->name, env_mini->value);
-		else
-			printf("declare -x %s\n", env_mini->name);
-		env_mini = env_mini->next;
-	}
-	*(shell_info->status) = 0;
-}
-
-// t_env_mini	*ft_lstnew_envmini(char *inpt)
-// {
-// 	t_env_mini	*first_node;
-// 	char		*ptr_to_equal;
-
-// 	first_node = (t_env_mini *)malloc(sizeof(t_env_mini));
-// 	if (!(first_node))
-// 		return (0);
-// 	ptr_to_equal = ft_strchr(inpt + 7, '=');
-// 	if (ptr_to_equal == 0)
-// 	{
-// 		// printf("ptrequal=%s\n", ptr_to_equal);
-// 		first_node->name = inpt + 7;
-// 		first_node->value = NULL;
-// 		return (first_node);
-// 	}
-// 	first_node->name = ft_substr(inpt + 7, 0, ptr_to_equal - (inpt + 7));
-// 	first_node->value = ft_substr(ptr_to_equal + 1, 0, ft_strlen(ptr_to_equal));
-// 	first_node->next = 0;
-// 	return (first_node);
-// }
-
-t_env_mini	*ft_lstnew_envmini(char *name, char *value)
-{
-	t_env_mini	*first_node;
-
-  first_node = (t_env_mini *)malloc(sizeof(t_env_mini));
-	first_node->name = name;
-//   printf("value=%s\n", value);
-  first_node->value = value;
-//   printf("envminivalue=%s\n", first_node->value);
-
-	first_node->next = 0;
-	return (first_node);
-}
-
-t_env_mini	*ft_lstlast_envmini(t_env_mini *lst)
-{
-	t_env_mini	*result;
-
-	if (!lst)
-		return (0);
-	result = lst;
-	while (result->next != 0)
-		result = result->next;
-	return (result);
-}
-
-void	ft_lstadd_back_envmini(t_env_mini **lst, t_env_mini *new)
-{
-	if (!*lst || !lst)
-		*lst = new;
-	else
-		ft_lstlast_envmini(*lst)->next = new;
-}
-
-int	is_al_num_underscore(char *str)
-{
-	if (!str || !*str)
-		return (0);
-	while (*str && str)
-	{
-		if (ft_isalnum(*str) || *str == '_')
-			str++;
-		else
-			return (0);
-	}
-	return (1);
-}
-
-// void	run_export_singlekeyword(t_shell *shell_info)
-// {
-// 	char		*inpt;
-// 	t_env_mini	*env_mini;
-// 	char		*ptr_to_equal;
-// 	char		*var_name;
-// 	char		*var_value;
-
-// 	inpt = shell_info->user_input;
-// 	ptr_to_equal = ft_strchr(inpt + 7, '=');
-// 	if (ptr_to_equal == 0)
-// 	{
-// 		// printf("ptrequal=%s\n", ptr_to_equal);
-// 		var_name = inpt + 7;
-// 		var_value = NULL;
-// 	}
-// 	else
-// 	{
-// 		var_name = ft_substr(inpt + 7, 0, ptr_to_equal - (inpt + 7));
-// 		var_value = ft_substr(ptr_to_equal + 1, 0, ft_strlen(ptr_to_equal));
-// 	}
-// printf("ivn %s ivv %s\n", var_name, var_value);
-// 	// printf("isalnu %d\n",  is_al_num_underscore(inpt + 7));
-// 	// printf("inpt7 %s\n", inpt + 7);
-// 	if (!var_name || !is_al_num_underscore(var_name))
-// 		printf("minishell: export: `%s' not a valid identifier\n", inpt + 7);
-// 	if (inputis(inpt, "export") || inputis(inpt, "export "))
-// 		run_declare_env(shell_info);
-// 	else if (inputstartswith(inpt, "export ") && is_al_num_underscore(var_name))
-// 	{
-// 		// printf("inside ivn %s ivv %s\n", var_name, var_value);
-// 		// env_mini = ft_lstnew_envmini(inpt);
-// 		env_mini = ft_lstnew_envmini(var_name, var_value);
-// 		ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
-// 	}
-// }
-
-void	run_export_keyword(char	*str, t_shell *shell_info)
-{
-	char		*ptr;
-	char		*ptr_to_equal;
-	char		*var_name;
-	char		*var_value;
-	t_env_mini	*env_mini;
-
-	char		q;
-	char		*str_q_removed;
+	char	*output;
+	char	q;
+	char	*str_q_removed;
 
 	if (ft_strchr(str, '\'') != 0 || ft_strchr(str, '"') != 0)
 	{
 		q = first_quote(str);
 		str_q_removed = rm_quotes(str, q);
-		ptr = str_q_removed;
+		output = str_q_removed;
 	}
 	else
-		ptr = str;
-	// printf("q = %c\n", q);
-	// printf("qrmed %s\n", str_q_removed);
+		output = str;
+	return (output);
+}
 
-	// ptr = str;
-	// printf("hi\n");
-	ptr_to_equal = ft_strchr(ptr, '=');
+char	*find_varname(char *str)
+{
+	char	*ptr_to_equal;
+	char	*var_name;
+
+	ptr_to_equal = ft_strchr(str, '=');
 	if (ptr_to_equal == 0)
-	{
-		// printf("ptrequal=%s\n", ptr_to_equal);
-		var_name = ptr;
-		var_value = NULL;
-	}
+		var_name = str;
 	else
-	{
-		var_name = ft_substr(ptr, 0, ptr_to_equal - ptr);
+		var_name = ft_substr(str, 0, ptr_to_equal - str);
+	return (var_name);
+}
+
+char	*find_varvalue(char *str)
+{
+	char	*ptr_to_equal;
+	char	*var_value;
+
+	ptr_to_equal = ft_strchr(str, '=');
+	if (ptr_to_equal == 0)
+		var_value = NULL;
+	else
 		var_value = ft_substr(ptr_to_equal + 1, 0, ft_strlen(ptr_to_equal));
-	}
-	// printf("inside ivn %s ivv %s\n", var_name, var_value);
+	return (var_value);
+}
+
+void	run_export_keyword(char	*str, t_shell *shell_info)
+{
+	char		*var_name;
+	char		*var_value;
+	t_env_mini	*env_mini;
+	char		*ptr;
+
+	ptr = export_rm_quote(str);
+	var_name = find_varname(ptr);
+	var_value = find_varvalue(ptr);
 	if (!var_name || !is_al_num_underscore(var_name))
 	{
 		*(shell_info->status) = 1;
-		printf("minishell: export: `%s' not a valid identifier\n", ptr);
+		printf("minishell: export: `%s' not a valid identifier\n", str);
 	}
 	else if (is_al_num_underscore(var_name))
 	{
-		// printf("inside ivn %s ivv %s\n", var_name, var_value);
-		// env_mini = ft_lstnew_envmini(inpt);
 		env_mini = ft_lstnew_envmini(var_name, var_value);
 		ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
 		*(shell_info->status) = 0;
 	}
 }
 
-
-// void	run_export_multiple(t_shell *shell_info)
 void	run_export(char *str, t_shell *shell_info)
 {
 	char	*inpt;
 	char	**keywords;
 
 	inpt = str;
-	// printf("str = %s\n", str);
-	// printf("inpy%s\n", inpt);
-	//OPTION1. WHEN ONLY KEYWORDS ARE PASSED
 	if (!str || !ft_strlen(inpt))
 		run_declare_env(shell_info);
 	else
 	{
 		keywords = ft_split(inpt, ' ');
-	//OPTION1. END
-
-	// //OPTION2. WHEN WHOLE STRING IS PASSED
-	// if (inputis(inpt, "export") || inputis(inpt, "export "))
-	// 	run_declare_env(shell_info);
-	// else
-	// {
-	// 	keywords = ft_split(inpt + 7, ' ');
-	// //OPTION2. END
-
-
-
-		// printf("kw %s\n", *keywords);
-		// if (keywords  && *keywords && ft_strlen(*keywords))
-			// printf("kwlen %d\n", ft_strlen(*keywords));
 		while (keywords && *keywords)
 		{
-		// printf("kw %s\n", *keywords);
 			run_export_keyword(*keywords, shell_info);
 			keywords++;
 		}
 	}
 }
-
-//var name = >onlyUNDERSCORE, ALPHANUMERIC!
-//EXPORT =>  makes the specified variable available to child processes of the current shell. 
-//DECLARE => 
-//export 'hey=pi' all="mor>>|ning"
-
-//	if (inputis(inpt, "export") || inputis(inpt, "export "))
-//		run_declare_env(shell_info);

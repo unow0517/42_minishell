@@ -32,7 +32,7 @@ void	execution_cases(t_shell *shell_info)
 	}
 }
 
-void execute_builtin(t_shell *shell_info, t_command *cmd)
+void	execute_builtin(t_shell *shell_info, t_command *cmd)
 {
 	if (inputis(cmd->builtin_type, "echo"))
 		run_echo(cmd->builtin_arg, shell_info);
@@ -92,7 +92,8 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 			{
 				if (cmd_to_exec->cmd == NULL)
 					exit(0);
-				full_path = find_cmd_in_env_mini(cmd_to_exec->cmd, paths_in_env);
+				full_path = find_cmd_in_env_mini(cmd_to_exec->cmd, \
+				paths_in_env);
 				if (!full_path || !paths_in_env)
 					cmd_error(cmd_to_exec);
 				execve(full_path, cmd_to_exec->full_cmd, paths_in_env);
@@ -103,14 +104,13 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 		close_fds(shell_info, cmd_to_exec);
 		exit(EXIT_FAILURE);
 	}
-	else //YUN: CODE IS RUNNING ON PARENT PROCESS, RETEURNS CHILD PROCESS
+	else
 	{
 		close_fds(shell_info, cmd_to_exec);
 		return (pid);
 	}
 }
 
-//CONNECT STDIN TO CURRENT CMD, STDOUT TO NEXT CMD, HANDLING FILE DESCRIPTOR
 void	pipe_handling(t_shell *shell_info, t_command *cur)
 {
 	t_command	*last_cmd;

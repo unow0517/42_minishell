@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:20:35 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/27 14:28:24 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/29 11:27:52 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,28 @@ int	ft_varname_len(char *str)
 	return (i);
 }
 
+char	*ft_varvalue(int var_name_len, char *str, t_env_mini *env_mini)
+{
+	char	*ptr_dollar;
+	char	*varname;
+
+	ptr_dollar = ft_strchr(str, '$');
+	varname = 0;
+	if (!ptr_dollar)
+		return (0);
+	varname = ft_substr(ptr_dollar + 1, 0, var_name_len);
+	while (env_mini)
+	{
+		if (inputis(env_mini->name, varname))
+			return (env_mini->value);
+		if (env_mini->next)
+			env_mini = env_mini->next;
+		else
+			break ;
+	}
+	return (0);
+}
+
 char	*join_three(char *str1, char *str2, char *str3)
 {
 	char	*join1;
@@ -51,4 +73,17 @@ char	*join_three(char *str1, char *str2, char *str3)
 	join2 = ft_strjoin(join1, str3);
 	free(join1);
 	return (join2);
+}
+
+void	rm_ws_aft_dl(char *before, char *after, t_shell *shell_info)
+{
+	char	*join;
+
+	if (before)
+		before = rm_starting_ws(before);
+	if (after && before)
+	{
+		join = ft_strjoin(before, after);
+		shell_info->user_input = join;
+	}
 }

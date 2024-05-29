@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 17:51:49 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/27 15:58:16 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 08:52:15 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,47 +19,34 @@ char	**ft_path_in_envmini(t_env_mini *env_mini)
 	output = 0;
 	while (env_mini)
 	{
-			// printf("HOO\n");
 		if (inputis(env_mini->name, "PATH"))
 		{
-
-			// printf("hello\n");
 			output = ft_split(env_mini->value, ':');
-			// printf("op 0 %s\n", output[0]);
 			return (output);
 		}
-	// printf("helloaaa\n");
-		
 		if (env_mini->next)
 			env_mini = env_mini->next;
 		else
 			break ;
 	}
-	// printf("hellobbbb\n");
-	// printf("op %d\n", output == 0);
-	// if (!output)
-	// {
-	// 	*(shell_info->status) = 1;
-	// 	printf("minishell: %s: No such file or directory\n", path_input);	
-	// }
 	return (output);
 }
 
 void	rm_in_lnli(char *str, t_env_mini *lnli)
 {
-	t_env_mini *prev;
+	t_env_mini	*prev;
 
 	while (lnli)
 	{
-    	if (inputis(lnli->name, str))
+		if (inputis(lnli->name, str))
 		{
-    		prev->next = lnli->next;
-    		free(lnli);
-    		break ;
-    	}
-    	prev = lnli;
-    	if (lnli->next)
-    		lnli=lnli->next;
+			prev->next = lnli->next;
+			free(lnli);
+			break ;
+		}
+		prev = lnli;
+		if (lnli->next)
+			lnli = lnli->next;
 		else
 			break ;
 	}
@@ -67,27 +54,16 @@ void	rm_in_lnli(char *str, t_env_mini *lnli)
 
 void	run_unset(char *str, t_shell *shell_info)
 {
-	char		*inpt;
-	// t_env_mini	*env_mini;
-	char		**var_names;
-	int			i;
+	char	*inpt;
+	char	**var_names;
+	int		i;
 
 	inpt = str;
 	i = 0;
-	// //OPTION 1. WHEN THE WHOLE INPUT IS PASSED.
-	// if (inputis(inpt, "unset"))
-	// 	rl_on_new_line();
-	// else if (inputstartswith(inpt, "unset "))
-	// {
-	// OPTION 1 END
-	
-	//OPTION 2. WHEN THE WHOLE INPUT IS PASSED.
 	if (!inpt || inputis(inpt, ""))
 		rl_on_new_line();
 	else
 	{
-	//OPTION 2 END
-
 		var_names = ft_split(inpt, ' ');
 		while (var_names[i])
 		{
@@ -97,5 +73,3 @@ void	run_unset(char *str, t_shell *shell_info)
 	}
 	*(shell_info->status) = 0;
 }
-
-//ft_split free required!
