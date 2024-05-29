@@ -59,6 +59,7 @@ pid_t	exec_pipeline(t_shell *shell_info)
 	t_command	*iterate_cmd;
 	pid_t		pid;
 
+	pid = 0;
 	iterate_cmd = shell_info->first_command;
 	while (iterate_cmd)
 	{

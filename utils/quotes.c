@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:53:09 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 11:55:39 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 18:29:30 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,10 @@ static char	*outer_q_removed_str(char *to_fix, char c, char *new);
 char	*rm_quotes(char *to_fix, char c)
 {
 	int		i;
-	int		j;
 	int		q_counter;
 	char	*new;
 
 	i = 0;
-	j = 0;
 	q_counter = 0;
 	if (!to_fix)
 		return (NULL);
