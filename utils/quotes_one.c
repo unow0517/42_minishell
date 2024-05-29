@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:53:16 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 13:51:43 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 18:37:42 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	update_quote_state_str(const char *str, int *sq, int *dq, int i)
 {
-	if (!str || !str[i])
+	if (!str)
+		return ;
+	if (str[i] == '\0')
 		return ;
 	if (str[i] == '\'' && *sq == 0)
 		*sq = 1;

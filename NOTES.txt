@@ -104,17 +104,11 @@ char *args[] =
 };
 
 
-REMOVE "" FROM INPUT
-
-OK FIX IT TO RUN WITH QUOTED BUILTINS
-
-
 
 '' '' '"ls'
 ls -"l
 echo hi $^^^^^^USE
 weird history behaviour
-"" ls "" works but should produce:	bash: : command not found
 
 
 printf("________________________________DEBUG____________________________");

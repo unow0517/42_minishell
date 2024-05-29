@@ -74,11 +74,11 @@ int	is_flag(char *str)
 	int	i;
 
 	i = 0;
-	if (ft_strncmp("-n", str, 2) == 0 && strlen(str) == 2)
+	if (ft_strncmp("-n", str, 2) == 0 && ft_strlen(str) == 2)
 		i = 1;
-	else if (ft_strncmp("'-n'", str, 4) == 0 && strlen(str) == 4)
+	else if (ft_strncmp("'-n'", str, 4) == 0 && ft_strlen(str) == 4)
 		i = 1;
-	else if (ft_strncmp("\"-n\"", str, 4) == 0 && strlen(str) == 4)
+	else if (ft_strncmp("\"-n\"", str, 4) == 0 && ft_strlen(str) == 4)
 		i = 1;
 	return (i);
 }

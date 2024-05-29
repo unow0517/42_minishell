@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:57:28 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 13:51:56 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 19:02:06 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ t_token	*handle_awk(t_token *iterate, t_command *cmd_node)
 	awk_free(&data);
 	return (iterate);
 }
-// awk '/int/ { print $1 }' minishell30 .c "pipe.c" | grep i
-// awk '/shell_info/ { print $1 }' minishell40 .c "pipe.c" | grep i
-// awk '/shell_info/ { print $1 }' "minishel40 l.c" "pipe.c" | grep i
+
 // '/int/ { print $1 }' minishell.c "pipe.c" | grep i
+// awk '/int/ { print }' minishell.c

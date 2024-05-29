@@ -74,8 +74,8 @@ void	initialise_basics(char **argv, char **env, t_shell *shell_info)
 	shell_info->fd[0] = -1;
 	shell_info->fd[1] = -1;
 	shell_info->syntax_error = false;
-	shell_info->status = ft_calloc(1, sizeof(int *));
-	*(shell_info->status) = 0;
+	shell_info->status = ft_calloc(1, sizeof(int));
+	*shell_info->status = 0;
 	shell_info->isheredoc = 0;
 }
 
@@ -93,6 +93,7 @@ int	create_prompt(t_shell *shell_info)
 		return (free(prompt), 1);
 	ft_memset(shell_info->prompt, 0, 2048);
 	ft_strlcat(shell_info->prompt, prompt_with_dollar, 2048);
+	free(prompt);
 	free(prompt_with_dollar);
 	return (0);
 }

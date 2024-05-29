@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:33:19 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 12:40:05 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 16:34:19 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	handle_exit(int status)
 	int	exit_code;
 	int	signal;
 
+	exit_code = 0;
+	signal = 0;
 	if (WIFEXITED(status) == 1)
 		exit_code = WEXITSTATUS(status);
 	if (WIFSIGNALED(status))
