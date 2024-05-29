@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 12:34:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 13:41:18 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 20:59:59 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_token	*initialize_cmd_options(t_token *iterate, t_command *cmd_node)
 	{
 		temp = ft_strjoin(cmd_node->to_split, " ");
 		temp1 = get_first_word(iterate->content);
-		cmd_node->to_split = ft_strjoin(temp, get_first_word(iterate->content));
+		// cmd_node->to_split = ft_strjoin(temp, get_first_word(iterate->content));
 		cmd_node->to_split = ft_strjoin(temp, temp1);
 		free(temp);
 		free(temp1);

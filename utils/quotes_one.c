@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:53:16 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 18:37:42 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 21:41:42 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,10 @@ char	*rm_q_in_fullcmd(char *to_fix)
 	c = first_quote(to_fix);
 	if (c != 'n')
 	{
-		temp = ft_calloc(ft_strlen(to_fix), sizeof(char));
-		if (!temp)
-			return (NULL);
 		temp = to_fix;
 		to_fix = rm_quotes(temp, c);
 		free(temp);
+		temp = NULL;
 	}
 	return (to_fix);
 }

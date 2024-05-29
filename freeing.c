@@ -50,7 +50,8 @@ void	free_cmd_list(t_command **cmds)
 			free(temp->builtin_type);
 		if (temp->builtin_arg)
 			free(temp->builtin_arg);
-		free(temp);
+		if (temp->to_split && ft_strlen(temp->to_split) != 0)
+			free(temp);
 	}
 	*cmds = NULL;
 }
