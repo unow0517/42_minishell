@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:18:41 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 15:26:29 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:37:47 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	handle_redir(t_shell *shell_info, t_command *cur)
 		close(cur->output_fd);
 	}
 }
+
 void	fork_fail(void)
 {
 	perror("fork");
