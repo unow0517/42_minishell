@@ -54,7 +54,8 @@ SRCS =	awk.c \
 		$(UTILS)/split_ms.c \
 		$(UTILS)/split_helper.c \
 		$(UTILS)/quotes.c \
-		$(UTILS)/quotes_one.c
+		$(UTILS)/quotes_one.c \
+		$(UTILS)/tokenizer_utils.c
 
 OBJ = $(SRCS:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 11:39:57 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 12:35:35 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # define DFL 1
 # define IGN 2
 
-typedef enum	e_token_type
+typedef enum e_token_type
 {
 	NO_TOKEN,
 	WORD,
@@ -41,7 +41,7 @@ typedef enum	e_token_type
 	D_MORE
 }	t_token_type;
 
-typedef struct	s_token
+typedef struct s_token
 {
 	char				*input;
 	int					len;
@@ -51,7 +51,7 @@ typedef struct	s_token
 	struct s_token		*next;
 }	t_token;
 
-typedef struct	s_command
+typedef struct s_command
 {
 	char				*cmd;
 	char				**options;
@@ -249,7 +249,8 @@ char		**split_ms(char const *s, char c);
 void		update_quote_state_str(const char *str, int *sq, int *dq, int i);
 void		update_ints(char const *s, int *end, int *dq, int*sq);
 void		update_position(int *end, int *start, char const *s, char c);
-char		*create_ms_split_array(char *array, int *end, int *start, char const *s);
+char		*create_ms_split_array(char *array, int *end, int *start, \
+char const *s);
 
 //TOKENIZER.C
 void		create_tokens(t_shell *shell_info);
@@ -264,7 +265,6 @@ void		run_unset(char *str, t_shell *shell_info);
 void		token_add_back(t_token **first_token, t_token *new);
 t_token		*token_last(t_token *token);
 int			skip_whitespace(char *inpt, int i);
-// int			num_of_remaining_cmds(t_command *cur);
 int			num_of_total_cmds(t_command *cur);
 t_command	*get_last_cmd(t_command *cmd);
 void		close_fds(t_shell *shell_info, t_command *cur);
@@ -289,6 +289,7 @@ t_token		*double_pipe_case(t_shell *shell_info, t_token *iter);
 bool		has_redir_twice(t_token *iter, int dq, int sq);
 t_token		*twice_redir_case(t_shell *shell_info, t_token *iter);
 char		*get_first_word(char *argv);
+t_token		*create_word_token(t_shell *sh_i, int i);
 
 //PARSING.C
 void		parse_input(t_shell *shell_info);

@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:33:19 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 11:34:11 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/29 12:40:05 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,17 @@ void	reset(t_shell *shell_info)
 	free_tokens(&shell_info->tokens);
 	free_cmd_list(&shell_info->first_command);
 	shell_info->syntax_error = false;
+}
+
+void	close_pipes(t_shell *shell_info)
+{
+	t_command	*iterate;
+
+	iterate = shell_info->first_command;
+	while (iterate)
+	{
+		close(iterate->fd[0]);
+		close(iterate->fd[1]);
+		iterate = iterate->next;
+	}
 }
