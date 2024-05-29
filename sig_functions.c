@@ -40,9 +40,8 @@ void	catchsignal(void)
 {
 	struct termios	term;
 
-	// printf("catchsignal\n");
 	tcgetattr(STDIN_FILENO, &term);
-	term.c_lflag &= ~(ECHOCTL); //to hide ^C 
+	term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	sigchecker(1, 1);
 }

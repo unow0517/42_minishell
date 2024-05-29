@@ -12,11 +12,6 @@
 
 #include "minishell.h"
 
-// void	leaks(void)
-// {
-// 	system("leaks minishell");
-// }
-
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	shell_info;

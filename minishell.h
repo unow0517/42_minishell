@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 14:33:16 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/29 14:56:52 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # define DFL 1
 # define IGN 2
 
-typedef enum	e_token_type
+typedef enum e_token_type
 {
 	NO_TOKEN,
 	WORD,
@@ -41,7 +41,7 @@ typedef enum	e_token_type
 	D_MORE
 }	t_token_type;
 
-typedef struct	s_token
+typedef struct s_token
 {
 	char				*input;
 	int					len;
@@ -51,7 +51,7 @@ typedef struct	s_token
 	struct s_token		*next;
 }	t_token;
 
-typedef struct	s_command
+typedef struct s_command
 {
 	char				*cmd;
 	char				**options;
@@ -173,7 +173,6 @@ char		*ft_varvalue(int var_name_len, char *str, t_env_mini *env_mini);
 char		*join_three(char *str1, char *str2, char *str3);
 void		rm_ws_aft_dl(char *before, char *after, t_shell *shell_info);
 
-
 //EXPAND.C
 // void		expand_except_literal(t_shell *shell_info);
 // void 	rm_outest_q_and_exp(t_shell *shell_info);
@@ -268,7 +267,8 @@ char		**split_ms(char const *s, char c);
 void		update_quote_state_str(const char *str, int *sq, int *dq, int i);
 void		update_ints(char const *s, int *end, int *dq, int*sq);
 void		update_position(int *end, int *start, char const *s, char c);
-char		*create_ms_split_array(char *array, int *end, int *start, char const *s);
+char		*create_ms_split_array(char *array, int *end, int *start, \
+char const *s);
 
 //TOKENIZER.C
 void		create_tokens(t_shell *shell_info);
@@ -362,8 +362,10 @@ void		run_export(char *str, t_shell *shell_info);
 //EXPAND.C
 int			is_al_num_udsc_c(char c);
 int			ft_varname_len(char *str);
-char    	*ft_varvalue(int var_name_len, char *str, t_env_mini *env_mini);
-char    	*replace_exp(char *inpt, char *var_value, int var_name_len);
+char		*ft_varvalue(int var_name_len, char *str, \
+t_env_mini *env_mini);
+char		*replace_exp(char *inpt, char *var_value, \
+int var_name_len);
 void		ft_expand(t_shell *shell_info);
 void		replace_caret(t_shell *shell_info);
 

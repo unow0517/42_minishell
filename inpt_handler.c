@@ -19,27 +19,20 @@ void	inpt_handler(t_shell *shell_info)
 	while (1)
 	{
 		signal(SIGINT, sighandler);
-		// shell_info->user_input = readline(join2);
 		shell_info->user_input = readline(shell_info->prompt);
 		if (shell_info->user_input && !inputis(shell_info->user_input, ""))
 			add_history(shell_info->user_input);
 		ft_expand(shell_info);
 		parse_input(shell_info);
 		execution_cases(shell_info);
-		if (!shell_info->user_input)
+		if (!shell_info->user_input || inputis(shell_info->user_input, "exit"))
 		{
 			write(1, "\n", 1);
 			free_cmd_list(&shell_info->first_command);
 			free_tokens(&shell_info->tokens);
 			free_shell(shell_info);
-			exit(0) ;
+			exit(0);
 		}
-		if (inputis(shell_info->user_input, "exit")) //these both if statements in same, then seg fault for ctrl+d
-		{
-			free_cmd_list(&shell_info->first_command);
-			// free(shell_info);
-			exit(0) ;
-		}
-	reset(shell_info);
+		reset(shell_info);
 	}
 }
