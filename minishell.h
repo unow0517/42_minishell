@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 18:26:33 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/29 21:47:24 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -341,15 +341,11 @@ int var_name_len);
 void		ft_expand(t_shell *shell_info);
 void		replace_caret(t_shell *shell_info);
 
-//UNSET.C
-char		**ft_path_in_envmini(t_env_mini *env_mini);
-void		run_unset(char *str, t_shell *shell_info);
-
 //FREES
 void		free_tokens(t_token **shell_info);
 void		free_cmd_list(t_command **cmds);
 void		free_shell(t_shell *shell_info);
-void		free_env_mini(t_env_mini *env_mini);
+void		free_envmini(t_env_mini *env_mini);
 
 
 //QUOTES

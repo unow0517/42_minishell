@@ -98,13 +98,21 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 				full_path = find_cmd_in_env_mini(cmd_to_exec->cmd, \
 				paths_in_env);
 				if (!full_path || !paths_in_env)
+				{
+					// if (paths_in_env) //DONT FREE HERE!
+					// 	free_split_thalia(paths_in_env);
 					cmd_error(cmd_to_exec);
+				}
 				execve(full_path, cmd_to_exec->full_cmd, paths_in_env);
 				free(full_path);
+				if (paths_in_env)
+					free_split_thalia(paths_in_env);
 				cmd_error(cmd_to_exec);
 			}
 		}
 		close_fds(shell_info, cmd_to_exec);
+		if (paths_in_env)
+			free_split_thalia(paths_in_env);
 		exit(EXIT_FAILURE);
 	}
 	else

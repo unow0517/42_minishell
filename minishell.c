@@ -44,18 +44,24 @@ t_env_mini	*env_to_envmini(char **env, t_env_mini *env_mini)
 	while (env && *env)
 	{
 		ft_splitted = ft_split(*env, '=');
-		name = ft_splitted[0];
-		value = ft_splitted[1];
-		ptr->name = name;
-		ptr->value = value;
-		env++;
-		if (env && *env && !inputis(name, "OLDPWD"))
+		name = ft_strdup(ft_splitted[0]);
+		if (ft_splitted[1])
+			value = ft_strdup(ft_splitted[1]);
+		env_mini->name = name;
+		if (value)
+			env_mini->value = value;
+		if (env + 1)
 		{
-			ptr->next = malloc(sizeof(t_env_mini));
-			ptr->next->name = NULL;
-			ptr->next->value = NULL;
-			ptr->next->next = NULL;
-			ptr = ptr->next;
+			env++;
+			if (env && *env && !inputis(name, "OLDPWD"))
+			{
+				env_mini->next = malloc(sizeof(t_env_mini));
+				env_mini->next->name = NULL;
+				env_mini->next->value = NULL;
+				env_mini->next->next = NULL;
+				if (env_mini->next)
+					env_mini = env_mini->next;
+			}
 		}
 		free_split_thalia(ft_splitted);
 	}
@@ -91,6 +97,8 @@ int	create_prompt(t_shell *shell_info)
 	if (!prompt)
 		return (1);
 	prompt_with_dollar = ft_strjoin(prompt, "$ ");
+	if (prompt)
+		free(prompt);
 	if (!prompt_with_dollar)
 		return (free(prompt), 1);
 	ft_memset(shell_info->prompt, 0, 2048);
