@@ -37,23 +37,45 @@ void	free_cmd_list(t_command **cmds)
 	{
 		temp = del;
 		del = del->next;
-		if (temp->cmd)
-			free(temp->cmd);
-		if (temp->options)
-			free_split_thalia(temp->options);
-		if (temp->full_cmd)
-			free_split_thalia(temp->full_cmd);
-		close_io(temp);
-		if (temp->filename)
-			free(temp->filename);
-		if (temp->builtin_type)
-			free(temp->builtin_type);
-		if (temp->builtin_arg)
-			free(temp->builtin_arg);
-		if (temp->to_split && ft_strlen(temp->to_split) != 0)
-			free(temp);
+		free_temp(temp);
+		// if (temp->cmd)
+		// 	free(temp->cmd);
+		// if (temp->options)
+		// 	free_split_thalia(temp->options);
+		// if (temp->full_cmd)
+		// 	free_split_thalia(temp->full_cmd);
+		// close_io(temp);
+		// if (temp->filename)
+		// 	free(temp->filename);
+		// if (temp->builtin_type)
+		// 	free(temp->builtin_type);
+		// if (temp->builtin_arg)
+		// 	free(temp->builtin_arg);
+		// if (temp->to_split && ft_strlen(temp->to_split) != 0)
+		// 	free(temp->to_split);
+		// free(temp);
 	}
 	*cmds = NULL;
+}
+
+void	free_temp(t_command *temp)
+{
+	if (temp->cmd)
+		free(temp->cmd);
+	if (temp->options)
+		free_split_thalia(temp->options);
+	if (temp->full_cmd)
+		free_split_thalia(temp->full_cmd);
+	close_io(temp);
+	if (temp->filename)
+		free(temp->filename);
+	if (temp->builtin_type)
+		free(temp->builtin_type);
+	if (temp->builtin_arg)
+		free(temp->builtin_arg);
+	if (temp->to_split && temp->to_split[0] != '\0')
+		free(temp->to_split);
+	free(temp);
 }
 
 void	free_shell(t_shell *shell_info)

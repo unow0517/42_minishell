@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 19:55:42 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/30 13:16:36 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,7 @@ void		free_cmd_list(t_command **cmds);
 void		free_shell(t_shell *shell_info);
 void		free_split_thalia(char **str);
 // void		free_env_mini(t_env_mini *env_mini);
+void	free_temp(t_command *temp);
 
 //HISTORY.C
 void		print_history(t_shell *shell_info);
@@ -245,15 +246,6 @@ char		*find_cmd_in_env_mini(char *cmd, char **env);
 
 //PWD.C
 void		run_pwd(t_shell *shell_info);
-
-//QUOTES
-char		*quote_handler(t_token *iterate, t_token_type flag);
-t_token		*skip_quoted_str(t_token *to_skip, t_token_type flag);
-
-//REDIR.C
-t_token		*set_redirections(t_command *cmd_node, t_token *iterate);
-void		handle_heredoc(t_command *cmd_node, char *delimiter);
-void		file_opener(t_command *cmd_node, int flag, char *file);
 
 //SIG_FUNCTIONS.C
 void		sighandler(int sig);
@@ -343,10 +335,6 @@ int var_name_len);
 void		ft_expand(t_shell *shell_info);
 void		replace_caret(t_shell *shell_info);
 
-//UNSET.C
-char		**ft_path_in_envmini(t_env_mini *env_mini);
-void		run_unset(char *str, t_shell *shell_info);
-
 //FREES
 void		free_tokens(t_token **shell_info);
 void		free_cmd_list(t_command **cmds);
@@ -359,8 +347,6 @@ char		*rm_q_in_fullcmd(char *to_fix);
 
 //BUILTIN_ARGS
 char		*arg_for_export(t_token *cur);
-void		update_quote_state(t_token *cur, int *sq, int *dq, int i);
-void		update_quote_state_token(t_token *cur, int *sq, int *dq);
 t_token		*skip_tokens_of_builtin_arg(t_token *iterate);
 t_token		*initialise_builtin_type_arg(t_command *cmd_node, t_token *iterate);
 

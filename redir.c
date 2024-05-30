@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 12:34:02 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 12:34:10 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/30 13:34:45 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@ t_token_type flag)
 	if (iter && (iter->token_type == S_QUOTE || iter->token_type == D_QUOTE))
 		iter = skip_q_tokens(iter);
 	if (cmd_node->file_not_found == 0)
+	{
+		if (cmd_node->filename)
+			free(cmd_node->filename);
 		cmd_node->filename = get_first_word(iter->content);
+	}
 	if (cmd_node->file_not_found == 0)
 	{
 		if (open_file(cmd_node, iter, flag) == -1 || \
