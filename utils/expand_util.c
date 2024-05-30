@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:20:35 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 15:09:04 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/30 22:34:42 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,18 @@ char	*ft_varvalue(int var_name_len, char *str, t_env_mini *env_mini)
 	while (env_mini)
 	{
 		if (inputis(env_mini->name, varname))
+		{
+			free(varname);
+			varname = NULL;
 			return (env_mini->value);
+		}
 		if (env_mini->next)
 			env_mini = env_mini->next;
 		else
 			break ;
 	}
+	free(varname);
+	varname = NULL;
 	return (0);
 }
 
@@ -71,19 +77,34 @@ char	*join_three(char *str1, char *str2, char *str3)
 
 	join1 = ft_strjoin(str1, str2);
 	join2 = ft_strjoin(join1, str3);
+	free(str1);
+	str1 = NULL;
 	free(join1);
+	join1 = NULL;
 	return (join2);
 }
 
 void	rm_ws_aft_dl(char *before, char *after, t_shell *shell_info)
 {
 	char	*join;
+	char	*temp;
 
 	if (before)
-		before = rm_starting_ws(before);
+	{
+		temp = before;
+		before = rm_starting_ws(temp);
+		free(temp);
+		temp = NULL;
+	}
 	if (after && before)
 	{
 		join = ft_strjoin(before, after);
+		free(before);
+		before = NULL;
+		free(after);
+		after = NULL;
+		free(shell_info->user_input);
+		shell_info->user_input = NULL;
 		shell_info->user_input = join;
 	}
 }

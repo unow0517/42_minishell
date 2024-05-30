@@ -75,6 +75,11 @@ void	rm_ws_following_d_less(t_shell *shell_info)
 			str++;
 	}
 	rm_ws_aft_dl(str_till_dless, str_after_dless, shell_info);
+	if (str_till_dless)
+	{
+		free(str_till_dless);
+		str_till_dless = NULL;
+	}
 }
 
 void	ft_expand(t_shell *shell_info)

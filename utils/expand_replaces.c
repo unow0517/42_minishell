@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 10:57:48 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 15:09:00 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/30 22:23:02 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ char	*replace_exp(char *inpt, char *var_value, int var_name_len)
 	char	*str_till_dollar;
 	char	*str_after_varname;
 	char	*ptr_dollar;
+	char	*return_str;
 
 	if (!inpt)
 		return (0);
@@ -58,7 +59,12 @@ char	*replace_exp(char *inpt, char *var_value, int var_name_len)
 		if (!ft_strlen(str_till_dollar) && !ft_strlen(str_after_varname))
 			return ("");
 		else
-			return (ft_strjoin(str_till_dollar, str_after_varname));
+		{
+			return_str = ft_strjoin(str_till_dollar, str_after_varname);
+			free(str_till_dollar);
+			str_till_dollar = NULL;
+			return (return_str);
+		}
 	}
 	else
 		return (inpt);
@@ -85,6 +91,10 @@ void	replace_dollar_question(t_shell *shell_info)
 			till_d = ft_substr(inpt, 0, str - inpt);
 			after_q = str + 2;
 			j = join_three(till_d, ft_itoa(*(shell_info->status)), after_q);
+			free(till_d);
+			till_d = NULL;
+			free(shell_info->user_input);
+			shell_info->user_input = NULL;
 			shell_info->user_input = j;
 		}
 		if (str + 1)
@@ -109,8 +119,10 @@ void	replace_caret(t_shell *shell_info)
 		inpt++;
 	}
 	inpt = shell_info->user_input;
-	output = malloc(ft_strlen(inpt) - cnt + 1);
+	output = ft_calloc(ft_strlen(inpt) - cnt + 1, sizeof(char));
 	cpy_str(inpt, output, cnt);
+	free(shell_info->user_input);
+	shell_info->user_input = NULL;
 	shell_info->user_input = output;
 }
 

@@ -40,9 +40,13 @@ void	update_pwd(char *str, t_shell *shell_info)
 	ft_strlcat(shell_info->oldpwd, shell_info->cwd, 2048);
 	ft_memset(shell_info->cwd, 0, 2048);
 	ft_strlcat(shell_info->cwd, str, 2048);
-	env_mini_pwd->value = shell_info->cwd;
+	free(env_mini_pwd->value);
+	env_mini_pwd->value = ft_strdup(shell_info->cwd);
 	if (env_mini_oldpwd)
-		env_mini_oldpwd->value = shell_info->oldpwd;
+	{
+		free(env_mini_oldpwd->value);
+		env_mini_oldpwd->value = ft_strdup(shell_info->oldpwd);
+	}
 	else
 	{
 		env_mini = ft_lstnew_envmini("OLDPWD", shell_info->oldpwd);
@@ -69,8 +73,12 @@ char	*rm_outest_quote_cd(char *str, t_shell *shell_info)
 		{
 			*(shell_info->status) = 1;
 			printf("minishell: cd : too many arguments\n");
+			free_split_thalia(splitted);
+			splitted = NULL;
 			return (0);
 		}
+		free_split_thalia(splitted);
+		splitted = NULL;
 		return (str);
 	}
 }
@@ -96,8 +104,7 @@ void	run_cd(char *inpt, t_shell *shell_info)
 	else if (chdir(path_input) == -1)
 	{
 		proc_exit(1, shell_info);
-		printf("minishell: cd : %s: No such file or directory\n",
-			path_input);
+		printf("minishell: cd : %s: No such file or directory\n", path_input);
 	}
 	else
 	{

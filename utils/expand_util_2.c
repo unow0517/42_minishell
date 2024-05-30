@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:33:41 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 15:09:17 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/30 22:16:17 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ void	exp_shell(char *str, int *i_sq, char *start, t_shell *shell_info)
 		str - start);
 		l = ft_varname_len(str);
 		v = ft_varvalue(l, str, shell_info->env_mini);
+		free(shell_info->user_input);
+		shell_info->user_input = NULL;
 		shell_info->user_input = ft_strjoin(till_d, replace_exp(str, v, l));
+		free(till_d);
+		till_d = NULL;
 	}
 }
