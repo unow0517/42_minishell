@@ -74,35 +74,118 @@ void	free_split_thalia(char **str)
 		i++;
 	}
 	free(str);
+	str = 0;
+}
+
+// t_env_mini	*get_nextnode(t_env_mini *env_mini)
+// {
+// 	t_env_mini	*output;
+
+// 	output = 0;
+// 	if (env_mini)
+// 	{
+// 		if (env_mini->value && ft_strlen(env_mini->value))
+// 		{
+// 			if (env_mini->name && ft_strlen(env_mini->name))
+// 				output = env_mini;
+// 		}
+// 	}
+// 	return (output);
+// }
+
+t_env_mini	*get_nextnode(t_env_mini *env_mini)
+{
+	t_env_mini	*output;
+
+	output = 0;
+	if (env_mini)
+	{
+		if (env_mini->next)
+			output = env_mini;
+		else
+		{
+			if (env_mini->value && ft_strlen(env_mini->value))
+			{
+				if (env_mini->name && ft_strlen(env_mini->name))
+					output = env_mini;
+			}
+		}
+
+	}
+	return (output);
 }
 
 void	free_envmini(t_env_mini *env_mini)
 {
 	t_env_mini	*next_node;
 	t_env_mini	*current;
+	int			i;
 
-	printf("hihi");
-	next_node = NULL;
-	current = NULL;
-	// current->next = NULL; //SEG FAULT
-	if (env_mini->next)
-		next_node = env_mini->next;
-	printf("nn %s\n", next_node->name);
-	free(env_mini);
-	while (next_node)
+	i = 0;
+	current = env_mini;
+	while (current != NULL)
 	{
-		current = next_node;
+		if (current->next)
+			next_node = current->next;
+		if (ft_strlen(current->name))
+			free(current->name);
+		if (current->value)
+			free(current->value);
 		if (current)
-		{
-			// if (current->name)
-			// 	free(current->name);
-			// if (*(current->value))
-			// 	free(current->value);
-			// free(current);
-			if (current->next) 
-				next_node = current->next;
-			else
-				break ;
-		}
+			free(current);
+		current = get_nextnode(next_node);
 	}
+	env_mini = NULL;
 }
+
+// void	free_envmini(t_env_mini *env_mini)
+// {
+// 	t_env_mini	*next_node;
+// 	t_env_mini	*current;
+// 	int			i;
+// 	i = 0;
+
+// 	current = env_mini;
+// 	while (current != NULL)
+// 	{
+// 		printf("hello\n");
+// 		printf("current = %p\n", current);
+// 		printf("current->next = %p\n", current->next);
+// 		if (current->next) 
+// 			next_node = current->next;
+// 		printf("current->name = %s\n", current->name);
+// 		if (ft_strlen(current->name))
+// 		{
+// 		printf("current->namein = %s\n", current->name);
+// 			free(current->name);
+// 		}
+// 		printf("current->value = %s\n", current->value);
+// 		if (current->value)
+// 			free(current->value);
+// 		if (current)
+// 			free(current);
+// 		if (next_node)
+// 		{
+// 				// printf("current->value11 = %s\n", current->value);
+// 			if (next_node->value && ft_strlen(next_node->value))
+// 			{
+// 				if (next_node->name && ft_strlen(next_node->name))
+// 				{
+// 					printf("in\n");
+// 					current = next_node;
+// 				} 
+// 				else
+// 					break ;
+// 			}
+// 			else
+// 				break ;
+// 		}
+// 		else
+// 			break ;
+// 		printf("next_node = %p\n\n", current);
+// 		if (i == 120)
+// 			exit(0);
+// 		i++;
+// 	}
+// 	env_mini=NULL;
+// }

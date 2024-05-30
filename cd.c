@@ -30,12 +30,10 @@ t_env_mini	*env_search_name(char *name, t_env_mini *env_mini)
 
 void	update_pwd(char *str, t_shell *shell_info)
 {
-	// char		cwd[2048];
 	t_env_mini	*env_mini;
 	t_env_mini	*env_mini_pwd;
 	t_env_mini	*env_mini_oldpwd;
 
-	// getcwd(cwd, sizeof(cwd));
 	env_mini_pwd = env_search_name("PWD", shell_info->env_mini);
 	env_mini_oldpwd = env_search_name("OLDPWD", shell_info->env_mini);
 	ft_memset(shell_info->oldpwd, 0, 2048);

@@ -1,0 +1,305 @@
+current->name = SHELL
+current->value = /bin/bash
+
+current->name = NUGET_XMLDOC_MODE
+current->value = skip
+
+current->name = COLORTERM
+current->value = truecolor
+
+current->name = CLOUDENV_ENVIRONMENT_ID
+current->value = 1e953775-5a54-4341-9381-0cca216e6a0b
+
+current->name = NVM_INC
+current->value = /usr/local/share/nvm/versions/node/v20.13.1/include/node
+
+current->name = TERM_PROGRAM_VERSION
+current->value = 1.89.1
+
+current->name = GITHUB_USER
+current->value = unow0517
+
+current->name = rvm_prefix
+current->value = /usr/local
+
+current->name = CODESPACE_NAME
+current->value = congenial-space-cod-jqq5xwq6vg5f5w66
+
+current->name = HOSTNAME
+current->value = codespaces-57c2a4
+
+current->name = JAVA_ROOT
+current->value = /home/codespace/java
+
+current->name = JAVA_HOME
+current->value = /usr/local/sdkman/candidates/java/current
+
+current->name = DOTNET_ROOT
+current->value = /usr/share/dotnet
+
+current->name = CODESPACES
+current->value = true
+
+current->name = PYTHON_ROOT
+current->value = /home/codespace/.python
+
+current->name = GRADLE_HOME
+current->value = /usr/local/sdkman/candidates/gradle/current
+
+current->name = NVS_DIR
+current->value = /usr/local/nvs
+
+current->name = NVS_OS
+current->value = linux
+
+current->name = DOTNET_SKIP_FIRST_TIME_EXPERIENCE
+current->value = 1
+
+current->name = MY_RUBY_HOME
+current->value = /usr/local/rvm/rubies/ruby-3.2.4
+
+current->name = NVS_USE_XZ
+current->value = 1
+
+current->name = SDKMAN_CANDIDATES_DIR
+current->value = /usr/local/sdkman/candidates
+
+current->name = RUBY_VERSION
+current->value = ruby-3.2.4
+
+current->name = PWD
+current->value = /workspaces/42_minishell
+
+current->name = PIPX_BIN_DIR
+current->value = /usr/local/py-utils/bin
+
+current->name = rvm_version
+current->value = 1.29.12 (latest)
+
+current->name = ORYX_DIR
+current->value = /usr/local/oryx
+
+current->name = ContainerVersion
+current->value = 13
+
+current->name = VSCODE_GIT_ASKPASS_NODE
+current->value = /vscode/bin/linux-x64/dc96b837cf6bb4af9cd736aa3af08cf8279f7685/node
+
+current->name = HUGO_ROOT
+current->value = /home/codespace/.hugo
+
+current->name = GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN
+current->value = app.github.dev
+
+current->name = NPM_GLOBAL
+current->value = /home/codespace/.npm-global
+
+current->name = HOME
+current->value = /home/codespace
+
+current->name = GITHUB_API_URL
+current->value = https://api.github.com
+
+current->name = LANG
+current->value = C.UTF-8
+
+current->name = GITHUB_TOKEN
+current->value = ghu_zw80QnuupO4tTqcnefhwszLPEXUx9k0dhE9m
+
+current->name = LS_COLORS
+current->value = rs
+
+current->name = DYNAMIC_INSTALL_ROOT_DIR
+current->value = /opt
+
+current->name = NVM_SYMLINK_CURRENT
+current->value = true
+
+current->name = PHP_PATH
+current->value = /usr/local/php/current
+
+current->name = DEBIAN_FLAVOR
+current->value = focal-scm
+
+current->name = GIT_ASKPASS
+current->value = /vscode/bin/linux-x64/dc96b837cf6bb4af9cd736aa3af08cf8279f7685/extensions/git/dist/askpass.sh
+
+current->name = PHP_ROOT
+current->value = /home/codespace/.php
+
+current->name = ORYX_ENV_TYPE
+current->value = vsonline-present
+
+current->name = HUGO_DIR
+current->value = /usr/local/hugo/bin
+
+current->name = DOCKER_BUILDKIT
+current->value = 1
+
+current->name = GOROOT
+current->value = /usr/local/go
+
+current->name = INTERNAL_VSCS_TARGET_URL
+current->value = https://westeurope.online.visualstudio.com
+
+current->name = SHELL_LOGGED_IN
+current->value = true
+
+current->name = PYTHON_PATH
+current->value = /usr/local/python/current
+
+current->name = NVM_DIR
+current->value = /usr/local/share/nvm
+
+current->name = VSCODE_GIT_ASKPASS_EXTRA_ARGS
+current->value = (null)
+
+current->name = rvm_bin_path
+current->value = /usr/local/rvm/bin
+
+current->name = GEM_PATH
+current->value = /usr/local/rvm/gems/ruby-3.2.4:/usr/local/rvm/gems/ruby-3.2.4@global
+
+current->name = GEM_HOME
+current->value = /usr/local/rvm/gems/ruby-3.2.4
+
+current->name = GITHUB_CODESPACE_TOKEN
+current->value = AK47PAC7QMFCTZWO7VO6GK3GLD7OJANCNFSM4AH5IR7Q
+
+current->name = LESSCLOSE
+current->value = /usr/bin/lesspipe %s %s
+
+current->name = NVS_ROOT
+current->value = /usr/local/nvs
+
+current->name = GITHUB_GRAPHQL_URL
+current->value = https://api.github.com/graphql
+
+current->name = TERM
+current->value = xterm-256color
+
+current->name = LESSOPEN
+current->value = | /usr/bin/lesspipe %s
+
+current->name = USER
+current->value = codespace
+
+current->name = NODE_ROOT
+current->value = /home/codespace/nvm
+
+current->name = VSCODE_GIT_IPC_HANDLE
+current->value = /tmp/vscode-git-3f745ef412.sock
+
+current->name = PYTHONIOENCODING
+current->value = UTF-8
+
+current->name = GITHUB_SERVER_URL
+current->value = https://github.com
+
+current->name = NVS_HOME
+current->value = /usr/local/nvs
+
+current->name = PIPX_HOME
+current->value = /usr/local/py-utils
+
+current->name = CONDA_SCRIPT
+current->value = /opt/conda/etc/profile.d/conda.sh
+
+current->name = MAVEN_HOME
+current->value = /usr/local/sdkman/candidates/maven/current
+
+current->name = SDKMAN_DIR
+current->value = /usr/local/sdkman
+
+current->name = SHLVL
+current->value = 2
+
+current->name = NVM_CD_FLAGS
+current->value = (null)
+
+current->name = ORYX_SDK_STORAGE_BASE_URL
+current->value = https://oryx-cdn.microsoft.io
+
+current->name = GIT_EDITOR
+current->value = code --wait
+
+current->name = CONDA_DIR
+current->value = /opt/conda
+
+current->name = PROMPT_DIRTRIM
+current->value = 4
+
+current->name = SDKMAN_CANDIDATES_API
+current->value = https://api.sdkman.io/2
+
+current->name = DOTNET_RUNNING_IN_CONTAINER
+current->value = true
+
+current->name = DOTNET_USE_POLLING_FILE_WATCHER
+current->value = true
+
+current->name = ENABLE_DYNAMIC_INSTALL
+current->value = true
+
+current->name = MAVEN_ROOT
+current->value = /home/codespace/.maven
+
+current->name = ORYX_PREFER_USER_INSTALLED_SDKS
+current->value = true
+
+current->name = JUPYTERLAB_PATH
+current->value = /home/codespace/.local/bin
+
+current->name = RVM_PATH
+current->value = /usr/local/rvm
+
+current->name = GITHUB_REPOSITORY
+current->value = unow0517/42_minishell
+
+current->name = RAILS_DEVELOPMENT_HOSTS
+current->value = .githubpreview.dev,.preview.app.github.dev,.app.github.dev
+
+current->name = VSCODE_GIT_ASKPASS_MAIN
+current->value = /vscode/bin/linux-x64/dc96b837cf6bb4af9cd736aa3af08cf8279f7685/extensions/git/dist/askpass-main.js
+
+current->name = RUBY_ROOT
+current->value = /home/codespace/.ruby
+
+current->name = RUBY_HOME
+current->value = /usr/local/rvm/rubies/default
+
+current->name = BROWSER
+current->value = /vscode/bin/linux-x64/dc96b837cf6bb4af9cd736aa3af08cf8279f7685/bin/helpers/browser.sh
+
+current->name = PATH
+current->value = /usr/local/rvm/gems/ruby-3.2.4/bin:/usr/local/rvm/gems/ruby-3.2.4@global/bin:/usr/local/rvm/rubies/ruby-3.2.4/bin:/vscode/bin/linux-x64/dc96b837cf6bb4af9cd736aa3af08cf8279f7685/bin/remote-cli:/home/codespace/.local/bin:/home/codespace/.dotnet:/home/codespace/nvm/current/bin:/home/codespace/.php/current/bin:/home/codespace/.python/current/bin:/home/codespace/java/current/bin:/home/codespace/.ruby/current/bin:/home/codespace/.local/bin:/usr/local/python/current/bin:/usr/local/py-utils/bin:/usr/local/oryx:/usr/local/go/bin:/go/bin:/usr/local/sdkman/bin:/usr/local/sdkman/candidates/java/current/bin:/usr/local/sdkman/candidates/gradle/current/bin:/usr/local/sdkman/candidates/maven/current/bin:/usr/local/sdkman/candidates/ant/current/bin:/usr/local/rvm/gems/default/bin:/usr/local/rvm/gems/default@global/bin:/usr/local/rvm/rubies/default/bin:/usr/local/share/rbenv/bin:/usr/local/php/current/bin:/opt/conda/bin:/usr/local/nvs:/usr/local/share/nvm/versions/node/v20.13.1/bin:/usr/local/hugo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/share/dotnet:/home/codespace/.dotnet/tools:/usr/local/rvm/bin
+
+current->name = CODESPACE_VSCODE_FOLDER
+current->value = /workspaces/42_minishell
+
+current->name = SDKMAN_PLATFORM
+current->value = linuxx64
+
+current->name = NVM_BIN
+current->value = /usr/local/share/nvm/versions/node/v20.13.1/bin
+
+current->name = IRBRC
+current->value = /usr/local/rvm/rubies/ruby-3.2.4/.irbrc
+
+current->name = rvm_path
+current->value = /usr/local/rvm
+
+current->name = (null)
+current->value = (null)
+
+current->name = GOPATH
+current->value = /go
+
+current->name = TERM_PROGRAM
+current->value = vscode
+
+current->name = VSCODE_IPC_HOOK_CLI
+current->value = /tmp/vscode-ipc-e7bce07f-17b9-4d81-a031-a6954260d84a.sock
+
+current->name = _
+current->value = ./minishell

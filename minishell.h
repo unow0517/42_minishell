@@ -6,7 +6,7 @@
 /*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 21:47:24 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/30 15:30:31 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -345,6 +345,7 @@ void		replace_caret(t_shell *shell_info);
 void		free_tokens(t_token **shell_info);
 void		free_cmd_list(t_command **cmds);
 void		free_shell(t_shell *shell_info);
+t_env_mini	*get_nextnode(t_env_mini *env_mini);
 void		free_envmini(t_env_mini *env_mini);
 
 

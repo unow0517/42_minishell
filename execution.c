@@ -120,6 +120,7 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 		close_fds(shell_info, cmd_to_exec);
 		return (pid);
 	}
+	free_split_thalia(paths_in_env);
 }
 
 void	handle_redir(t_shell *shell_info, t_command *cur)
