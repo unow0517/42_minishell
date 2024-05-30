@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/30 21:12:18 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/30 21:20:01 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,19 @@ typedef struct s_shell
 	char				*user_input;
 	char				prompt[2048];
 	t_command			*first_command;
-	// int					fd[2];
+	int					fd[2];
 	bool				syntax_error;
 	int					*status;
 	bool				isheredoc;
 	char				*temp;
 }	t_shell;
+
+typedef struct s_awk_data
+{
+	char	*to_split_options;
+	char	*to_split_options_rest;
+	char	*temp;
+}	t_awk_data;
 
 // AWK.C
 t_token		*handle_awk(t_token *iterate, t_command *cmd_node);
