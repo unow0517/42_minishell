@@ -38,22 +38,6 @@ void	free_cmd_list(t_command **cmds)
 		temp = del;
 		del = del->next;
 		free_temp(temp);
-		// if (temp->cmd)
-		// 	free(temp->cmd);
-		// if (temp->options)
-		// 	free_split_thalia(temp->options);
-		// if (temp->full_cmd)
-		// 	free_split_thalia(temp->full_cmd);
-		// close_io(temp);
-		// if (temp->filename)
-		// 	free(temp->filename);
-		// if (temp->builtin_type)
-		// 	free(temp->builtin_type);
-		// if (temp->builtin_arg)
-		// 	free(temp->builtin_arg);
-		// if (temp->to_split && ft_strlen(temp->to_split) != 0)
-		// 	free(temp->to_split);
-		// free(temp);
 	}
 	*cmds = NULL;
 }
@@ -98,26 +82,52 @@ void	free_split_thalia(char **str)
 	free(str);
 }
 
-// void	free_env_mini(t_env_mini *env_mini)
+// void	free_envmini(t_env_mini *env_mini)
 // {
-// 	t_env_mini  *next_node;
-// 	t_env_mini  *current;
-// 	next_node = NULL;
-// 	current = NULL;
-// 	current->next = NULL;
-// 	if (env_mini->next)
-// 		next_node = env_mini->next;
-// 	else
-// 		return ;
-// 	free(env_mini);
-// 	while (next_node)
+// 	t_env_mini	*next_node;
+// 	t_env_mini	*current;
+// 	int			i;
+
+// 	i = 0;
+// 	current = env_mini;
+// 	while (current != NULL)
 // 	{
-// 		current = next_node;
-// 		if (current)
+// 		if (current || current->next || ft_strlen(current->name) || current->value)
+// 		// if (current->next)
+// 		// 	next_node = current->next;
+// 		// if (ft_strlen(current->name))
+// 		// 	free(current->name);
+// 		// if (current->value)
+// 		// 	free(current->value);
+// 		// if (current)
+// 		// 	free(current);
+// 		if (next_node)
 // 		{
-// 			if (current->next)
-// 				next_node = current->next;
-// 			free(current);
+// 			if (next_node->value && ft_strlen(next_node->value))
+// 			{
+// 				if (next_node->name && ft_strlen(next_node->name))
+// 					current = next_node;
+// 				else
+// 					break ;
+// 			}
+// 			else
+// 				break ;
 // 		}
+// 		else
+// 			break ;
 // 	}
+// 	env_mini = NULL;
+// }
+
+// void	something(t_env_mini *current)
+// {
+	
+// 		if (current->next)
+// 			next_node = current->next;
+// 		if (ft_strlen(current->name))
+// 			free(current->name);
+// 		if (current->value)
+// 			free(current->value);
+// 		if (current)
+// 			free(current);
 // }

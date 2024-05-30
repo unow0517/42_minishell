@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/30 13:16:36 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/30 15:25:25 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,8 +200,8 @@ void		free_tokens(t_token **shell_info);
 void		free_cmd_list(t_command **cmds);
 void		free_shell(t_shell *shell_info);
 void		free_split_thalia(char **str);
-// void		free_env_mini(t_env_mini *env_mini);
-void	free_temp(t_command *temp);
+// void	free_envmini(t_env_mini *env_mini);
+void		free_temp(t_command *temp);
 
 //HISTORY.C
 void		print_history(t_shell *shell_info);
