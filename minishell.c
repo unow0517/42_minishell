@@ -43,7 +43,6 @@ t_env_mini	*env_to_envmini(char **env, t_env_mini *env_mini)
 	{
 		ft_splitted = ft_split(*env, '=');
 		env_mini->name = ft_strdup(ft_splitted[0]);
-		printf("name %s\n", env_mini->name);
 		if (!inputis(env_mini->name, "OLDPWD"))
 		{
 			if (ft_splitted[1])
@@ -118,7 +117,7 @@ void	initialise_basics(char **argv, char **env, t_shell *shell_info)
 	shell_info->fd[1] = -1;
 	shell_info->syntax_error = false;
 	shell_info->status = ft_calloc(1, sizeof(int));
-	*(shell_info->status) = 0;
+	*shell_info->status = 0;
 	shell_info->isheredoc = 0;
 }
 
@@ -132,12 +131,13 @@ int	create_prompt(t_shell *shell_info)
 	if (!prompt)
 		return (1);
 	prompt_with_dollar = ft_strjoin(prompt, "$ ");
-	if (prompt)
-		free(prompt);
 	if (!prompt_with_dollar)
 		return (free(prompt), 1);
 	ft_memset(shell_info->prompt, 0, 2048);
 	ft_strlcat(shell_info->prompt, prompt_with_dollar, 2048);
-	free(prompt_with_dollar);
+	if (prompt)
+		free(prompt);
+	if (prompt_with_dollar)
+		free(prompt_with_dollar);
 	return (0);
 }

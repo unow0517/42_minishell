@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 12:34:21 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 13:41:18 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/30 15:34:44 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,14 @@ t_command *cmd_node, t_token_type flag)
 {
 	char	*quoted_str;
 	char	*temp;
-	char	*temp1;
 
 	quoted_str = quote_handler(iterate, flag);
 	temp = ft_strjoin(cmd_node->to_split, " ");
-	temp1 = quoted_str;
-	cmd_node->to_split = ft_strjoin(temp, temp1);
+	if (cmd_node->to_split && cmd_node->to_split[0] != '\0')
+		free(cmd_node->to_split);
+	cmd_node->to_split = ft_strjoin(temp, quoted_str);
 	free(temp);
+	free(quoted_str);
 	iterate = skip_quoted_str(iterate, flag);
 	return (iterate);
 }
@@ -81,7 +82,8 @@ t_token	*initialize_cmd_options(t_token *iterate, t_command *cmd_node)
 	{
 		temp = ft_strjoin(cmd_node->to_split, " ");
 		temp1 = get_first_word(iterate->content);
-		cmd_node->to_split = ft_strjoin(temp, get_first_word(iterate->content));
+		if (cmd_node->to_split && cmd_node->to_split[0] != '\0')
+			free(cmd_node->to_split);
 		cmd_node->to_split = ft_strjoin(temp, temp1);
 		free(temp);
 		free(temp1);

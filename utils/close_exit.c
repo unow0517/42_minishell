@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   close_exit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:33:19 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 17:13:55 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/30 17:49:44 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	handle_exit(int status)
 	int	exit_code;
 	int	signal;
 
+	exit_code = 0;
+	signal = 0;
 	if (WIFEXITED(status) == 1)
 		exit_code = WEXITSTATUS(status);
 	if (WIFSIGNALED(status))

@@ -2,16 +2,6 @@ cat | cat | cat | ls// checks for file descriptor leaks
 ls -l > f1 << END | grep hi | cat > out
 la -l < f1 < f2 < f3 > f1 << END | grep hi | cat > out
 
-while (cmd)
-	PIPE
-	fork_exec(pipe)
-	close pipe[1]
-	dup2(pipe[0], stdin)
-	close pipe[0]
-
-	pid = last_fork
-	waitpid (pid, &status, 0);
-
 debug with terminal
 	ps aux | grep minishell
 	lsof -p (PID)	   check for fd's, hanging processes etc.
@@ -24,11 +14,6 @@ quote handling
 	"$test1"
 	<<
 	$test
-	if (str[i] == '"' || str[i] == '\'')
-		i = iter(str + i, str[i]);
-	int iter(char *str, char c)
-	{
-	}
 
 
 
@@ -40,19 +25,6 @@ SEGFAULT
 	|
 	<
 	
-
-bash-3.2$ <
-bash: syntax error near unexpected token `newline'
-bash-3.2$ |
-bash: syntax error near unexpected token `|'
-bash-3.2$ <<
-bash: syntax error near unexpected token `newline'
-bash-3.2$ >>
-bash: syntax error near unexpected token `newline'
-bash-3.2$ >
-bash: syntax error near unexpected token `newline'
-bash-3.2$ echo $?
-258
 
 "ls" "-l" "-a" | grep u | wc | cat > out > out1 >> out2
 
@@ -104,17 +76,11 @@ char *args[] =
 };
 
 
-REMOVE "" FROM INPUT
-
-OK FIX IT TO RUN WITH QUOTED BUILTINS
-
-
 
 '' '' '"ls'
 ls -"l
 echo hi $^^^^^^USE
 weird history behaviour
-"" ls "" works but should produce:	bash: : command not found
 
 
 printf("________________________________DEBUG____________________________");
@@ -140,3 +106,19 @@ norminette
 execution.c
 
 awk '/int/ { print $1 }' minishell.c "pipe.c" | grep i segfault with -fsanitize
+
+
+			printf("NO IDEA\n");
+			printf("output[0] = %s\n", output[0]);
+			printf("output[1] = %s\n", output[1]);
+			printf("output[2] = %s\n", output[2]);
+			printf("output[3] = %s\n", output[3]);
+			printf("output[4] = %s\n", output[4]);
+			printf("output[5] = %s\n", output[5]);
+			printf("output[6] = %s\n", output[6]);
+			printf("output[7] = %s\n", output[7]);
+			printf("output[8] = %s\n", output[8]);
+			printf("output[9] = %s\n", output[9]);
+			printf("output[10] = %s\n", output[10]);
+			printf("output[11] = %s\n", output[11]);
+			printf("output[12] = %s\n", output[12]);

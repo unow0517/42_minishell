@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/30 15:30:31 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/30 17:48:19 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,11 @@ void		close_pipes(t_shell *shell_info);
 void		execute_builtin(t_shell *shell_info, t_command *cur);
 // void		execute_builtin_no_fork(t_shell *shell_info, 
 //			char *builtin,char *arg);
+void		fork_fail(void);
+// void		execute_cmd(t_shell *shell_info, t_command *cmd_to_exec);
+void		execute_cmd(t_shell *shell_info, t_command *cmd_to_exec, \
+char *full_path, char **paths_in_env);
+void		free_exec_paths(char *full_path, char **paths_in_env);
 
 //EXPAND_REPLACES.C
 void		replace_bs_dollar(t_shell *shell_info);
@@ -198,6 +203,8 @@ void		free_tokens(t_token **shell_info);
 void		free_cmd_list(t_command **cmds);
 void		free_shell(t_shell *shell_info);
 void		free_split_thalia(char **str);
+// void	free_envmini(t_env_mini *env_mini);
+void		free_temp(t_command *temp);
 
 //HISTORY.C
 void		print_history(t_shell *shell_info);
@@ -242,15 +249,6 @@ char		*find_cmd_in_env_mini(char *cmd, char **env);
 
 //PWD.C
 void		run_pwd(t_shell *shell_info);
-
-//QUOTES
-char		*quote_handler(t_token *iterate, t_token_type flag);
-t_token		*skip_quoted_str(t_token *to_skip, t_token_type flag);
-
-//REDIR.C
-t_token		*set_redirections(t_command *cmd_node, t_token *iterate);
-void		handle_heredoc(t_command *cmd_node, char *delimiter);
-void		file_opener(t_command *cmd_node, int flag, char *file);
 
 //SIG_FUNCTIONS.C
 void		sighandler(int sig);
@@ -356,8 +354,6 @@ char		*rm_q_in_fullcmd(char *to_fix);
 
 //BUILTIN_ARGS
 char		*arg_for_export(t_token *cur);
-void		update_quote_state(t_token *cur, int *sq, int *dq, int i);
-void		update_quote_state_token(t_token *cur, int *sq, int *dq);
 t_token		*skip_tokens_of_builtin_arg(t_token *iterate);
 t_token		*initialise_builtin_type_arg(t_command *cmd_node, t_token *iterate);
 

@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:33:49 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 13:52:54 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/30 12:14:58 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,11 @@ int	awk_restlen(t_token *iterate, int *sq, int *dq)
 	j = 0;
 	while (iterate->content && iterate->content[i] != '\0')
 	{
-		if (iterate->content[i] == '\'' || iterate->content[i] == '"')
-			update_quote_state_str(&iterate->content[i], sq, dq, i);
-		if (is_redir_pipe_char(iterate->content[i]) == true && sq == 0 && \
-		dq == 0)
+		if ((iterate->content[i] == '\'' && *dq == 0) || \
+		(iterate->content[i] == '"' && *sq == 0))
+			update_quote_state_str(&iterate->content[i], sq, dq, 0);
+		if (is_redir_pipe_char(iterate->content[i]) == true && *sq == 0 && \
+		*dq == 0)
 			break ;
 		i++;
 		j++;

@@ -58,6 +58,7 @@ SRCS =	awk.c \
 		$(UTILS)/quotes.c \
 		$(UTILS)/quotes_one.c \
 		$(UTILS)/syntax.c \
+		$(UTILS)/exec_helper.c \
 		$(UTILS)/tokenizer_utils.c
 
 OBJ = $(SRCS:.c=.o)

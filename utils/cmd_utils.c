@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:32:23 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 12:37:36 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/30 12:39:18 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	init_cmds_in_struct(t_command *cmd_node, char *to_split)
 		to_full_cmd = ft_strjoin(temp_cmd, to_split);
 	if (cmd_node->cmd && to_full_cmd)
 		cmd_node->full_cmd = split_ms(to_full_cmd, ' ');
-	if (to_split)
+	if (to_split && to_split[0] != '\0')
 		cmd_node->options = split_ms(to_split, ' ');
 	if (temp_cmd)
 		free(temp_cmd);
