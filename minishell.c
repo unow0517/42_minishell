@@ -49,8 +49,6 @@ t_env_mini	*env_to_envmini(char **env, t_env_mini *env_mini)
 				env_mini->value = ft_strdup(ft_splitted[1]);
 			env_mini->next = NULL;
 		}
-		else
-			free(env_mini->name);
 		env++;
 		if (*env)
 		{
@@ -67,40 +65,6 @@ t_env_mini	*env_to_envmini(char **env, t_env_mini *env_mini)
 	}
 	return (ptr);
 }
-
-// t_env_mini	*env_to_envmini(char **env, t_env_mini *env_mini)
-// {
-// 	char		*name;
-// 	char		*value;
-// 	t_env_mini	*ptr;
-// 	char		**ft_splitted;
-// 	ptr = env_mini;
-// 	while (env && *env)
-// 	{
-// 		ft_splitted = ft_split(*env, '=');
-// 		name = ft_strdup(ft_splitted[0]);
-// 		if (ft_splitted[1])
-// 			value = ft_strdup(ft_splitted[1]);
-// 		env_mini->name = name;
-// 		if (value)
-// 			env_mini->value = value;
-// 		if (env + 1)
-// 		{
-// 			env++;
-// 			if (env && *env && !inputis(name, "OLDPWD"))
-// 			{
-// 				env_mini->next = malloc(sizeof(t_env_mini));
-// 				env_mini->next->name = NULL;
-// 				env_mini->next->value = NULL;
-// 				env_mini->next->next = NULL;
-// 				if (env_mini->next)
-// 					env_mini = env_mini->next;
-// 			}
-// 		}
-// 		free_split_thalia(ft_splitted);
-// 	}
-// 	return (ptr);
-// }
 
 void	initialise_basics(char **argv, char **env, t_shell *shell_info)
 {

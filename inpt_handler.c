@@ -31,11 +31,11 @@ void	inpt_handler(t_shell *shell_info)
 			free_cmd_list(&shell_info->first_command);
 			free_tokens(&shell_info->tokens);
 			free_shell(shell_info);
-			free_envmini(shell_info->env_mini);
+			// free_envmini(shell_info->env_mini);
 			system("leaks minishell");
 			exit(0);
 		}
 		reset(shell_info);
-		free(shell_info->user_input); //LEAK FOR EVERY USER INPUT WITHOUT THIS
+		free(shell_info->user_input);
 	}
 }

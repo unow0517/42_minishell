@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-//YUN: RUN CMD OR PIPE DEPENDING ON THE # OF CMDS
 void	execution_cases(t_shell *shell_info)
 {
 	pid_t	pid;
@@ -52,8 +51,6 @@ void	execute_builtin(t_shell *shell_info, t_command *cmd)
 		print_history(shell_info);
 }
 
-//YUN: ITERATE TO RUN COMMANDS, shell_info->first_command IS LINKED LIST 
-//OF CMD STRUCTS
 pid_t	exec_pipeline(t_shell *shell_info)
 {
 	t_command	*iterate_cmd;
@@ -79,25 +76,33 @@ pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 	pid = fork();
 	if (pid == -1)
 		fork_fail();
-	paths_in_env = ft_path_in_envmini(shell_info->env_mini);
-	full_path = find_cmd_in_env_mini(cmd_to_exec->cmd, paths_in_env);
+	if (cmd_to_exec->is_builtin == false)
+	{
+		paths_in_env = ft_path_in_envmini(shell_info->env_mini);
+		full_path = find_cmd_in_env_mini(cmd_to_exec->cmd, paths_in_env);
+	}
 	if (pid == 0)
 	{
-		pipe_handling(shell_info, cmd_to_exec);
-		handle_redir(shell_info, cmd_to_exec);
-		if (cmd_to_exec->file_not_found == 0)
-			execute_cmd(shell_info, cmd_to_exec, full_path, paths_in_env);
-		close_fds(shell_info, cmd_to_exec);
-		if (paths_in_env)
-			free_split_thalia(paths_in_env);
+		child_proccess(shell_info, cmd_to_exec, full_path, paths_in_env);
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
-		free_exec_paths(full_path, paths_in_env);
+		if (cmd_to_exec->is_builtin == false)
+			free_exec_paths(full_path, paths_in_env);
 		close_fds(shell_info, cmd_to_exec);
 		return (pid);
 	}
 }
 
-//DIFFERENCE BETWEEN CMD FD[2] AND SHELL FD[2]?
+void	child_proccess(t_shell *shell_info, t_command *cmd_to_exec, \
+char *full_path, char **paths_in_env)
+{
+	pipe_handling(shell_info, cmd_to_exec);
+	handle_redir(shell_info, cmd_to_exec);
+	if (cmd_to_exec->file_not_found == 0)
+		execute_cmd(shell_info, cmd_to_exec, full_path, paths_in_env);
+	close_fds(shell_info, cmd_to_exec);
+	if (cmd_to_exec->is_builtin == false)
+		free_exec_paths(full_path, paths_in_env);
+}

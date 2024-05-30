@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 17:51:49 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/30 17:49:36 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/30 21:10:13 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	rm_in_lnli(char *str, t_env_mini *lnli)
 		if (inputis(lnli->name, str))
 		{
 			prev->next = lnli->next;
-			free(lnli);
+			free_env_node(lnli);
 			break ;
 		}
 		prev = lnli;
@@ -52,23 +52,42 @@ void	rm_in_lnli(char *str, t_env_mini *lnli)
 	}
 }
 
+void	free_env_node(t_env_mini *lnli)
+{
+	if (lnli->name)
+	{
+		free(lnli->name);
+		lnli->name = NULL;
+	}
+	if (lnli->value)
+	{
+		free(lnli->value);
+		lnli->value = NULL;
+	}
+	free(lnli);
+	lnli = NULL;
+}
+
 void	run_unset(char *str, t_shell *shell_info)
 {
-	char	*inpt;
 	char	**var_names;
 	int		i;
 
-	inpt = str;
 	i = 0;
-	if (!inpt || inputis(inpt, ""))
+	if (!str || inputis(str, ""))
 		rl_on_new_line();
 	else
 	{
-		var_names = ft_split(inpt, ' ');
+		var_names = ft_split(str, ' ');
 		while (var_names[i])
 		{
 			rm_in_lnli(var_names[i], shell_info->env_mini);
 			i++;
+		}
+		if (var_names)
+		{
+			free_split_thalia(var_names);
+			var_names = NULL;
 		}
 	}
 	proc_exit(0, shell_info);

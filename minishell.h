@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/30 17:48:19 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/30 21:12:18 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,6 @@ typedef struct s_env_mini
 	struct s_env_mini	*next;
 }	t_env_mini;
 
-typedef struct s_awk_data
-{
-	char	*to_split_options;
-	char	*to_split_options_rest;
-	char	*temp;
-}	t_awk_data;
-
 typedef struct s_shell
 {
 	int					argc;
@@ -95,7 +88,7 @@ typedef struct s_shell
 	char				*user_input;
 	char				prompt[2048];
 	t_command			*first_command;
-	int					fd[2];
+	// int					fd[2];
 	bool				syntax_error;
 	int					*status;
 	bool				isheredoc;
@@ -108,8 +101,6 @@ t_token		*handle_awk(t_token *iterate, t_command *cmd_node);
 // AWK_UTILS.C
 int			awk_sqlen(t_token *iterate);
 int			awk_restlen(t_token *iterate, int *sq, int *dq);
-int			awk_sq_part(t_awk_data *data, t_token *iterate);
-void		awk_filestr(t_awk_data *data, t_token *iterate, int h);
 t_token		*skip_awk(t_token *iterate, int *sq, int *dq);
 
 //BUILTIN_ARGS.C
@@ -142,8 +133,6 @@ void		quote_error(t_shell *shell_info);
 void		env_error(char *cmd);
 
 //EXECUTION.C
-// void		executor(t_shell *shell_info, t_command *cur);
-// void		init_pipe(t_shell *shell_info, t_command *cur);
 void		handle_redir(t_shell *shell_info, t_command *cur);
 void		execution_cases(t_shell *shell_info);
 pid_t		exec_pipeline(t_shell *shell_info);
@@ -151,10 +140,7 @@ pid_t		exec_single_cmd(t_shell *shell_info, t_command	*cmd_to_exec);
 void		pipe_handling(t_shell *shell_info, t_command *cur);
 void		close_pipes(t_shell *shell_info);
 void		execute_builtin(t_shell *shell_info, t_command *cur);
-// void		execute_builtin_no_fork(t_shell *shell_info, 
-//			char *builtin,char *arg);
 void		fork_fail(void);
-// void		execute_cmd(t_shell *shell_info, t_command *cmd_to_exec);
 void		execute_cmd(t_shell *shell_info, t_command *cmd_to_exec, \
 char *full_path, char **paths_in_env);
 void		free_exec_paths(char *full_path, char **paths_in_env);
@@ -179,10 +165,6 @@ char		*join_three(char *str1, char *str2, char *str3);
 void		rm_ws_aft_dl(char *before, char *after, t_shell *shell_info);
 
 //EXPAND.C
-// void		expand_except_literal(t_shell *shell_info);
-// void 	rm_outest_q_and_exp(t_shell *shell_info);
-// void		rm_outest_q(t_shell *shell_info);
-// void		rm_ws_following_d_less(t_shell *shell_info);
 void		ft_expand(t_shell *shell_info);
 
 //EXPORT_UTILS.C
@@ -193,8 +175,6 @@ int			is_al_num_underscore(char *str);
 
 //EXPORT.C
 char		*export_rm_quote(char *str);
-// char		*find_varname(char *str);
-// char		*find_varvalue(char *str);
 void		run_export_keyword(char	*str, t_shell *shell_info, int *status);
 void		run_export(char *str, t_shell *shell_info);
 
@@ -203,7 +183,6 @@ void		free_tokens(t_token **shell_info);
 void		free_cmd_list(t_command **cmds);
 void		free_shell(t_shell *shell_info);
 void		free_split_thalia(char **str);
-// void	free_envmini(t_env_mini *env_mini);
 void		free_temp(t_command *temp);
 
 //HISTORY.C
@@ -272,6 +251,7 @@ void		initialize_token(t_token *tok);
 //UNSET.C
 char		**ft_path_in_envmini(t_env_mini *env_mini);
 void		run_unset(char *str, t_shell *shell_info);
+void		free_env_node(t_env_mini *lnli);
 
 //UTILS_DIRECTORY
 void		token_add_back(t_token **first_token, t_token *new);
@@ -305,8 +285,6 @@ t_token		*create_word_token(t_shell *sh_i, int i);
 void		proc_exit(int status, t_shell *shell_info);
 
 //EXECUTION.C
-// void	executor(t_shell *shell_info, t_command *cur);
-// void	init_pipe(t_shell *shell_info, t_command *cur);
 void		handle_redir(t_shell *shell_info, t_command *cur);
 void		execution_cases(t_shell *shell_info);
 pid_t		exec_pipeline(t_shell *shell_info);
@@ -314,7 +292,8 @@ pid_t		exec_single_cmd(t_shell *shell_info, t_command	*cmd_to_exec);
 void		pipe_handling(t_shell *shell_info, t_command *cur);
 void		close_pipes(t_shell *shell_info);
 void		execute_builtin(t_shell *shell_info, t_command *cur);
-// void execute_builtin_no_fork(t_shell *shell_info, char *builtin, char *arg);
+void		child_proccess(t_shell *shell_info, t_command *cmd_to_exec, \
+char *full_path, char **paths_in_env);
 
 //ERRORS
 void		file_error(t_command *cmd_node);
@@ -328,6 +307,7 @@ void		env_error(char *cmd);
 t_env_mini	*ft_lstnew_envmini(char *name, char *value);
 t_env_mini	*ft_lstlast_envmini(t_env_mini *lst);
 void		run_export(char *str, t_shell *shell_info);
+void		free_split_set_null(char **keywords);
 
 //EXPAND.C
 int			is_al_num_udsc_c(char c);
@@ -345,7 +325,6 @@ void		free_cmd_list(t_command **cmds);
 void		free_shell(t_shell *shell_info);
 t_env_mini	*get_nextnode(t_env_mini *env_mini);
 void		free_envmini(t_env_mini *env_mini);
-
 
 //QUOTES
 char		*quote_handler(t_token *iterate, t_token_type flag);
