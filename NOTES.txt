@@ -106,3 +106,19 @@ norminette
 execution.c
 
 awk '/int/ { print $1 }' minishell.c "pipe.c" | grep i segfault with -fsanitize
+
+
+			printf("NO IDEA\n");
+			printf("output[0] = %s\n", output[0]);
+			printf("output[1] = %s\n", output[1]);
+			printf("output[2] = %s\n", output[2]);
+			printf("output[3] = %s\n", output[3]);
+			printf("output[4] = %s\n", output[4]);
+			printf("output[5] = %s\n", output[5]);
+			printf("output[6] = %s\n", output[6]);
+			printf("output[7] = %s\n", output[7]);
+			printf("output[8] = %s\n", output[8]);
+			printf("output[9] = %s\n", output[9]);
+			printf("output[10] = %s\n", output[10]);
+			printf("output[11] = %s\n", output[11]);
+			printf("output[12] = %s\n", output[12]);

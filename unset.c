@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 17:51:49 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 08:52:15 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/30 17:25:59 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	**ft_path_in_envmini(t_env_mini *env_mini)
 {
 	char	**output;
 
-	output = 0;
+	output = NULL;
 	while (env_mini)
 	{
 		if (inputis(env_mini->name, "PATH"))

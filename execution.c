@@ -70,22 +70,27 @@ pid_t	exec_pipeline(t_shell *shell_info)
 
 pid_t	exec_single_cmd(t_shell *shell_info, t_command *cmd_to_exec)
 {
-	pid_t		pid;
+	pid_t	pid;
+	char	*full_path;
+	char	**paths_in_env;
 
 	pid = fork();
 	if (pid == -1)
 		fork_fail();
+	paths_in_env = ft_path_in_envmini(shell_info->env_mini);
+	full_path = find_cmd_in_env_mini(cmd_to_exec->cmd, paths_in_env);
 	if (pid == 0)
 	{
 		pipe_handling(shell_info, cmd_to_exec);
 		handle_redir(shell_info, cmd_to_exec);
 		if (cmd_to_exec->file_not_found == 0)
-			execute_cmd(shell_info, cmd_to_exec);
+			execute_cmd(shell_info, cmd_to_exec, full_path, paths_in_env);
 		close_fds(shell_info, cmd_to_exec);
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
+		free_exec_paths(full_path, paths_in_env);
 		close_fds(shell_info, cmd_to_exec);
 		return (pid);
 	}

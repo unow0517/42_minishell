@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:18:41 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 15:37:47 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/30 17:38:40 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,25 @@ void	fork_fail(void)
 	exit (EXIT_FAILURE);
 }
 
-void	execute_cmd(t_shell *shell_info, t_command *cmd_to_exec)
+void	execute_cmd(t_shell *shell_info, t_command *cmd_to_exec, \
+char *full_path, char **paths_in_env)
 {
-	char		*full_path;
-	char		**paths_in_env;
-
 	if (cmd_to_exec->is_builtin == true)
 		execute_builtin(shell_info, cmd_to_exec);
 	else
 	{
 		if (cmd_to_exec->cmd == NULL)
 			exit(0);
-		paths_in_env = ft_path_in_envmini(shell_info->env_mini);
-		full_path = find_cmd_in_env_mini(cmd_to_exec->cmd, paths_in_env);
-		if (!full_path || !paths_in_env)
-			cmd_error(cmd_to_exec);
 		execve(full_path, cmd_to_exec->full_cmd, paths_in_env);
-		free(full_path);
+		free_exec_paths(full_path, paths_in_env);
 		cmd_error(cmd_to_exec);
 	}
+}
+
+void	free_exec_paths(char *full_path, char **paths_in_env)
+{
+	if (full_path)
+		free(full_path);
+	if (paths_in_env)
+		free_split_thalia(paths_in_env);
 }

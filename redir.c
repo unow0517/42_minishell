@@ -6,14 +6,14 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 12:34:02 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/30 13:34:45 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/30 17:39:58 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_token	*simple_file_redir(t_command *cmd_node, t_token *iter, \
-t_token_type flag)
+static t_token	*simple_file_redir(t_command *cmd, t_token *iter, \
+t_token_type f)
 {
 	t_token_type	hold;
 
@@ -21,19 +21,18 @@ t_token_type flag)
 	hold = iter->token_type;
 	if (iter && (iter->token_type == S_QUOTE || iter->token_type == D_QUOTE))
 		iter = skip_q_tokens(iter);
-	if (cmd_node->file_not_found == 0)
+	if (cmd->file_not_found == 0)
 	{
-		if (cmd_node->filename)
-			free(cmd_node->filename);
-		cmd_node->filename = get_first_word(iter->content);
+		if (cmd->filename)
+			free(cmd->filename);
+		cmd->filename = get_first_word(iter->content);
 	}
-	if (cmd_node->file_not_found == 0)
+	if (cmd->file_not_found == 0)
 	{
-		if (open_file(cmd_node, iter, flag) == -1 || \
-		access(cmd_node->filename, F_OK) == -1)
+		if (open_file(cmd, iter, f) == -1 || access(cmd->filename, F_OK) == -1)
 		{
-			cmd_node->file_not_found = 1;
-			file_error(cmd_node);
+			cmd->file_not_found = 1;
+			file_error(cmd);
 		}
 	}
 	if (iter && (hold == S_QUOTE || hold == D_QUOTE))

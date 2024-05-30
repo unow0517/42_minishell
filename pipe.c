@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:11:21 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 14:59:17 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/30 17:40:16 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,10 @@ char	*find_cmd_in_env_mini(char *cmd, char **env)
 	{
 		cmd_path = ft_strjoin(paths[i], slash_cmd);
 		if (access(cmd_path, X_OK) != -1)
-			return (free(slash_cmd), cmd_path); //free_split_thalia(paths), 
+			return (free(slash_cmd), cmd_path);
 		else
 			free(cmd_path);
 		i++;
 	}
-	return (free_split_thalia(paths), free(slash_cmd), NULL);
+	return (free(slash_cmd), NULL);
 }

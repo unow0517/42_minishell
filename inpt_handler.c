@@ -31,6 +31,7 @@ void	inpt_handler(t_shell *shell_info)
 			free_cmd_list(&shell_info->first_command);
 			free_tokens(&shell_info->tokens);
 			free_shell(shell_info);
+			// system("leaks minishell");
 			exit(0);
 		}
 		reset(shell_info);
