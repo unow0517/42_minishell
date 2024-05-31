@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 11:14:13 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/31 11:27:47 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/31 12:50:53 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,21 @@ void	free_envmini(t_env_mini *env_mini)
 	t_env_mini	*current;
 
 	current = env_mini;
-	while (current != NULL)
+	next_node = current;
+	while (next_node != NULL)
 	{
-		if (current->next)
+		if (current)
 			next_node = current->next;
 		if (current->name && ft_strlen(current->name) > 0)
 			free(current->name);
 		if (current->value && ft_strlen(current->value) > 0)
 			free(current->value);
 		if (current)
+		{
 			free(current);
-		current = get_nextnode(next_node);
+			current = NULL;
+		}
+		current = next_node;
 	}
 	env_mini = NULL;
 }

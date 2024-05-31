@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 18:01:12 by tsimitop          #+#    #+#             */
-/*   Updated: 2023/11/25 16:00:32 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/31 12:26:32 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_strdup(const char *s1)
 
 	len_s1cpy = ft_strlen(s1);
 	i = 0;
-	ptr = (char *)malloc(len_s1cpy + 1);
+	ptr = ft_calloc(len_s1cpy + 1, sizeof(char));
 	if (ptr)
 	{
 		while (len_s1cpy > i)
