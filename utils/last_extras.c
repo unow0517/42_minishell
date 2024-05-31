@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:52:57 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/31 11:23:08 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/31 14:09:03 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,10 @@ char *var_value, char *ptr)
 		free_set_null(ptr);
 }
 
-void	cd_helper(t_shell *shell_info, char *cwd)
+void	cd_helper(t_shell *shell_info)
 {
+	char	cwd[2048];
+
 	getcwd(cwd, sizeof(cwd));
 	update_pwd(cwd, shell_info);
 	proc_exit(0, shell_info);
