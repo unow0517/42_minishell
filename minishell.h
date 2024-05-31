@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/31 13:05:09 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/31 14:35:04 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -366,8 +366,6 @@ char		*repl_exp_return(char *str_till_dollar, char *str_after_varname);
 t_env_mini	*env_to_envmini_helper(t_env_mini *env_mini);
 void		run_export_keyword_error(int *status, char *var_name, \
 char *var_value, char *ptr);
-void		cd_helper(t_shell *shell_info, char *cwd);
-
-// void		env_to_envmini_helper(char **ft_splitted, t_env_mini *env_mini);
+void		cd_helper(t_shell *shell_info);
 
 #endif

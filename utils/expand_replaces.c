@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 10:57:48 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/31 10:52:26 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/31 14:21:35 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,24 +69,24 @@ void	replace_dollar_question(t_shell *shell_info)
 	char	*str;
 	char	*inpt;
 	char	*till_d;
-	char	*after_q;
 	char	*j;
+	char	*status_str;
 
-	str = 0;
+	str = NULL;
 	if (shell_info->user_input)
 		str = shell_info->user_input;
 	inpt = str;
-	till_d = NULL;
-	after_q = NULL;
 	while (*str)
 	{
 		if (*str == '$' && *(str + 1) == '?')
 		{
+			status_str = ft_itoa(*(shell_info->status));
 			till_d = ft_substr(inpt, 0, str - inpt);
-			after_q = str + 2;
-			j = join_three(till_d, ft_itoa(*(shell_info->status)), after_q);
+			j = join_three(till_d, status_str, str + 2);
+			free_set_null(status_str);
 			free_set_null(shell_info->user_input);
-			shell_info->user_input = j;
+			shell_info->user_input = ft_strdup(j);
+			free_set_null(j);
 		}
 		if (str + 1)
 			str++;

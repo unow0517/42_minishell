@@ -107,5 +107,5 @@ void	run_cd(char *inpt, t_shell *shell_info)
 		printf("minishell: cd : %s: No such file or directory\n", path_input);
 	}
 	else
-		cd_helper(shell_info, cwd);
+		cd_helper(shell_info);
 }
