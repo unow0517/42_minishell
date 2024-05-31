@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 14:57:40 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/31 10:25:38 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/31 11:53:29 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	parse_input(t_shell *shell_info)
 		syntax_error_check(shell_info);
 		if (shell_info->syntax_error == false)
 			parse_tokens(shell_info);
-		print_cmd_list(shell_info->first_command);
 	}
 	else
 		quote_error(shell_info);

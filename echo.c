@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	echo_without_flag(char **split_arg)
+static void	echo_without_flag(char **split_arg, int fd)
 {
 	int		i;
 	int		j;
@@ -26,22 +26,22 @@ static void	echo_without_flag(char **split_arg)
 	{
 		j = 0;
 		if (i != 0)
-			write (1, " ", 1);
+			write (fd, " ", 1);
 		while (split_arg[i][j])
 		{
 			if ((split_arg[i][j] == '\'' && dq == 0) || \
 			(split_arg[i][j] == '"' && sq == 0))
 				update_quote_state_str(split_arg[i], &sq, &dq, j);
 			else
-				write (1, &(split_arg[i][j]), 1);
+				write (fd, &(split_arg[i][j]), 1);
 			j++;
 		}
 		i++;
 	}
-	write (1, "\n", 1);
+	write (fd, "\n", 1);
 }
 
-static void	echo_with_flag(char **split_arg)
+static void	echo_with_flag(char **split_arg, int fd)
 {
 	int		i;
 	int		j;
@@ -55,14 +55,14 @@ static void	echo_with_flag(char **split_arg)
 	{
 		j = 0;
 		if (i != 1)
-			write (1, " ", 1);
+			write (fd, " ", 1);
 		while (split_arg[i][j])
 		{
 			if ((split_arg[i][j] == '\'' && dq == 0) || \
 			(split_arg[i][j] == '"' && sq == 0))
 				update_quote_state_str(split_arg[i], &sq, &dq, j);
 			else
-				write (1, &(split_arg[i][j]), 1);
+				write (fd, &(split_arg[i][j]), 1);
 			j++;
 		}
 		i++;
@@ -83,25 +83,27 @@ int	is_flag(char *str)
 	return (i);
 }
 
-void	run_echo(char *inpt, t_shell *shell_info)
+void	run_echo(char *inpt, t_shell *shell_info, int fd)
 {
 	char	**split_arg;
 
+	if (fd < 0)
+		fd = 1;
 	if (inpt)
 	{
 		split_arg = split_ms(inpt, ' ');
 		if (split_arg)
 		{
 			if (is_flag(split_arg[0]))
-				echo_with_flag(split_arg);
+				echo_with_flag(split_arg, fd);
 			else
-				echo_without_flag(split_arg);
+				echo_without_flag(split_arg, fd);
 		}
 		if (split_arg)
 			free_split_thalia(split_arg);
 	}
 	else
-		write (1, "\n", 1);
+		write (fd, "\n", 1);
 	if (num_of_total_cmds(shell_info->first_command) > 1)
 		exit(0);
 	*(shell_info->status) = 0;

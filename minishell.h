@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/31 11:26:45 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/31 11:51:13 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void		print_split_no_newline(char **str);
 void		print_token_types(t_shell *shell_info);
 
 //ECHO.C
-void		run_echo(char *inpt, t_shell *shell_info);
+void		run_echo(char *inpt, t_shell *shell_info, int fd);
 
 //ENV.C
 void		run_env(t_shell *shell_info);
