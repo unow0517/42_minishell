@@ -51,14 +51,7 @@ t_env_mini	*env_to_envmini(char **env, t_env_mini *env_mini)
 		}
 		env++;
 		if (*env)
-		{
-			env_mini->next = malloc(sizeof(t_env_mini));
-			env_mini->next->name = NULL;
-			env_mini->next->value = NULL;
-			env_mini->next->next = NULL;
-			if (env_mini->next)
-				env_mini = env_mini->next;
-		}
+			env_mini = env_to_envmini_helper(env_mini);
 		else
 			env_mini->next = NULL;
 		free_split_thalia(ft_splitted);
@@ -70,7 +63,7 @@ void	initialise_basics(char **argv, char **env, t_shell *shell_info)
 {
 	shell_info->argv = argv;
 	shell_info->env = env;
-	shell_info->env_mini = malloc(sizeof(t_env_mini));
+	shell_info->env_mini = ft_calloc(1, sizeof(t_env_mini));
 	init_env_mini(shell_info->env_mini);
 	shell_info->env_mini = env_to_envmini(env, shell_info->env_mini);
 	getcwd(shell_info->cwd, sizeof(shell_info->cwd));

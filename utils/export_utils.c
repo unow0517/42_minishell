@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 12:09:53 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/29 20:55:09 by yowoo            ###   ########.fr       */
+/*   Updated: 2024/05/31 09:40:53 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_env_mini	*ft_lstnew_envmini(char *name, char *value)
 {
 	t_env_mini	*first_node;
 
-	first_node = (t_env_mini *)malloc(sizeof(t_env_mini));
+	first_node = ft_calloc(1, sizeof(t_env_mini));
 	first_node->name = name;
 	first_node->value = value;
 	first_node->next = 0;

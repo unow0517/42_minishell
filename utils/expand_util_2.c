@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:33:41 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/30 22:16:17 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/31 09:19:44 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	exp_shell(char *str, int *i_sq, char *start, t_shell *shell_info)
 	char	*till_d;
 	int		l;
 	char	*v;
+	char	*to_replace;
 
 	if (*str == '$' && !*i_sq)
 	{
@@ -64,7 +65,10 @@ void	exp_shell(char *str, int *i_sq, char *start, t_shell *shell_info)
 		v = ft_varvalue(l, str, shell_info->env_mini);
 		free(shell_info->user_input);
 		shell_info->user_input = NULL;
-		shell_info->user_input = ft_strjoin(till_d, replace_exp(str, v, l));
+		to_replace = replace_exp(str, v, l);
+		shell_info->user_input = ft_strjoin(till_d, to_replace);
+		free(to_replace);
+		to_replace = NULL;
 		free(till_d);
 		till_d = NULL;
 	}

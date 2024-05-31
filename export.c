@@ -16,18 +16,14 @@ char	*export_rm_quote(char *str)
 {
 	char	*output;
 	char	q;
-	char	*str_q_removed;
 
 	if (ft_strchr(str, '\'') != 0 || ft_strchr(str, '"') != 0)
 	{
 		q = first_quote(str);
-		str_q_removed = rm_quotes(str, q);
-		free(str);
-		str = NULL;
-		output = str_q_removed;
+		output = rm_quotes(str, q);
 	}
 	else
-		output = str;
+		output = ft_strdup(str);
 	return (output);
 }
 
@@ -38,7 +34,7 @@ char	*find_varname(char *str)
 
 	ptr_to_equal = ft_strchr(str, '=');
 	if (ptr_to_equal == 0)
-		var_name = str;
+		var_name = ft_substr(str, 0, ft_strlen(str));
 	else
 		var_name = ft_substr(str, 0, ptr_to_equal - str);
 	return (var_name);
@@ -67,20 +63,15 @@ void	run_export_keyword(char	*str, t_shell *shell_info, int *status)
 	ptr = export_rm_quote(str);
 	var_name = find_varname(ptr);
 	var_value = find_varvalue(ptr);
-	if (!var_name || !is_al_num_underscore(var_name))
-	{
-		(*status)++;
-		printf("minishell: export: `%s' not a valid identifier\n", ptr);
-	}
-	else if (ft_strlen(ptr) && isdigit(*ptr))
-	{
-		(*status)++;
-		printf("minishell: export: `%s' not a valid identifier\n", ptr);
-	}
+	if (!var_name || !is_al_num_underscore(var_name) || \
+	((ft_strlen(ptr)) && (ft_isdigit(*ptr))))
+		run_export_keyword_error(status, var_name, var_value, ptr);
 	else if (is_al_num_underscore(var_name))
 	{
 		env_mini = ft_lstnew_envmini(var_name, var_value);
 		ft_lstlast_envmini(shell_info->env_mini)->next = env_mini;
+		if (ptr)
+			free_set_null(ptr);
 	}
 }
 
@@ -111,13 +102,4 @@ void	run_export(char *str, t_shell *shell_info)
 		proc_exit(1, shell_info);
 	else
 		proc_exit(0, shell_info);
-}
-
-void	free_split_set_null(char **keywords)
-{
-	if (keywords)
-	{
-		free_split_thalia(keywords);
-		keywords = NULL;
-	}
 }

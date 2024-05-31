@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/30 21:20:01 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/31 11:26:45 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ t_token		*initialise_builtin_type_arg(t_command *cmd_node, t_token *iterate);
 
 //CD.C
 void		run_cd(char *inpt, t_shell *shell_info);
+void		update_pwd(char *str, t_shell *shell_info);
 
 //CHECKS.C
 void		print_token(t_token *token);
@@ -315,6 +316,7 @@ t_env_mini	*ft_lstnew_envmini(char *name, char *value);
 t_env_mini	*ft_lstlast_envmini(t_env_mini *lst);
 void		run_export(char *str, t_shell *shell_info);
 void		free_split_set_null(char **keywords);
+void		free_set_null(char *str);
 
 //EXPAND.C
 int			is_al_num_udsc_c(char c);
@@ -358,5 +360,15 @@ char		*ptr_ws(char *inpt);
 void		syntax_error_check(t_shell *shell_info);
 bool		syntax_error_at_start(t_token *iter);
 void		syntax_error_at_start_msg(t_shell *shell_info, t_token *iter);
+
+//LAST
+void		nullify_ints_two(int *inside_sq, int *inside_dq);
+char		*repl_exp_return(char *str_till_dollar, char *str_after_varname);
+t_env_mini	*env_to_envmini_helper(t_env_mini *env_mini);
+void		run_export_keyword_error(int *status, char *var_name, \
+char *var_value, char *ptr);
+void		cd_helper(t_shell *shell_info, char *cwd);
+
+// void		env_to_envmini_helper(char **ft_splitted, t_env_mini *env_mini);
 
 #endif

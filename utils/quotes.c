@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:53:09 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/30 17:50:05 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/31 10:17:40 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_token	*skip_quoted_str(t_token *to_skip, t_token_type flag)
 	return (to_skip);
 }
 
-static int	count_quotes(char *to_fix, char c, int *q_counter, int *i);
+static int	count_quotes(char *to_fix, int *i);
 static char	*outer_q_removed_str(char *to_fix, char c, char *new);
 
 char	*rm_quotes(char *to_fix, char c)
@@ -64,7 +64,7 @@ char	*rm_quotes(char *to_fix, char c)
 	q_counter = 0;
 	if (!to_fix)
 		return (NULL);
-	count_quotes(to_fix, c, &q_counter, &i);
+	count_quotes(to_fix, &i);
 	new = ft_calloc(i - q_counter + 1, sizeof(char));
 	if (!new)
 		return (NULL);
@@ -92,12 +92,10 @@ static char	*outer_q_removed_str(char *to_fix, char c, char *new)
 	return (new);
 }
 
-static int	count_quotes(char *to_fix, char c, int *q_counter, int *i)
+static int	count_quotes(char *to_fix, int *i)
 {
 	while (to_fix && to_fix[*i] != '\0')
 	{
-		if (to_fix[*i] == c)
-			q_counter++;
 		(*i)++;
 	}
 	return (*i);

@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:20:35 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/30 22:34:42 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/31 09:09:49 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,6 @@ void	rm_ws_aft_dl(char *before, char *after, t_shell *shell_info)
 		join = ft_strjoin(before, after);
 		free(before);
 		before = NULL;
-		free(after);
-		after = NULL;
 		free(shell_info->user_input);
 		shell_info->user_input = NULL;
 		shell_info->user_input = join;

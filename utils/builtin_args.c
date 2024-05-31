@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:53:26 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/29 11:55:49 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/31 10:39:16 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	arg_counter(t_token *cur, int *sq, int *dq, int *counter)
 	}
 }
 
-static void	nullify_ints_two(int *inside_sq, int *inside_dq)
+void	nullify_ints_two(int *inside_sq, int *inside_dq)
 {
 	*inside_dq = 0;
 	*inside_sq = 0;

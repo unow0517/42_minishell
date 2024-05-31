@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 10:57:48 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/30 22:23:02 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/31 10:52:26 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,11 @@ char	*replace_exp(char *inpt, char *var_value, int var_name_len)
 	char	*str_till_dollar;
 	char	*str_after_varname;
 	char	*ptr_dollar;
-	char	*return_str;
 
 	if (!inpt)
 		return (0);
-	str_till_dollar = 0;
-	str_after_varname = 0;
+	str_till_dollar = NULL;
+	str_after_varname = NULL;
 	ptr_dollar = ft_strchr(inpt, '$');
 	if (ptr_dollar)
 	{
@@ -59,12 +58,7 @@ char	*replace_exp(char *inpt, char *var_value, int var_name_len)
 		if (!ft_strlen(str_till_dollar) && !ft_strlen(str_after_varname))
 			return ("");
 		else
-		{
-			return_str = ft_strjoin(str_till_dollar, str_after_varname);
-			free(str_till_dollar);
-			str_till_dollar = NULL;
-			return (return_str);
-		}
+			return (repl_exp_return(str_till_dollar, str_after_varname));
 	}
 	else
 		return (inpt);
@@ -82,8 +76,8 @@ void	replace_dollar_question(t_shell *shell_info)
 	if (shell_info->user_input)
 		str = shell_info->user_input;
 	inpt = str;
-	till_d = 0;
-	after_q = 0;
+	till_d = NULL;
+	after_q = NULL;
 	while (*str)
 	{
 		if (*str == '$' && *(str + 1) == '?')
@@ -91,10 +85,7 @@ void	replace_dollar_question(t_shell *shell_info)
 			till_d = ft_substr(inpt, 0, str - inpt);
 			after_q = str + 2;
 			j = join_three(till_d, ft_itoa(*(shell_info->status)), after_q);
-			free(till_d);
-			till_d = NULL;
-			free(shell_info->user_input);
-			shell_info->user_input = NULL;
+			free_set_null(shell_info->user_input);
 			shell_info->user_input = j;
 		}
 		if (str + 1)
