@@ -1,9 +1,0 @@
-*.o
-*.dSYM
-.vscode
-minishell_tester/
-.gitignore
-Libft/objects
-leaks.txt
-env_toenvmini.txt
-free.txt
