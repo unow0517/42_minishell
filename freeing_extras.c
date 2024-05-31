@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 11:14:13 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/05/31 12:50:53 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/31 13:05:00 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,27 +28,6 @@ void	free_set_null(char *str)
 		free(str);
 		str = NULL;
 	}
-}
-
-t_env_mini	*get_nextnode(t_env_mini *env_mini)
-{
-	t_env_mini	*output;
-
-	output = 0;
-	if (env_mini)
-	{
-		if (env_mini->next)
-			output = env_mini;
-		else
-		{
-			if (env_mini->value && ft_strlen(env_mini->value))
-			{
-				if (env_mini->name && ft_strlen(env_mini->name))
-					output = env_mini;
-			}
-		}
-	}
-	return (output);
 }
 
 void	free_envmini(t_env_mini *env_mini)

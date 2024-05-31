@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 19:13:36 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/31 11:51:13 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/31 13:05:09 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -332,7 +332,6 @@ void		replace_caret(t_shell *shell_info);
 void		free_tokens(t_token **shell_info);
 void		free_cmd_list(t_command **cmds);
 void		free_shell(t_shell *shell_info);
-t_env_mini	*get_nextnode(t_env_mini *env_mini);
 void		free_envmini(t_env_mini *env_mini);
 
 //QUOTES
