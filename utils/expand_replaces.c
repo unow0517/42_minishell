@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_replaces.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: yowoo <yowoo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 10:57:48 by yowoo             #+#    #+#             */
-/*   Updated: 2024/05/31 14:21:35 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:39:00 by yowoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*replace_exp(char *inpt, char *var_value, int var_name_len)
 	else if (ptr_dollar && !var_value)
 	{
 		if (!ft_strlen(str_till_dollar) && !ft_strlen(str_after_varname))
-			return ("");
+			return (free(str_till_dollar), ft_strdup(""));
 		else
 			return (repl_exp_return(str_till_dollar, str_after_varname));
 	}
